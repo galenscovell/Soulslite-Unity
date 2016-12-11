@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soulslite", "Soulslite.csproj", "{3839C065-A1A5-2D30-E7A8-60A24246D645}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Soulslite.Editor", "Soulslite.Editor.csproj", "{9ED5F8F3-0D9B-5E80-F818-10981EFF84B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{3839C065-A1A5-2D30-E7A8-60A24246D645}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3839C065-A1A5-2D30-E7A8-60A24246D645}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3839C065-A1A5-2D30-E7A8-60A24246D645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ED5F8F3-0D9B-5E80-F818-10981EFF84B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ED5F8F3-0D9B-5E80-F818-10981EFF84B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ED5F8F3-0D9B-5E80-F818-10981EFF84B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ED5F8F3-0D9B-5E80-F818-10981EFF84B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
