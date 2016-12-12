@@ -4,8 +4,8 @@ using UnityEngine.Assertions;
 
 public class CameraController : MonoBehaviour {
     private new Camera camera;
-    private int pixelsPerUnit = 1;
-    private int verticalUnitsOnScreen = 270;
+    private float pixelsPerUnit = 1f;
+    private float verticalUnitsOnScreen = 270f;
 
     private float finalUnitSize;
     private Vector3 playerOffset;
@@ -28,15 +28,15 @@ public class CameraController : MonoBehaviour {
         transform.position = player.transform.position + playerOffset;
     }
 
-    void SetOrthographicSize(int unitsOnScreen) {
+    void SetOrthographicSize(float unitsOnScreen) {
         var tempUnitSize = Screen.height / unitsOnScreen;
         finalUnitSize = GetNearestMultiple(tempUnitSize, pixelsPerUnit);
         camera.orthographicSize = Screen.height / (finalUnitSize * 2.0f);
     }
 
-    int GetNearestMultiple(int value, int multiple) {
-        int rem = value % multiple;
-        int result = value - rem;
+    float GetNearestMultiple(float value, float multiple) {
+        float rem = value % multiple;
+        float result = value - rem;
 
         if (rem > (multiple / 2))
             result += multiple;
