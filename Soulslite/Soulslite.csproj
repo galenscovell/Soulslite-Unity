@@ -82,6 +82,8 @@
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TileObject.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
+    <Compile Include="Assets\code\graphics\DashTrail.cs" />
+    <Compile Include="Assets\code\graphics\DashTrailObject.cs" />
     <Compile Include="Assets\code\processing\CameraController.cs" />
     <Compile Include="Assets\code\processing\PlayerController.cs" />
   </ItemGroup>

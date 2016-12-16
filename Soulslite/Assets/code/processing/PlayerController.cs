@@ -5,8 +5,8 @@ public class PlayerController : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D body;
+    private DashTrail dashTrail;
 
-    private const float epsilon = 0.2f;
     private float speedLimit;
     private bool moving = false;
     private bool dashing = false;
@@ -19,15 +19,11 @@ public class PlayerController : MonoBehaviour
    /**************************
     *          Init          *
     **************************/
-    void Awake() 
+	private void Start() 
     {
-        body = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-    }
-
-	void Start() 
-    {
-        
+        body = GetComponent<Rigidbody2D>();
+        dashTrail = GetComponent<DashTrail>();
     }
 
 
@@ -35,45 +31,33 @@ public class PlayerController : MonoBehaviour
    /**************************
     *        Update          *
     **************************/
-    void FixedUpdate() 
+    private void FixedUpdate() 
     {
-        /***********
-         * Default *
-         */
         if (!dashing) 
         {
             speedLimit = 60f;
-
             float newX = Input.GetAxis("LeftAxisX") * speedLimit;
             float newY = Input.GetAxis("LeftAxisY") * speedLimit;
 
             // Dash input handling
             if (Input.GetButtonDown("Button0"))
             {
+                dashing = true;
+
                 // If not moving, set start dash velocity in facing direction
                 if (!IsMoving())
                 {
                     newX = previousDirection.x * speedLimit;
                     newY = previousDirection.y * speedLimit;
                 }
-                dashing = true;
             }
             
+            // Set new velocity
             body.velocity = NormalizedDiagonal(newX, newY);
 
             // Determine last direction faced
             moving = IsMoving();
-            if (moving)
-            {
-                SetDirection();
-            }
-        }
-        /***********
-         * Dashing *
-         */
-        else if (dashing)
-        {
-            speedLimit = 1200f;
+            if (moving) SetDirection();
         }
         
         // Update animator parameters
@@ -147,7 +131,7 @@ public class PlayerController : MonoBehaviour
     /// <returns></returns>
     private bool IsMoving() 
     {
-        return Vector2.Distance(body.velocity, zeroVector) > epsilon;
+        return Vector2.Distance(body.velocity, zeroVector) > 0.2f;
     }
 
 
@@ -160,9 +144,11 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void StartDash()
     {
+        speedLimit = 1200f;
         float dashX = body.velocity.x * speedLimit;
         float dashY = body.velocity.y * speedLimit;
         body.velocity = NormalizedDiagonal(dashX, dashY);
+        dashTrail.SetEnabled(true);
     }
 
     /// <summary>
@@ -171,6 +157,7 @@ public class PlayerController : MonoBehaviour
     private void HaltDash()
     {
         body.velocity = new Vector2(0, 0);
+        dashTrail.SetEnabled(false);
     }
 
     /// <summary>
