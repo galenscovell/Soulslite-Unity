@@ -144,7 +144,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void StartDash()
     {
-        speedLimit = 1200f;
+        speedLimit = 1600f;
         float dashX = body.velocity.x * speedLimit;
         float dashY = body.velocity.y * speedLimit;
         body.velocity = NormalizedDiagonal(dashX, dashY);
