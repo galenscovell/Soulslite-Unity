@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 
 
-public class PlayerController : MonoBehaviour 
+public class PlayerAgent : MonoBehaviour 
 {
     private Animator animator;
     private Rigidbody2D body;
     private DashTrail dashTrail;
+    private SpriteRenderer spriteRenderer;
 
     private float speedLimit;
     private bool moving = false;
@@ -13,24 +14,35 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 previousDirection = new Vector2(0, 0);
     private Vector2 zeroVector = new Vector2(0, 0);
-
+    
 
 
    /**************************
     *          Init          *
     **************************/
-	private void Start() 
+    private void Start() 
     {
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         dashTrail = GetComponent<DashTrail>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
 
 
-   /**************************
-    *        Update          *
-    **************************/
+    /**************************
+     *        Update          *
+     **************************/
+    private void UpdateSortingLayer()
+    {
+        spriteRenderer.sortingOrder = -Mathf.RoundToInt((transform.position.y + -0.1f) / 0.05f);
+    }
+
+    private void Update()
+    {
+        UpdateSortingLayer();
+    }
+
     private void FixedUpdate() 
     {
         if (!dashing) 
@@ -65,6 +77,18 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Moving", moving);
 	}
 
+
+
+    /**************************
+     *      Collisions        *
+     **************************/
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (dashing)
+        {
+            print("Dash collision " + gameObject.name + " and " + collision.collider.name);
+        }
+    }
 
 
     /**************************
@@ -144,7 +168,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void StartDash()
     {
-        speedLimit = 1600f;
+        speedLimit = 2400f;
         float dashX = body.velocity.x * speedLimit;
         float dashY = body.velocity.y * speedLimit;
         body.velocity = NormalizedDiagonal(dashX, dashY);
