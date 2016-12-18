@@ -1,24 +1,24 @@
 ﻿using UnityEngine;
 
 
-public class EntityAgent : MonoBehaviour
+public class BaseEntity : MonoBehaviour
 {
-    private Animator animator;
-    private Rigidbody2D body;
-    private SpriteRenderer spriteRenderer;
+    protected Animator animator;
+    protected Rigidbody2D body;
+    protected SpriteRenderer spriteRenderer;
 
-    private float speedLimit;
-    private bool moving = false;
+    protected float speedMultiplier;
+    protected bool moving = false;
 
-    private Vector2 previousDirection = new Vector2(0, 0);
-    private Vector2 zeroVector = new Vector2(0, 0);
+    protected Vector2 previousDirection = new Vector2(0, 0);
+    protected Vector2 zeroVector = new Vector2(0, 0);
 
 
 
     /**************************
      *          Init          *
      **************************/
-    private void Start()
+    protected void Start()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
@@ -30,17 +30,17 @@ public class EntityAgent : MonoBehaviour
     /**************************
      *        Update          *
      **************************/
-    private void UpdateSortingLayer()
+    protected void UpdateSortingLayer()
     {
         spriteRenderer.sortingOrder = -Mathf.RoundToInt((transform.position.y + -0.1f) / 0.05f);
     }
 
-    private void Update()
+    protected void Update()
     {
         UpdateSortingLayer();
     }
 
-    private void FixedUpdate()
+    protected void FixedUpdate()
     {
         // Determine last direction faced
         moving = IsMoving();
@@ -55,7 +55,7 @@ public class EntityAgent : MonoBehaviour
     /**************************
      *      Collisions        *
      **************************/
-    private void OnCollisionEnter2D(Collision2D collision)
+    protected void OnCollisionEnter2D(Collision2D collision)
     {
         print("Collision: " + gameObject.name + ", " + collision.collider.name);
     }
@@ -67,7 +67,7 @@ public class EntityAgent : MonoBehaviour
     /// <summary>
     /// Find currently facing direction and set animator direction parameters.
     /// </summary>
-    private void SetDirection()
+    protected void SetDirection()
     {
         if (Mathf.Abs(body.velocity.x) > Mathf.Abs(body.velocity.y))
         {
@@ -106,13 +106,13 @@ public class EntityAgent : MonoBehaviour
     /// <param name="velocityX"></param>
     /// <param name="velocityY"></param>
     /// <returns>Normalized velocity vector2</returns>
-    private Vector2 NormalizedDiagonal(float velocityX, float velocityY)
+    protected Vector2 NormalizedDiagonal(float velocityX, float velocityY)
     {
         float pythagoras = (velocityX * velocityX) + (velocityY * velocityY);
-        if (pythagoras > (speedLimit * speedLimit))
+        if (pythagoras > (speedMultiplier * speedMultiplier))
         {
             float magnitude = Mathf.Sqrt(pythagoras);
-            float multiplier = speedLimit / magnitude;
+            float multiplier = speedMultiplier / magnitude;
             velocityX *= multiplier;
             velocityY *= multiplier;
         }
@@ -123,7 +123,7 @@ public class EntityAgent : MonoBehaviour
     /// Return whether the current body velocity is considered 'moving'.
     /// </summary>
     /// <returns>true if velocity is significant</returns>
-    private bool IsMoving()
+    protected bool IsMoving()
     {
         return Vector2.Distance(body.velocity, zeroVector) > 0.2f;
     }

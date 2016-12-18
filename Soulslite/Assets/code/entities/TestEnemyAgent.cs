@@ -1,31 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class TestEnemyAgent : MonoBehaviour {
-    private Animator animator;
-    private Rigidbody2D body;
-    private DashTrail dashTrail;
-    private SpriteRenderer spriteRenderer;
-
-    private float speedLimit;
-    private bool moving = false;
-    private bool dashing = false;
-
-    private Vector2 previousDirection = new Vector2(0, 0);
-    private Vector2 zeroVector = new Vector2(0, 0);
+public class TestEnemyAgent : BaseEntity
+{
 
 
 
     /**************************
      *          Init          *
      **************************/
-    private void Start()
+    private new void Start()
     {
-        animator = GetComponent<Animator>();
-        body = GetComponent<Rigidbody2D>();
-        dashTrail = GetComponent<DashTrail>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        base.Start();
     }
 
 
@@ -33,18 +18,23 @@ public class TestEnemyAgent : MonoBehaviour {
     /**************************
      *        Update          *
      **************************/
-    private void UpdateSortingLayer()
+    private new void Update()
     {
-        spriteRenderer.sortingOrder = -Mathf.RoundToInt((transform.position.y + -0.1f) / 0.05f);
+        base.Update();
     }
 
-    private void Update()
+    private new void FixedUpdate()
     {
-        UpdateSortingLayer();
+        base.FixedUpdate();
     }
 
-    private void FixedUpdate()
-    {
 
+
+    /**************************
+     *      Collisions        *
+     **************************/
+    private new void OnCollisionEnter2D(Collision2D collision)
+    {
+        base.OnCollisionEnter2D(collision);
     }
 }
