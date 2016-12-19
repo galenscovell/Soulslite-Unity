@@ -10,6 +10,7 @@ public class BaseEntity : MonoBehaviour
     protected float speedMultiplier;
     protected bool moving = false;
 
+    protected Vector2 nextVelocity = new Vector2(0, 0);
     protected Vector2 previousDirection = new Vector2(0, 0);
     protected Vector2 zeroVector = new Vector2(0, 0);
 
@@ -103,20 +104,19 @@ public class BaseEntity : MonoBehaviour
     /// <summary>
     /// Take in a velocity and normalize it in the diagonal direction.
     /// </summary>
-    /// <param name="velocityX"></param>
-    /// <param name="velocityY"></param>
+    /// <param name="velocity"></param>
     /// <returns>Normalized velocity vector2</returns>
-    protected Vector2 NormalizedDiagonal(float velocityX, float velocityY)
+    protected Vector2 NormalizedDiagonal(Vector2 velocity)
     {
-        float pythagoras = (velocityX * velocityX) + (velocityY * velocityY);
+        float pythagoras = (velocity.x * velocity.x) + (velocity.y * velocity.y);
         if (pythagoras > (speedMultiplier * speedMultiplier))
         {
             float magnitude = Mathf.Sqrt(pythagoras);
             float multiplier = speedMultiplier / magnitude;
-            velocityX *= multiplier;
-            velocityY *= multiplier;
+            velocity.x *= multiplier;
+            velocity.y *= multiplier;
         }
-        return new Vector2(velocityX, velocityY);
+        return new Vector2(velocity.x, velocity.y);
     }
 
     /// <summary>

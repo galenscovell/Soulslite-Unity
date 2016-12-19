@@ -26,15 +26,12 @@ public class PlayerAgent : BaseEntity
     private new void Update()
     {
         base.Update();
-    }
 
-    private new void FixedUpdate() 
-    {
-        if (!dashing) 
+        if (!dashing)
         {
             speedMultiplier = 60f;
-            float newX = Input.GetAxis("LeftAxisX") * speedMultiplier;
-            float newY = Input.GetAxis("LeftAxisY") * speedMultiplier;
+            nextVelocity.x = Input.GetAxis("LeftAxisX") * speedMultiplier;
+            nextVelocity.y = Input.GetAxis("LeftAxisY") * speedMultiplier;
 
             // Dash input handling
             if (Input.GetButtonDown("Button0"))
@@ -44,17 +41,20 @@ public class PlayerAgent : BaseEntity
                 // If not moving, set start dash velocity in facing direction
                 if (!IsMoving())
                 {
-                    newX = previousDirection.x * speedMultiplier;
-                    newY = previousDirection.y * speedMultiplier;
+                    nextVelocity.x = previousDirection.x * speedMultiplier;
+                    nextVelocity.y = previousDirection.y * speedMultiplier;
                 }
             }
-            
-            // Set new velocity
-            body.velocity = NormalizedDiagonal(newX, newY);
         }
-        
+
         // Update animator parameters
         animator.SetBool("Dashing", dashing);
+    }
+
+    private new void FixedUpdate() 
+    {
+        // Set new velocity
+        body.velocity = NormalizedDiagonal(nextVelocity);
 
         base.FixedUpdate();
 	}
@@ -79,10 +79,10 @@ public class PlayerAgent : BaseEntity
     /// </summary>
     private void StartDash()
     {
-        speedMultiplier = 2400f;
-        float dashX = body.velocity.x * speedMultiplier;
-        float dashY = body.velocity.y * speedMultiplier;
-        body.velocity = NormalizedDiagonal(dashX, dashY);
+        speedMultiplier = 1200f;
+        nextVelocity.x = body.velocity.x * speedMultiplier;
+        nextVelocity.y = body.velocity.y * speedMultiplier;
+        body.velocity = NormalizedDiagonal(nextVelocity);
         dashTrail.SetEnabled(true);
     }
 
@@ -91,7 +91,9 @@ public class PlayerAgent : BaseEntity
     /// </summary>
     private void HaltDash()
     {
-        body.velocity = new Vector2(0, 0);
+        nextVelocity.x = 0;
+        nextVelocity.y = 0;
+        body.velocity = nextVelocity;
         dashTrail.SetEnabled(false);
     }
 
