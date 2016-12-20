@@ -10,9 +10,8 @@ public class BaseEntity : MonoBehaviour
     protected float speedMultiplier;
     protected bool moving = false;
 
+    protected Vector2 direction;
     protected Vector2 nextVelocity = new Vector2(0, 0);
-    protected Vector2 previousDirection = new Vector2(0, 0);
-    protected Vector2 zeroVector = new Vector2(0, 0);
 
 
 
@@ -66,39 +65,13 @@ public class BaseEntity : MonoBehaviour
      *          Util          *
      **************************/
     /// <summary>
-    /// Find currently facing direction and set animator direction parameters.
+    /// Set animator direction as normalized current velocity.
     /// </summary>
     protected void SetDirection()
     {
-        if (Mathf.Abs(body.velocity.x) > Mathf.Abs(body.velocity.y))
-        {
-            if (body.velocity.x > 0)
-            {
-                previousDirection.x = 1;   // Right
-                previousDirection.y = 0;
-            }
-            else
-            {
-                previousDirection.x = -1;  // Left
-                previousDirection.y = 0;
-            }
-        }
-        else if (Mathf.Abs(body.velocity.x) < Mathf.Abs(body.velocity.y))
-        {
-            if (body.velocity.y > 0)
-            {
-                previousDirection.x = 0;   // Up
-                previousDirection.y = 1;
-            }
-            else
-            {
-                previousDirection.x = 0;   // Down
-                previousDirection.y = -1;
-            }
-        }
-
-        animator.SetFloat("DirectionX", previousDirection.x);
-        animator.SetFloat("DirectionY", previousDirection.y);
+        Vector2 direction = body.velocity.normalized;
+        animator.SetFloat("DirectionX", direction.x);
+        animator.SetFloat("DirectionY", direction.y);
     }
 
     /// <summary>
@@ -125,6 +98,6 @@ public class BaseEntity : MonoBehaviour
     /// <returns>true if velocity is significant</returns>
     protected bool IsMoving()
     {
-        return Vector2.Distance(body.velocity, zeroVector) > 0.2f;
+        return body.velocity.magnitude > 0.2f;
     }
 }

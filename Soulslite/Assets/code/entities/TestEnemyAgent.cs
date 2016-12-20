@@ -6,6 +6,8 @@ public class TestEnemyAgent : BaseEntity
     private SeekBehavior behavior;
     private Seeker seeker;
 
+    private bool attacking = false;
+
     public Transform target;
 
 
@@ -35,9 +37,9 @@ public class TestEnemyAgent : BaseEntity
 
     private new void FixedUpdate()
     {
-        behavior.WalkPath(body, nextVelocity, speedMultiplier);
-        Debug.Log(nextVelocity);
-        Debug.Log(body.velocity);
+        speedMultiplier = 40f;
+        nextVelocity = behavior.WalkPath(body, speedMultiplier);
+        body.velocity = nextVelocity;
 
         base.FixedUpdate();
     }
@@ -50,5 +52,42 @@ public class TestEnemyAgent : BaseEntity
     private new void OnCollisionEnter2D(Collision2D collision)
     {
         base.OnCollisionEnter2D(collision);
+    }
+
+
+
+    /**************************
+    *         Attack          *
+    **************************/
+    /// <summary>
+    /// 
+    /// </summary>
+    private void StartAttack()
+    {
+        nextVelocity.x = 0;
+        nextVelocity.y = 0;
+        body.velocity = nextVelocity;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void Attack()
+    {
+        speedMultiplier = 1200f;
+        nextVelocity.x = body.velocity.x * speedMultiplier;
+        nextVelocity.y = body.velocity.y * speedMultiplier;
+        body.velocity = NormalizedDiagonal(nextVelocity);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void EndAttack()
+    {
+        nextVelocity.x = 0;
+        nextVelocity.y = 0;
+        body.velocity = nextVelocity;
+        attacking = false;
     }
 }

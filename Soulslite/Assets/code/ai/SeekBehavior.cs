@@ -3,11 +3,11 @@ using UnityEngine;
 
 
 public class SeekBehavior {
-    public Vector2 target;                     // point to move to
-    public Path path;                          // calculated path
-    public float nextWaypointDistance = 2;     // max distance from ai to a waypoint for it to continue to the next
+    private Vector2 target;
+    private int currentWaypoint = 0;
 
-    private int currentWaypoint = 0;           // current destination index
+    public Path path;
+    public float nextWaypointDistance = 2;
 
 
 
@@ -24,31 +24,31 @@ public class SeekBehavior {
     public void SetPath(Seeker seeker, Vector2 startPosition, Vector2 targetPosition)
     {
         // Start a new path to the targetPosition, return the result to the OnPathComplete function
+        target = targetPosition;
         seeker.StartPath(startPosition, targetPosition, OnPathComplete);
     }
 	
-    public void WalkPath(Rigidbody2D body, Vector2 nextVelocity, float speedMultiplier) {
+    public Vector2 WalkPath(Rigidbody2D body, float speedMultiplier) {
         // We have no path to move after yet
-        if (path == null) return;
+        if (path == null) return default(Vector2);
 
-        if (currentWaypoint >= path.vectorPath.Count)
+        if (currentWaypoint > path.vectorPath.Count)
         {
             Debug.Log("End Of Path Reached");
+            currentWaypoint++;
             path = null;
-            return;
+            return default(Vector2);
         }
 
         Vector2 nextWaypoint = path.vectorPath[currentWaypoint];
         if (Vector2.Distance(nextWaypoint, target) < 40)
         {
             Debug.Log("Within attack distance, ending path");
-            return;
+            return default(Vector2);
         }
 
         // Direction to the next waypoint
-        Vector3 dir = ((Vector2) path.vectorPath[currentWaypoint] - target).normalized;
-        nextVelocity.x = dir.x * speedMultiplier;
-        nextVelocity.y = dir.y * speedMultiplier;
+        Vector2 dir = ((Vector2) path.vectorPath[currentWaypoint] - body.position).normalized;
 
         // Check if we are close enough to the next waypoint
         // If we are, proceed to follow the next waypoint
@@ -56,16 +56,26 @@ public class SeekBehavior {
         {
             currentWaypoint++;
         }
+
+        return new Vector2(dir.x * speedMultiplier, dir.y * speedMultiplier);
     }
 
     private void OnPathComplete(Path p)
     {
-        Debug.Log("Yay, we got a path back. Did it have an error? " + p.error);
+        Debug.Log("A path was calculated -- did it have an error? " + p.error);
+
+        p.Claim(this);
         if (!p.error)
         {
+            if (path != null) path.Release(this);
+
             path = p;
             // Reset the waypoint counter
             currentWaypoint = 0;
+        }
+        else
+        {
+            p.Release(this);
         }
     }
 }

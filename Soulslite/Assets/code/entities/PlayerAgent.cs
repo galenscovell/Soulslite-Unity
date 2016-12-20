@@ -41,8 +41,8 @@ public class PlayerAgent : BaseEntity
                 // If not moving, set start dash velocity in facing direction
                 if (!IsMoving())
                 {
-                    nextVelocity.x = previousDirection.x * speedMultiplier;
-                    nextVelocity.y = previousDirection.y * speedMultiplier;
+                    nextVelocity.x = direction.x * speedMultiplier;
+                    nextVelocity.y = direction.y * speedMultiplier;
                 }
             }
         }
