@@ -53,9 +53,6 @@ public class PlayerAgent : BaseEntity
 
     private new void FixedUpdate() 
     {
-        // Set new velocity
-        body.velocity = NormalizedDiagonal(nextVelocity);
-
         base.FixedUpdate();
 	}
 
@@ -91,8 +88,7 @@ public class PlayerAgent : BaseEntity
     /// </summary>
     private void HaltDash()
     {
-        nextVelocity.x = 0;
-        nextVelocity.y = 0;
+        nextVelocity = Vector2.zero;
         body.velocity = nextVelocity;
         dashTrail.SetEnabled(false);
     }

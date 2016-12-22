@@ -5,18 +5,47 @@ using UnityEngine;
 public class SeekBehavior {
     private Vector2 target;
     private int currentWaypoint = 0;
+    private int aggroDistance = 128;
 
     public Path path;
     public float nextWaypointDistance = 2;
 
 
+    public bool InAggroRange(Vector2 currentPosition, Vector2 targetPosition)
+    {
+        return Vector2.Distance(currentPosition, targetPosition) < aggroDistance;
+    }
+
+    public void RemovePath()
+    {
+        if (path != null)
+        {
+            path.Release(this);
+            path = null;
+        }
+    }
 
     public bool HasPath()
     {
-        return path != null;
+        return path != null && currentWaypoint < path.vectorPath.Count;
     }
 
-    public Vector2 GetWaypoint()
+    public bool HasReachedWaypoint(Vector2 currentPosition)
+    {
+        return Vector2.Distance(currentPosition, path.vectorPath[currentWaypoint]) < nextWaypointDistance;
+    }
+
+    public bool InAttackRange(Vector2 currentPosition)
+    {
+        return Vector2.Distance(currentPosition, target) < 48;
+    }
+
+    public void IncrementPath()
+    {
+        currentWaypoint++;
+    }
+
+    public Vector2 GetNextWaypoint()
     {
         return path.vectorPath[currentWaypoint];
     }
@@ -27,43 +56,9 @@ public class SeekBehavior {
         target = targetPosition;
         seeker.StartPath(startPosition, targetPosition, OnPathComplete);
     }
-	
-    public Vector2 WalkPath(Rigidbody2D body, float speedMultiplier) {
-        // We have no path to move after yet
-        if (path == null) return default(Vector2);
-
-        if (currentWaypoint > path.vectorPath.Count)
-        {
-            Debug.Log("End Of Path Reached");
-            currentWaypoint++;
-            path = null;
-            return default(Vector2);
-        }
-
-        Vector2 nextWaypoint = path.vectorPath[currentWaypoint];
-        if (Vector2.Distance(nextWaypoint, target) < 40)
-        {
-            Debug.Log("Within attack distance, ending path");
-            return default(Vector2);
-        }
-
-        // Direction to the next waypoint
-        Vector2 dir = ((Vector2) path.vectorPath[currentWaypoint] - body.position).normalized;
-
-        // Check if we are close enough to the next waypoint
-        // If we are, proceed to follow the next waypoint
-        if (Vector3.Distance(body.position, path.vectorPath[currentWaypoint]) < nextWaypointDistance)
-        {
-            currentWaypoint++;
-        }
-
-        return new Vector2(dir.x * speedMultiplier, dir.y * speedMultiplier);
-    }
 
     private void OnPathComplete(Path p)
     {
-        Debug.Log("A path was calculated -- did it have an error? " + p.error);
-
         p.Claim(this);
         if (!p.error)
         {

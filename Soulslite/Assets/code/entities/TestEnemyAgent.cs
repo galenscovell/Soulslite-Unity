@@ -7,6 +7,7 @@ public class TestEnemyAgent : BaseEntity
     private Seeker seeker;
 
     private bool attacking = false;
+    private int thoughtTick = 20;
 
     public Transform target;
 
@@ -21,8 +22,6 @@ public class TestEnemyAgent : BaseEntity
 
         behavior = new SeekBehavior();
         seeker = GetComponent<Seeker>();
-
-        behavior.SetPath(seeker, body.position, target.position);
     }
 
 
@@ -33,13 +32,40 @@ public class TestEnemyAgent : BaseEntity
     private new void Update()
     {
         base.Update();
+
+        thoughtTick--;
     }
 
     private new void FixedUpdate()
     {
-        speedMultiplier = 40f;
-        nextVelocity = behavior.WalkPath(body, speedMultiplier);
-        body.velocity = nextVelocity;
+        if (behavior.InAggroRange(body.position, target.position))
+        {
+            if (thoughtTick <= 0)
+            {
+                behavior.SetPath(seeker, body.position, target.position);
+                thoughtTick = 20;
+            }
+        } else
+        {
+            behavior.RemovePath();
+        }
+
+        if (behavior.HasPath() && !behavior.InAttackRange(body.position))
+        {
+            if (behavior.HasReachedWaypoint(body.position))
+            {
+                speedMultiplier = 40f;
+                behavior.IncrementPath();
+                Vector2 nextWaypoint = behavior.GetNextWaypoint();
+                Vector2 dirToWaypoint = (nextWaypoint - body.position).normalized;
+                nextVelocity = new Vector2(dirToWaypoint.x * speedMultiplier, dirToWaypoint.y * speedMultiplier);
+            }
+        }
+        else
+        {
+            behavior.RemovePath();
+            nextVelocity = Vector2.zero;
+        }
 
         base.FixedUpdate();
     }
@@ -64,8 +90,7 @@ public class TestEnemyAgent : BaseEntity
     /// </summary>
     private void StartAttack()
     {
-        nextVelocity.x = 0;
-        nextVelocity.y = 0;
+        nextVelocity = Vector2.zero;
         body.velocity = nextVelocity;
     }
 
@@ -85,8 +110,7 @@ public class TestEnemyAgent : BaseEntity
     /// </summary>
     private void EndAttack()
     {
-        nextVelocity.x = 0;
-        nextVelocity.y = 0;
+        nextVelocity = Vector2.zero;
         body.velocity = nextVelocity;
         attacking = false;
     }

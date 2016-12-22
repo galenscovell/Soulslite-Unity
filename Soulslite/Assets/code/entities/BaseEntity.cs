@@ -44,7 +44,11 @@ public class BaseEntity : MonoBehaviour
     {
         // Determine last direction faced
         moving = IsMoving();
-        if (moving) SetDirection();
+        if (moving)
+        {
+            SetDirection();
+            body.velocity = NormalizedDiagonal(nextVelocity);
+        }
 
         // Update animator
         animator.SetBool("Moving", moving);
@@ -69,7 +73,7 @@ public class BaseEntity : MonoBehaviour
     /// </summary>
     protected void SetDirection()
     {
-        Vector2 direction = body.velocity.normalized;
+        Vector2 direction = nextVelocity.normalized;
         animator.SetFloat("DirectionX", direction.x);
         animator.SetFloat("DirectionY", direction.y);
     }
@@ -98,6 +102,6 @@ public class BaseEntity : MonoBehaviour
     /// <returns>true if velocity is significant</returns>
     protected bool IsMoving()
     {
-        return body.velocity.magnitude > 0.2f;
+        return Vector2.Distance(nextVelocity, Vector2.zero) > 0.2f;
     }
 }
