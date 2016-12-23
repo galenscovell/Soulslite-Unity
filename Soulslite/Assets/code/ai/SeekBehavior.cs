@@ -5,16 +5,11 @@ using UnityEngine;
 public class SeekBehavior {
     private Vector2 target;
     private int currentWaypoint = 0;
-    private int aggroDistance = 128;
 
     public Path path;
     public float nextWaypointDistance = 2;
 
 
-    public bool InAggroRange(Vector2 currentPosition, Vector2 targetPosition)
-    {
-        return Vector2.Distance(currentPosition, targetPosition) < aggroDistance;
-    }
 
     public void RemovePath()
     {
@@ -35,11 +30,6 @@ public class SeekBehavior {
         return Vector2.Distance(currentPosition, path.vectorPath[currentWaypoint]) < nextWaypointDistance;
     }
 
-    public bool InAttackRange(Vector2 currentPosition)
-    {
-        return Vector2.Distance(currentPosition, target) < 48;
-    }
-
     public void IncrementPath()
     {
         currentWaypoint++;
@@ -50,11 +40,20 @@ public class SeekBehavior {
         return path.vectorPath[currentWaypoint];
     }
 
-    public void SetPath(Seeker seeker, Vector2 startPosition, Vector2 targetPosition)
+    public void SetPath(Seeker seeker, Vector2 startPosition, Rigidbody2D targetBody, float thinkTime)
     {
         // Start a new path to the targetPosition, return the result to the OnPathComplete function
-        target = targetPosition;
-        seeker.StartPath(startPosition, targetPosition, OnPathComplete);
+        Vector2 trackedPosition = Vector2.zero;
+        if (thinkTime > 0)
+        {
+            Vector2 currentTargetVelocity = targetBody.velocity;
+            trackedPosition = targetBody.position + (targetBody.velocity * thinkTime);
+        } else
+        {
+            trackedPosition = targetBody.position;
+        }
+        target = trackedPosition;
+        seeker.StartPath(startPosition, target, OnPathComplete);
     }
 
     private void OnPathComplete(Path p)

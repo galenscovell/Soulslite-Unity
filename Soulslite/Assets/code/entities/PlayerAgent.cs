@@ -76,7 +76,7 @@ public class PlayerAgent : BaseEntity
     /// </summary>
     private void StartDash()
     {
-        speedMultiplier = 1200f;
+        speedMultiplier = 900f;
         nextVelocity.x = body.velocity.x * speedMultiplier;
         nextVelocity.y = body.velocity.y * speedMultiplier;
         body.velocity = NormalizedDiagonal(nextVelocity);

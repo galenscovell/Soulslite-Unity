@@ -8,8 +8,13 @@ public class TestEnemyAgent : BaseEntity
 
     private bool attacking = false;
     private int thoughtTick = 20;
+    private Vector2 directionToTarget;
 
-    public Transform target;
+    public Rigidbody2D target;
+    public float thinkTime;
+    public int aggroDistance;
+    public int deAggroDistance;
+    public int attackRange;
 
 
 
@@ -38,34 +43,47 @@ public class TestEnemyAgent : BaseEntity
 
     private new void FixedUpdate()
     {
-        if (behavior.InAggroRange(body.position, target.position))
+        if (!attacking)
         {
-            if (thoughtTick <= 0)
+            if (InAggroRange())
             {
-                behavior.SetPath(seeker, body.position, target.position);
-                thoughtTick = 20;
+                if (thoughtTick <= 0)
+                {
+                    behavior.SetPath(seeker, body.position, target, thinkTime);
+                    thoughtTick = 20;
+                }
             }
-        } else
-        {
-            behavior.RemovePath();
+            else
+            {
+                behavior.RemovePath();
+            }
+
+            if (behavior.HasPath())
+            {
+                if (!InAttackRange())
+                {
+                    if (behavior.HasReachedWaypoint(body.position))
+                    {
+                        speedMultiplier = 40f;
+                        behavior.IncrementPath();
+                        Vector2 nextWaypoint = behavior.GetNextWaypoint();
+                        Vector2 dirToWaypoint = (nextWaypoint - body.position).normalized;
+                        nextVelocity = new Vector2(dirToWaypoint.x * speedMultiplier, dirToWaypoint.y * speedMultiplier);
+                    }
+                }
+                else
+                {
+                    attacking = true;
+                }
+            }
+            else
+            {
+                behavior.RemovePath();
+                nextVelocity = Vector2.zero;
+            }
         }
 
-        if (behavior.HasPath() && !behavior.InAttackRange(body.position))
-        {
-            if (behavior.HasReachedWaypoint(body.position))
-            {
-                speedMultiplier = 40f;
-                behavior.IncrementPath();
-                Vector2 nextWaypoint = behavior.GetNextWaypoint();
-                Vector2 dirToWaypoint = (nextWaypoint - body.position).normalized;
-                nextVelocity = new Vector2(dirToWaypoint.x * speedMultiplier, dirToWaypoint.y * speedMultiplier);
-            }
-        }
-        else
-        {
-            behavior.RemovePath();
-            nextVelocity = Vector2.zero;
-        }
+        animator.SetBool("Attacking", attacking);
 
         base.FixedUpdate();
     }
@@ -83,6 +101,21 @@ public class TestEnemyAgent : BaseEntity
 
 
     /**************************
+     *        Ranges          *
+     **************************/
+    private bool InAggroRange()
+    {
+        return Vector2.Distance(body.position, target.position) < aggroDistance;
+    }
+
+    private bool InAttackRange()
+    {
+        return Vector2.Distance(body.position, target.position) < 48;
+    }
+
+
+
+    /**************************
     *         Attack          *
     **************************/
     /// <summary>
@@ -92,17 +125,25 @@ public class TestEnemyAgent : BaseEntity
     {
         nextVelocity = Vector2.zero;
         body.velocity = nextVelocity;
+        directionToTarget = (target.position - body.position).normalized;
     }
 
     /// <summary>
     /// 
     /// </summary>
-    private void Attack()
+    private void StartLeap()
     {
-        speedMultiplier = 1200f;
-        nextVelocity.x = body.velocity.x * speedMultiplier;
-        nextVelocity.y = body.velocity.y * speedMultiplier;
+        speedMultiplier = 160f;
+        nextVelocity.x = directionToTarget.x * speedMultiplier;
+        nextVelocity.y = directionToTarget.y * speedMultiplier;
         body.velocity = NormalizedDiagonal(nextVelocity);
+    }
+
+    private void EndLeap()
+    {
+        nextVelocity = Vector2.zero;
+        body.velocity = nextVelocity;
+        directionToTarget = Vector2.zero;
     }
 
     /// <summary>
