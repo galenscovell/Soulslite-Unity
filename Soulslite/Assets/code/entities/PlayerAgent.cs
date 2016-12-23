@@ -15,6 +15,7 @@ public class PlayerAgent : BaseEntity
     private new void Start()
     {
         base.Start();
+
         dashTrail = GetComponent<DashTrail>();
     }
 
@@ -27,6 +28,9 @@ public class PlayerAgent : BaseEntity
     {
         base.Update();
 
+        /*****************
+         * DEFAULT
+         *****************/
         if (!dashing)
         {
             speedMultiplier = 60f;
@@ -40,7 +44,6 @@ public class PlayerAgent : BaseEntity
             }
         }
 
-        // Update animator parameters
         animator.SetBool("Dashing", dashing);
     }
 
@@ -69,11 +72,10 @@ public class PlayerAgent : BaseEntity
     /// </summary>
     private void StartDash()
     {
-        speedMultiplier = 800f;
-        nextVelocity.x = direction.x * speedMultiplier;
-        nextVelocity.y = direction.y * speedMultiplier;
-        body.velocity = NormalizedDiagonal(nextVelocity);
         dashTrail.SetEnabled(true);
+
+        speedMultiplier = 800f;
+        nextVelocity = facingDirection * speedMultiplier;
     }
 
     /// <summary>
@@ -81,9 +83,9 @@ public class PlayerAgent : BaseEntity
     /// </summary>
     private void HaltDash()
     {
-        nextVelocity = Vector2.zero;
-        body.velocity = nextVelocity;
         dashTrail.SetEnabled(false);
+
+        nextVelocity = Vector2.zero;
     }
 
     /// <summary>

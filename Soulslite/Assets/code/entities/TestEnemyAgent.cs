@@ -14,7 +14,7 @@ public class TestEnemyAgent : BaseEntity
     public float thinkTime;
     public int aggroDistance;
     public int deAggroDistance;
-    public int attackRange;
+    public int attackDistance;
 
 
 
@@ -43,6 +43,9 @@ public class TestEnemyAgent : BaseEntity
 
     private new void FixedUpdate()
     {
+        /*****************
+         * DEFAULT
+         *****************/
         if (!attacking)
         {
             if (InAggroRange())
@@ -110,7 +113,7 @@ public class TestEnemyAgent : BaseEntity
 
     private bool InAttackRange()
     {
-        return Vector2.Distance(body.position, target.position) < 48;
+        return Vector2.Distance(body.position, target.position) < attackDistance;
     }
 
 
@@ -124,7 +127,6 @@ public class TestEnemyAgent : BaseEntity
     private void StartAttack()
     {
         nextVelocity = Vector2.zero;
-        body.velocity = nextVelocity;
         directionToTarget = (target.position - body.position).normalized;
     }
 
@@ -133,16 +135,13 @@ public class TestEnemyAgent : BaseEntity
     /// </summary>
     private void StartLeap()
     {
-        speedMultiplier = 160f;
-        nextVelocity.x = directionToTarget.x * speedMultiplier;
-        nextVelocity.y = directionToTarget.y * speedMultiplier;
-        body.velocity = NormalizedDiagonal(nextVelocity);
+        speedMultiplier = 220f;
+        nextVelocity = directionToTarget * speedMultiplier;
     }
 
     private void EndLeap()
     {
         nextVelocity = Vector2.zero;
-        body.velocity = nextVelocity;
         directionToTarget = Vector2.zero;
     }
 
@@ -152,7 +151,6 @@ public class TestEnemyAgent : BaseEntity
     private void EndAttack()
     {
         nextVelocity = Vector2.zero;
-        body.velocity = nextVelocity;
         attacking = false;
     }
 }

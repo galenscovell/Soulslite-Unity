@@ -7,11 +7,10 @@ public class BaseEntity : MonoBehaviour
     protected Rigidbody2D body;
     protected SpriteRenderer spriteRenderer;
 
-    protected float speedMultiplier;
-    protected bool moving = false;
+    protected Vector2 facingDirection = Vector2.zero;
+    protected Vector2 nextVelocity = Vector2.zero;
 
-    protected Vector2 direction;
-    protected Vector2 nextVelocity = new Vector2(0, 0);
+    protected float speedMultiplier;
 
 
 
@@ -30,28 +29,32 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *        Update          *
      **************************/
-    protected void UpdateSortingLayer()
+    protected void SetRenderLayer()
     {
         spriteRenderer.sortingOrder = -Mathf.RoundToInt((transform.position.y + -0.1f) / 0.05f);
     }
 
     protected void Update()
     {
-        UpdateSortingLayer();
+        SetRenderLayer();
     }
 
     protected void FixedUpdate()
     {
-        // Determine last direction faced
-        moving = IsMoving();
-        if (moving)
+        // If moving, set direction moved in
+        if (IsMoving())
         {
-            SetDirection();
-            body.velocity = NormalizedDiagonal(nextVelocity);
+            SetFacingDirection();
+            animator.SetBool("Moving", true);
+        }
+        // If idle, use last direction moved in as facing direction
+        else
+        {
+            animator.SetBool("Moving", false);
         }
 
-        // Update animator
-        animator.SetBool("Moving", moving);
+        // Set new body velocity based on updated nextVelocity
+        body.velocity = nextVelocity.normalized * speedMultiplier;
     }
 
 
@@ -69,31 +72,13 @@ public class BaseEntity : MonoBehaviour
      *          Util          *
      **************************/
     /// <summary>
-    /// Set animator direction as normalized current velocity.
+    /// Set facing direction as normalized current velocity.
     /// </summary>
-    protected void SetDirection()
+    protected void SetFacingDirection()
     {
-        direction = nextVelocity.normalized;
-        animator.SetFloat("DirectionX", direction.x);
-        animator.SetFloat("DirectionY", direction.y);
-    }
-
-    /// <summary>
-    /// Take in a velocity and normalize it in the diagonal direction.
-    /// </summary>
-    /// <param name="velocity"></param>
-    /// <returns>Normalized velocity vector2</returns>
-    protected Vector2 NormalizedDiagonal(Vector2 velocity)
-    {
-        float pythagoras = (velocity.x * velocity.x) + (velocity.y * velocity.y);
-        if (pythagoras > (speedMultiplier * speedMultiplier))
-        {
-            float magnitude = Mathf.Sqrt(pythagoras);
-            float multiplier = speedMultiplier / magnitude;
-            velocity.x *= multiplier;
-            velocity.y *= multiplier;
-        }
-        return new Vector2(velocity.x, velocity.y);
+        facingDirection = nextVelocity.normalized;
+        animator.SetFloat("DirectionX", facingDirection.x);
+        animator.SetFloat("DirectionY", facingDirection.y);
     }
 
     /// <summary>
