@@ -74,7 +74,7 @@ public class PlayerAgent : BaseEntity
     {
         dashTrail.SetEnabled(true);
 
-        speedMultiplier = 800f;
+        speedMultiplier = 900f;
         nextVelocity = facingDirection * speedMultiplier;
     }
 
