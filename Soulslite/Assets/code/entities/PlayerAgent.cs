@@ -37,13 +37,6 @@ public class PlayerAgent : BaseEntity
             if (Input.GetButtonDown("Button0"))
             {
                 dashing = true;
-
-                // If not moving, set start dash velocity in facing direction
-                if (!IsMoving())
-                {
-                    nextVelocity.x = direction.x * speedMultiplier;
-                    nextVelocity.y = direction.y * speedMultiplier;
-                }
             }
         }
 
@@ -76,9 +69,9 @@ public class PlayerAgent : BaseEntity
     /// </summary>
     private void StartDash()
     {
-        speedMultiplier = 900f;
-        nextVelocity.x = body.velocity.x * speedMultiplier;
-        nextVelocity.y = body.velocity.y * speedMultiplier;
+        speedMultiplier = 800f;
+        nextVelocity.x = direction.x * speedMultiplier;
+        nextVelocity.y = direction.y * speedMultiplier;
         body.velocity = NormalizedDiagonal(nextVelocity);
         dashTrail.SetEnabled(true);
     }

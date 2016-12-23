@@ -73,7 +73,7 @@ public class BaseEntity : MonoBehaviour
     /// </summary>
     protected void SetDirection()
     {
-        Vector2 direction = nextVelocity.normalized;
+        direction = nextVelocity.normalized;
         animator.SetFloat("DirectionX", direction.x);
         animator.SetFloat("DirectionY", direction.y);
     }
