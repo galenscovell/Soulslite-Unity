@@ -2,32 +2,18 @@
 using UnityEngine;
 
 
-public class SeekBehavior {
+public class SeekBehavior
+{
     private Vector2 target;
-    private int currentWaypoint = 0;
+    private int currentWaypoint = -1;
 
     public Path path;
     public float nextWaypointDistance = 2;
 
 
-
-    public void RemovePath()
-    {
-        if (path != null)
-        {
-            path.Release(this);
-            path = null;
-        }
-    }
-
     public bool HasPath()
     {
         return path != null && currentWaypoint < path.vectorPath.Count;
-    }
-
-    public bool HasReachedWaypoint(Vector2 currentPosition)
-    {
-        return Vector2.Distance(currentPosition, path.vectorPath[currentWaypoint]) < nextWaypointDistance;
     }
 
     public void IncrementPath()
@@ -40,18 +26,13 @@ public class SeekBehavior {
         return path.vectorPath[currentWaypoint];
     }
 
-    public void SetPath(Seeker seeker, Vector2 startPosition, Rigidbody2D targetBody, float thinkTime)
+    public bool HasReachedWaypoint(Vector2 currentPosition)
     {
-        // Start a new path to the targetPosition, return the result to the OnPathComplete function
-        Vector2 trackedPosition = Vector2.zero;
-        if (thinkTime > 0)
-        {
-            Vector2 currentTargetVelocity = targetBody.velocity;
-            trackedPosition = targetBody.position + (targetBody.velocity * thinkTime);
-        } else
-        {
-            trackedPosition = targetBody.position;
-        }
+        return Vector2.Distance(currentPosition, path.vectorPath[currentWaypoint]) < nextWaypointDistance;
+    }
+
+    public void SetPath(Seeker seeker, Vector2 startPosition, Vector2 trackedPosition)
+    {
         target = trackedPosition;
         seeker.StartPath(startPosition, target, OnPathComplete);
     }

@@ -9,9 +9,7 @@ public class BaseEntity : MonoBehaviour
 
     protected Vector2 facingDirection = Vector2.zero;
     protected Vector2 nextVelocity = Vector2.zero;
-
     protected float speedMultiplier;
-
 
 
     /**************************
@@ -25,18 +23,12 @@ public class BaseEntity : MonoBehaviour
     }
 
 
-
     /**************************
      *        Update          *
      **************************/
-    protected void SetRenderLayer()
-    {
-        spriteRenderer.sortingOrder = -Mathf.RoundToInt((transform.position.y + -0.1f) / 0.05f);
-    }
-
     protected void Update()
     {
-        SetRenderLayer();
+        spriteRenderer.sortingOrder = -Mathf.RoundToInt((transform.position.y + -0.1f) / 0.05f);
     }
 
     protected void FixedUpdate()
@@ -55,16 +47,6 @@ public class BaseEntity : MonoBehaviour
 
         // Set new body velocity based on updated nextVelocity
         body.velocity = nextVelocity.normalized * speedMultiplier;
-    }
-
-
-
-    /**************************
-     *      Collisions        *
-     **************************/
-    protected void OnCollisionEnter2D(Collision2D collision)
-    {
-        print("Collision: " + gameObject.name + ", " + collision.collider.name);
     }
 
 

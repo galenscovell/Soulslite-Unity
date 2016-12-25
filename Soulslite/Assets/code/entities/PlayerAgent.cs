@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 
-public class PlayerAgent : BaseEntity 
+public class PlayerAgent : BaseEntity
 {
     private DashTrail dashTrail;
-
     private bool dashing = false;
-
 
 
     /**************************
@@ -15,10 +14,8 @@ public class PlayerAgent : BaseEntity
     private new void Start()
     {
         base.Start();
-
         dashTrail = GetComponent<DashTrail>();
     }
-
 
 
     /**************************
@@ -47,51 +44,79 @@ public class PlayerAgent : BaseEntity
         animator.SetBool("Dashing", dashing);
     }
 
-    private new void FixedUpdate() 
+    private new void FixedUpdate()
     {
+        // Will update body velocity and facing direction
         base.FixedUpdate();
 	}
 
 
-
     /**************************
-     *      Collisions        *
+     *       Collisions       *
      **************************/
-    private new void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        base.OnCollisionEnter2D(collision);
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        print(collision.tag);
+        StartCoroutine(Hurt(collision.attachedRigidbody.velocity));
     }
 
 
+    /**************************
+     *          Hurt          *
+     **************************/
+    private IEnumerator Hurt(Vector2 collisionVelocity)
+    {
+        if (dashing)
+        {
+            PlayerHaltDash();
+            PlayerEndDash();
+        }
 
-   /**************************
-    *          Dash          *
-    **************************/
+        spriteRenderer.material.SetFloat("_FlashAmount", 0.85f);
+        yield return new WaitForSeconds(0.025f);
+        spriteRenderer.material.SetFloat("_FlashAmount", 0f);
+    }
+
+
+    /**************************
+     *          Dash          *
+     **************************/
     /// <summary>
-    /// Dash animation event -- begin dashing.
+    /// Dash animation event -- begin dash
     /// </summary>
-    private void StartDash()
+    private void PlayerStartDash()
     {
         dashTrail.SetEnabled(true);
-
-        speedMultiplier = 900f;
+        speedMultiplier = 1200f;
         nextVelocity = facingDirection * speedMultiplier;
     }
 
     /// <summary>
-    /// Dash animation event -- stop forward motion of dash.
+    /// Dash animation event -- stop forward motion of dash
     /// </summary>
-    private void HaltDash()
+    private void PlayerHaltDash()
     {
         dashTrail.SetEnabled(false);
-
         nextVelocity = Vector2.zero;
     }
 
     /// <summary>
-    /// Dash animation event -- end dashing.
+    /// Dash animation event -- dash abruptly stopped (ie from wall or enemy attack)
     /// </summary>
-    private void EndDash()
+    private void PlayerInterruptDash()
+    {
+
+    }
+
+    /// <summary>
+    /// Dash animation event -- end dash
+    /// </summary>
+    private void PlayerEndDash()
     {
         dashing = false;
     }

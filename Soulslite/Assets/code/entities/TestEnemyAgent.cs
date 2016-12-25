@@ -1,34 +1,21 @@
 ﻿using UnityEngine;
 
 
-public class TestEnemyAgent : BaseEntity
+public class TestEnemyAgent : Enemy
 {
     private SeekBehavior behavior;
     private Seeker seeker;
-
-    private bool attacking = false;
-    private int thoughtTick = 20;
-    private Vector2 directionToTarget;
-
-    public Rigidbody2D target;
-    public float thinkTime;
-    public int aggroDistance;
-    public int deAggroDistance;
-    public int attackDistance;
-
 
 
     /**************************
      *          Init          *
      **************************/
-    private new void Start()
+    private new void Start() 
     {
         base.Start();
-
         behavior = new SeekBehavior();
         seeker = GetComponent<Seeker>();
     }
-
 
 
     /**************************
@@ -37,109 +24,105 @@ public class TestEnemyAgent : BaseEntity
     private new void Update()
     {
         base.Update();
-
-        thoughtTick--;
     }
 
     private new void FixedUpdate()
     {
         /*****************
-         * DEFAULT
+         * PASSIVE
          *****************/
-        if (!attacking)
+        if (passive)
         {
-            if (InAggroRange())
+            IdleAnimCheck();
+            if (TargetInVision())
             {
-                if (thoughtTick <= 0)
+                passive = false;
+                EndIdleAnim();
+            }
+        }
+        /*****************
+         * ACTIVE
+         *****************/
+        else
+        {
+            if (!attacking)
+            {
+                // Repath
+                if (repathCounter <= 0)
                 {
-                    behavior.SetPath(seeker, body.position, target, thinkTime);
-                    thoughtTick = 20;
+                    repathCounter = repathRate;
+                    behavior.SetPath(seeker, body.position, TrackTarget());
                 }
-            }
-            else
-            {
-                behavior.RemovePath();
-            }
 
-            if (behavior.HasPath())
-            {
-                if (!InAttackRange())
+                // Follow set path
+                if (behavior.HasPath())
                 {
-                    if (behavior.HasReachedWaypoint(body.position))
+                    // Target not in attack range or not within vision
+                    if (!InAttackRange() || !TargetInVision())
                     {
-                        speedMultiplier = 40f;
-                        behavior.IncrementPath();
-                        Vector2 nextWaypoint = behavior.GetNextWaypoint();
-                        Vector2 dirToWaypoint = (nextWaypoint - body.position).normalized;
-                        nextVelocity = new Vector2(dirToWaypoint.x * speedMultiplier, dirToWaypoint.y * speedMultiplier);
+                        if (behavior.HasReachedWaypoint(body.position))
+                        {
+                            speedMultiplier = 40f;
+                            behavior.IncrementPath();
+                            Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
+                            nextVelocity = dirToWaypoint * speedMultiplier;
+                        }
+                    }
+                    // Start attack
+                    else
+                    {
+                        attacking = true;
                     }
                 }
+                // No path to follow, stop motion
                 else
                 {
-                    attacking = true;
+                    nextVelocity = Vector2.zero;
                 }
-            }
-            else
-            {
-                behavior.RemovePath();
-                nextVelocity = Vector2.zero;
             }
         }
 
         animator.SetBool("Attacking", attacking);
 
+        // Will update body velocity and facing direction
         base.FixedUpdate();
     }
 
 
-
     /**************************
-     *      Collisions        *
+     *       Collision        *
      **************************/
-    private new void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        base.OnCollisionEnter2D(collision);
+        
     }
 
 
-
-    /**************************
-     *        Ranges          *
-     **************************/
-    private bool InAggroRange()
-    {
-        return Vector2.Distance(body.position, target.position) < aggroDistance;
-    }
-
-    private bool InAttackRange()
-    {
-        return Vector2.Distance(body.position, target.position) < attackDistance;
-    }
-
-
-
-    /**************************
-    *         Attack          *
+   /**************************
+    *         Attack         *
     **************************/
     /// <summary>
     /// 
     /// </summary>
-    private void StartAttack()
+    private void TestenemyStartAttack()
     {
         nextVelocity = Vector2.zero;
-        directionToTarget = (target.position - body.position).normalized;
+        directionToTarget = (TrackTarget() - body.position).normalized;
     }
 
     /// <summary>
     /// 
     /// </summary>
-    private void StartLeap()
+    private void TestenemyStartLeap()
     {
         speedMultiplier = 220f;
         nextVelocity = directionToTarget * speedMultiplier;
     }
 
-    private void EndLeap()
+    /// <summary>
+    /// 
+    /// </summary>
+    private void TestenemyEndLeap()
     {
         nextVelocity = Vector2.zero;
         directionToTarget = Vector2.zero;
@@ -148,7 +131,7 @@ public class TestEnemyAgent : BaseEntity
     /// <summary>
     /// 
     /// </summary>
-    private void EndAttack()
+    private void TestenemyEndAttack()
     {
         nextVelocity = Vector2.zero;
         attacking = false;
