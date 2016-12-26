@@ -56,7 +56,15 @@ public class PlayerAgent : BaseEntity
      **************************/
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
+        //if (dashing)
+        //{
+        //    canMove = false;
+        //    animator.SetBool("Hurt", true);
+
+        //    PlayerInterruptDash();
+        //    PlayerHaltDash();
+        //    PlayerEndDash();
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -71,15 +79,29 @@ public class PlayerAgent : BaseEntity
      **************************/
     private IEnumerator Hurt(Vector2 collisionVelocity)
     {
+        canMove = false;
+        animator.SetBool("Hurt", true);
+
         if (dashing)
         {
+            PlayerInterruptDash();
             PlayerHaltDash();
             PlayerEndDash();
+        } 
+        else
+        {
+            animator.Play("PlayerHurtState");
         }
 
         spriteRenderer.material.SetFloat("_FlashAmount", 0.85f);
         yield return new WaitForSeconds(0.025f);
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
+    }
+
+    private void EndHurt()
+    {
+        canMove = true;
+        animator.SetBool("Hurt", false);
     }
 
 
@@ -106,18 +128,18 @@ public class PlayerAgent : BaseEntity
     }
 
     /// <summary>
-    /// Dash animation event -- dash abruptly stopped (ie from wall or enemy attack)
-    /// </summary>
-    private void PlayerInterruptDash()
-    {
-
-    }
-
-    /// <summary>
     /// Dash animation event -- end dash
     /// </summary>
     private void PlayerEndDash()
     {
         dashing = false;
+    }
+
+    /// <summary>
+    /// Dash animation event -- dash abruptly stopped (ie from wall or enemy attack)
+    /// </summary>
+    private void PlayerInterruptDash()
+    {
+        animator.Play("PlayerDashCrashState");
     }
 }

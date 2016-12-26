@@ -7,7 +7,7 @@ public class Enemy : BaseEntity
     protected bool attacking = false;
     protected Vector2 directionToTarget;
 
-    protected int idleCounter = Random.Range(90, 360);
+    protected int idleCounter;
     protected int repathCounter;
 
     public Rigidbody2D target;
@@ -24,6 +24,7 @@ public class Enemy : BaseEntity
     {
         base.Start();
         repathCounter = repathRate;
+        idleCounter = Random.Range(90, 360);
     }
 
 

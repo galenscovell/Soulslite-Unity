@@ -5,6 +5,8 @@ public class CameraController : MonoBehaviour
 {
     private new Camera camera;
     private Vector3 playerOffset;
+    private float dampTime = 0.2f;
+    private Vector3 velocity = Vector3.zero;
 
     public int orthographicHeight = 120;
     public GameObject player;
@@ -23,6 +25,6 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate() 
     {
-        transform.position = player.transform.position + playerOffset;
+        transform.position = Vector3.SmoothDamp(transform.position, player.transform.position + playerOffset, ref velocity, dampTime);
     }
 }

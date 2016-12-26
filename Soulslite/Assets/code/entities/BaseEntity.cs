@@ -11,6 +11,8 @@ public class BaseEntity : MonoBehaviour
     protected Vector2 nextVelocity = Vector2.zero;
     protected float speedMultiplier;
 
+    protected bool canMove = true;
+    
 
     /**************************
      *          Init          *
@@ -33,16 +35,25 @@ public class BaseEntity : MonoBehaviour
 
     protected void FixedUpdate()
     {
-        // If moving, set direction moved in
-        if (IsMoving())
+        // Entity is allowed to move
+        if (canMove)
         {
-            SetFacingDirection();
-            animator.SetBool("Moving", true);
+            // If moving, set direction moved in
+            if (IsMoving())
+            {
+                SetFacingDirection();
+                animator.SetBool("Moving", true);
+            }
+            // If idle, use last direction moved in as facing direction
+            else
+            {
+                animator.SetBool("Moving", false);
+            }
         }
-        // If idle, use last direction moved in as facing direction
+        // Entity is not allowed to move
         else
         {
-            animator.SetBool("Moving", false);
+            nextVelocity = Vector2.zero;
         }
 
         // Set new body velocity based on updated nextVelocity
