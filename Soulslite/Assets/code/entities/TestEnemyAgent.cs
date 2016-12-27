@@ -102,7 +102,7 @@ public class TestEnemyAgent : Enemy
     *         Attack         *
     **************************/
     /// <summary>
-    /// 
+    /// Enemy prepares for leap (no motion)
     /// </summary>
     private void TestenemyStartAttack()
     {
@@ -111,7 +111,7 @@ public class TestEnemyAgent : Enemy
     }
 
     /// <summary>
-    /// 
+    /// Enemy begins leap towards tracked target
     /// </summary>
     private void TestenemyStartLeap()
     {
@@ -120,7 +120,7 @@ public class TestEnemyAgent : Enemy
     }
 
     /// <summary>
-    /// 
+    /// Enemy lands from leap (no motion)
     /// </summary>
     private void TestenemyEndLeap()
     {
@@ -129,7 +129,7 @@ public class TestEnemyAgent : Enemy
     }
 
     /// <summary>
-    /// 
+    /// Enemy attack has finished
     /// </summary>
     private void TestenemyEndAttack()
     {

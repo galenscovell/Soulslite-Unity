@@ -5,6 +5,7 @@ using System.Collections;
 public class PlayerAgent : BaseEntity
 {
     private DashTrail dashTrail;
+    private bool attacking = false;
     private bool dashing = false;
 
 
@@ -28,19 +29,25 @@ public class PlayerAgent : BaseEntity
         /*****************
          * DEFAULT
          *****************/
-        if (!dashing)
+        if (!dashing && !attacking)
         {
             speedMultiplier = 60f;
             nextVelocity.x = Input.GetAxis("LeftAxisX") * speedMultiplier;
             nextVelocity.y = Input.GetAxis("LeftAxisY") * speedMultiplier;
 
             // Dash input handling
-            if (Input.GetButtonDown("Button0"))
+            if (!attacking && Input.GetButtonDown("Button0"))
             {
                 dashing = true;
             }
+
+            if (!dashing && Input.GetButtonDown("Button1"))
+            {
+                attacking = true;
+            }
         }
 
+        animator.SetBool("Attacking", attacking);
         animator.SetBool("Dashing", dashing);
     }
 
@@ -48,7 +55,7 @@ public class PlayerAgent : BaseEntity
     {
         // Will update body velocity and facing direction
         base.FixedUpdate();
-	}
+    }
 
 
     /**************************
@@ -56,12 +63,8 @@ public class PlayerAgent : BaseEntity
      **************************/
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (dashing)
+        //if (dashing && collision.gameObject.tag == "EnvironmentObstacle")
         //{
-        //    canMove = false;
-        //    animator.SetBool("Hurt", true);
-
-        //    PlayerInterruptDash();
         //    PlayerHaltDash();
         //    PlayerEndDash();
         //}
@@ -69,7 +72,6 @@ public class PlayerAgent : BaseEntity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        print(collision.tag);
         StartCoroutine(Hurt(collision.attachedRigidbody.velocity));
     }
 
@@ -84,14 +86,16 @@ public class PlayerAgent : BaseEntity
 
         if (dashing)
         {
-            PlayerInterruptDash();
             PlayerHaltDash();
             PlayerEndDash();
-        } 
-        else
-        {
-            animator.Play("PlayerHurtState");
         }
+
+        if (attacking)
+        {
+            PlayerEndAttack();
+        }
+
+        animator.Play("PlayerHurtState");
 
         spriteRenderer.material.SetFloat("_FlashAmount", 0.85f);
         yield return new WaitForSeconds(0.025f);
@@ -102,6 +106,22 @@ public class PlayerAgent : BaseEntity
     {
         canMove = true;
         animator.SetBool("Hurt", false);
+    }
+
+
+    /**************************
+     *        Attack          *
+     **************************/
+    private void PlayerStartAttack()
+    {
+        nextVelocity = Vector2.zero;
+        canMove = false;
+    }
+
+    private void PlayerEndAttack()
+    {
+        canMove = true;
+        attacking = false;
     }
 
 
@@ -136,7 +156,7 @@ public class PlayerAgent : BaseEntity
     }
 
     /// <summary>
-    /// Dash animation event -- dash abruptly stopped (ie from wall or enemy attack)
+    /// Dash animation event -- dash abruptly stopped (ie from wall)
     /// </summary>
     private void PlayerInterruptDash()
     {

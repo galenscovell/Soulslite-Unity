@@ -167,7 +167,7 @@
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
     <Compile Include="Assets\code\CameraController.cs" />
-    <Compile Include="Assets\code\ai\SeekBehavior.cs" />
+    <Compile Include="Assets\code\behaviors\SeekBehavior.cs" />
     <Compile Include="Assets\code\effects\CameraShaker.cs" />
     <Compile Include="Assets\code\effects\DashTrail.cs" />
     <Compile Include="Assets\code\effects\DashTrailObject.cs" />
