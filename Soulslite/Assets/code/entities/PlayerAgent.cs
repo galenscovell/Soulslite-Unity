@@ -36,12 +36,12 @@ public class PlayerAgent : BaseEntity
             nextVelocity.y = Input.GetAxis("LeftAxisY") * speedMultiplier;
 
             // Dash input handling
-            if (!attacking && Input.GetButtonDown("Button0"))
+            if (Input.GetButtonDown("Button0"))
             {
                 dashing = true;
             }
 
-            if (!dashing && Input.GetButtonDown("Button1"))
+            if (Input.GetButtonDown("Button1"))
             {
                 attacking = true;
             }
@@ -86,13 +86,13 @@ public class PlayerAgent : BaseEntity
 
         if (dashing)
         {
-            PlayerHaltDash();
-            PlayerEndDash();
+            PlayerDashPost();
+            PlayerDashEnd();
         }
 
         if (attacking)
         {
-            PlayerEndAttack();
+            PlayerAttackEnd();
         }
 
         animator.Play("PlayerHurtState");
@@ -112,15 +112,19 @@ public class PlayerAgent : BaseEntity
     /**************************
      *        Attack          *
      **************************/
-    private void PlayerStartAttack()
+    private void PlayerAttackStart()
     {
-        nextVelocity = Vector2.zero;
-        canMove = false;
+        speedMultiplier = 60f;
+        nextVelocity = facingDirection * speedMultiplier;
     }
 
-    private void PlayerEndAttack()
+    private void PlayerAttackPost()
     {
-        canMove = true;
+        nextVelocity = Vector2.zero;
+    }
+
+    private void PlayerAttackEnd()
+    {
         attacking = false;
     }
 
@@ -131,7 +135,7 @@ public class PlayerAgent : BaseEntity
     /// <summary>
     /// Dash animation event -- begin dash
     /// </summary>
-    private void PlayerStartDash()
+    private void PlayerDashStart()
     {
         dashTrail.SetEnabled(true);
         speedMultiplier = 1200f;
@@ -141,7 +145,7 @@ public class PlayerAgent : BaseEntity
     /// <summary>
     /// Dash animation event -- stop forward motion of dash
     /// </summary>
-    private void PlayerHaltDash()
+    private void PlayerDashPost()
     {
         dashTrail.SetEnabled(false);
         nextVelocity = Vector2.zero;
@@ -150,7 +154,7 @@ public class PlayerAgent : BaseEntity
     /// <summary>
     /// Dash animation event -- end dash
     /// </summary>
-    private void PlayerEndDash()
+    private void PlayerDashEnd()
     {
         dashing = false;
     }
@@ -158,7 +162,7 @@ public class PlayerAgent : BaseEntity
     /// <summary>
     /// Dash animation event -- dash abruptly stopped (ie from wall)
     /// </summary>
-    private void PlayerInterruptDash()
+    private void PlayerDashInterrupt()
     {
         animator.Play("PlayerDashCrashState");
     }
