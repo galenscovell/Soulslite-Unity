@@ -8,6 +8,11 @@ public class PlayerAgent : BaseEntity
     private bool attacking = false;
     private bool dashing = false;
 
+    private AnimatorStateInfo currentStateInfo;
+    private DashStateMachine dashStateMachine;
+    private int dashStateHash = Animator.StringToHash("Base Layer.PlayerDashState");
+    private int attackStateHash = Animator.StringToHash("Base Layer.PlayerAttackState");
+
 
     /**************************
      *          Init          *
@@ -15,7 +20,8 @@ public class PlayerAgent : BaseEntity
     private new void Start()
     {
         base.Start();
-        dashTrail = GetComponent<DashTrail>();
+        dashStateMachine = animator.GetBehaviour<DashStateMachine>();
+        dashStateMachine.Setup(GetComponent<DashTrail>(), this);
     }
 
 
@@ -26,10 +32,13 @@ public class PlayerAgent : BaseEntity
     {
         base.Update();
 
+        currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
         /*****************
          * DEFAULT
          *****************/
-        if (!dashing && !attacking)
+        if (currentStateInfo.fullPathHash != dashStateHash && 
+            currentStateInfo.fullPathHash != attackStateHash)
         {
             speedMultiplier = 60f;
             nextVelocity.x = Input.GetAxis("LeftAxisX") * speedMultiplier;
@@ -38,17 +47,14 @@ public class PlayerAgent : BaseEntity
             // Dash input handling
             if (Input.GetButtonDown("Button0"))
             {
-                dashing = true;
+                animator.SetTrigger("Dash");
             }
 
             if (Input.GetButtonDown("Button1"))
             {
-                attacking = true;
+                animator.SetTrigger("Attack");
             }
         }
-
-        animator.SetBool("Attacking", attacking);
-        animator.SetBool("Dashing", dashing);
     }
 
     private new void FixedUpdate()
@@ -84,13 +90,12 @@ public class PlayerAgent : BaseEntity
         canMove = false;
         animator.SetBool("Hurt", true);
 
-        if (dashing)
+        if (currentStateInfo.fullPathHash == dashStateHash)
         {
-            PlayerDashPost();
-            PlayerDashEnd();
+            dashStateMachine.Interrupt(animator);
         }
 
-        if (attacking)
+        if (currentStateInfo.fullPathHash == attackStateHash)
         {
             PlayerAttackEnd();
         }
@@ -126,44 +131,5 @@ public class PlayerAgent : BaseEntity
     private void PlayerAttackEnd()
     {
         attacking = false;
-    }
-
-
-    /**************************
-     *          Dash          *
-     **************************/
-    /// <summary>
-    /// Dash animation event -- begin dash
-    /// </summary>
-    private void PlayerDashStart()
-    {
-        dashTrail.SetEnabled(true);
-        speedMultiplier = 1200f;
-        nextVelocity = facingDirection * speedMultiplier;
-    }
-
-    /// <summary>
-    /// Dash animation event -- stop forward motion of dash
-    /// </summary>
-    private void PlayerDashPost()
-    {
-        dashTrail.SetEnabled(false);
-        nextVelocity = Vector2.zero;
-    }
-
-    /// <summary>
-    /// Dash animation event -- end dash
-    /// </summary>
-    private void PlayerDashEnd()
-    {
-        dashing = false;
-    }
-
-    /// <summary>
-    /// Dash animation event -- dash abruptly stopped (ie from wall)
-    /// </summary>
-    private void PlayerDashInterrupt()
-    {
-        animator.Play("PlayerDashCrashState");
     }
 }

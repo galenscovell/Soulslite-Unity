@@ -7,9 +7,9 @@ public class BaseEntity : MonoBehaviour
     protected Rigidbody2D body;
     protected SpriteRenderer spriteRenderer;
 
-    protected Vector2 facingDirection = Vector2.zero;
-    protected Vector2 nextVelocity = Vector2.zero;
-    protected float speedMultiplier;
+    public Vector2 facingDirection = Vector2.zero;
+    public Vector2 nextVelocity = Vector2.zero;
+    public float speedMultiplier;
 
     protected bool canMove = true;
     
