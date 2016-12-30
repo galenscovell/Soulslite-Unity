@@ -4,14 +4,16 @@ using System.Collections;
 
 public class PlayerAgent : BaseEntity
 {
-    private DashTrail dashTrail;
-    private bool attacking = false;
-    private bool dashing = false;
-
     private AnimatorStateInfo currentStateInfo;
-    private DashStateMachine dashStateMachine;
-    private int dashStateHash = Animator.StringToHash("Base Layer.PlayerDashState");
+
+    private PlayerAttackState attackState;
     private int attackStateHash = Animator.StringToHash("Base Layer.PlayerAttackState");
+
+    private PlayerDashState dashState;
+    private int dashStateHash = Animator.StringToHash("Base Layer.PlayerDashState");
+
+    private PlayerHurtState hurtState;
+    private int hurtStateHash = Animator.StringToHash("Base Layer.PlayerHurtState");
 
 
     /**************************
@@ -20,8 +22,15 @@ public class PlayerAgent : BaseEntity
     private new void Start()
     {
         base.Start();
-        dashStateMachine = animator.GetBehaviour<DashStateMachine>();
-        dashStateMachine.Setup(GetComponent<DashTrail>(), this);
+
+        attackState = animator.GetBehaviour<PlayerAttackState>();
+        attackState.Setup(this);
+
+        dashState = animator.GetBehaviour<PlayerDashState>();
+        dashState.Setup(this, GetComponent<DashTrail>());
+
+        hurtState = animator.GetBehaviour<PlayerHurtState>();
+        hurtState.Setup(this);
     }
 
 
@@ -34,26 +43,16 @@ public class PlayerAgent : BaseEntity
 
         currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        /*****************
-         * DEFAULT
-         *****************/
-        if (currentStateInfo.fullPathHash != dashStateHash && 
-            currentStateInfo.fullPathHash != attackStateHash)
+        if (currentStateInfo.fullPathHash != attackStateHash &&
+            currentStateInfo.fullPathHash != dashStateHash &&
+            currentStateInfo.fullPathHash != hurtStateHash)
         {
             speedMultiplier = 60f;
             nextVelocity.x = Input.GetAxis("LeftAxisX") * speedMultiplier;
             nextVelocity.y = Input.GetAxis("LeftAxisY") * speedMultiplier;
 
-            // Dash input handling
-            if (Input.GetButtonDown("Button0"))
-            {
-                animator.SetTrigger("Dash");
-            }
-
-            if (Input.GetButtonDown("Button1"))
-            {
-                animator.SetTrigger("Attack");
-            }
+            if (Input.GetButtonDown("Button0")) animator.SetBool("Dashing", true);
+            if (Input.GetButtonDown("Button1")) animator.SetTrigger("Attack");
         }
     }
 
@@ -69,67 +68,27 @@ public class PlayerAgent : BaseEntity
      **************************/
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (dashing && collision.gameObject.tag == "EnvironmentObstacle")
-        //{
-        //    PlayerHaltDash();
-        //    PlayerEndDash();
-        //}
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        StartCoroutine(Hurt(collision.attachedRigidbody.velocity));
+        StartCoroutine(Hurt());
     }
 
 
     /**************************
      *          Hurt          *
      **************************/
-    private IEnumerator Hurt(Vector2 collisionVelocity)
+    private IEnumerator Hurt()
     {
-        canMove = false;
-        animator.SetBool("Hurt", true);
-
-        if (currentStateInfo.fullPathHash == dashStateHash)
-        {
-            dashStateMachine.Interrupt(animator);
-        }
-
-        if (currentStateInfo.fullPathHash == attackStateHash)
-        {
-            PlayerAttackEnd();
-        }
+        if (currentStateInfo.fullPathHash == attackStateHash) attackState.Interrupt(animator);
+        if (currentStateInfo.fullPathHash == dashStateHash) dashState.Interrupt(animator);
 
         animator.Play("PlayerHurtState");
 
         spriteRenderer.material.SetFloat("_FlashAmount", 0.85f);
         yield return new WaitForSeconds(0.025f);
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
-    }
-
-    private void EndHurt()
-    {
-        canMove = true;
-        animator.SetBool("Hurt", false);
-    }
-
-
-    /**************************
-     *        Attack          *
-     **************************/
-    private void PlayerAttackStart()
-    {
-        speedMultiplier = 60f;
-        nextVelocity = facingDirection * speedMultiplier;
-    }
-
-    private void PlayerAttackPost()
-    {
-        nextVelocity = Vector2.zero;
-    }
-
-    private void PlayerAttackEnd()
-    {
-        attacking = false;
     }
 }

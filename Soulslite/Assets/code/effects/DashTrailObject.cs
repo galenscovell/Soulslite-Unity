@@ -12,6 +12,8 @@ public class DashTrailObject : MonoBehaviour
 
     public SpriteRenderer spriteRenderer;
     public Color startColor, endColor;
+    // Pick random color from preset color list
+    // Every color should be half alpha
 
 
     private void Start()

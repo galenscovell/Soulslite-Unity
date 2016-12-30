@@ -10,8 +10,7 @@ public class BaseEntity : MonoBehaviour
     public Vector2 facingDirection = Vector2.zero;
     public Vector2 nextVelocity = Vector2.zero;
     public float speedMultiplier;
-
-    protected bool canMove = true;
+    public bool canMove = true;
     
 
     /**************************

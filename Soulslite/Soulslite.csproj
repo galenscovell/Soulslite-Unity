@@ -175,8 +175,9 @@
     <Compile Include="Assets\code\entities\Enemy.cs" />
     <Compile Include="Assets\code\entities\PlayerAgent.cs" />
     <Compile Include="Assets\code\entities\TestEnemyAgent.cs" />
-    <Compile Include="Assets\code\stateMachines\AttackStateMachine.cs" />
-    <Compile Include="Assets\code\stateMachines\DashStateMachine.cs" />
+    <Compile Include="Assets\code\stateMachines\player\PlayerAttackState.cs" />
+    <Compile Include="Assets\code\stateMachines\player\PlayerDashState.cs" />
+    <Compile Include="Assets\code\stateMachines\player\PlayerHurtState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh.shader" />
