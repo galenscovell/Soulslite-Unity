@@ -8,7 +8,7 @@ public class CameraShaker : MonoBehaviour
     public Camera mainCamera;
 
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    public void Activate()
     {
         shakeAmt = 100 * .01f;
         InvokeRepeating("CameraShake", 0, .01f);
@@ -21,7 +21,7 @@ public class CameraShaker : MonoBehaviour
         {
             float quakeAmt = Random.value * shakeAmt * 2 - shakeAmt;
             Vector3 pp = mainCamera.transform.position;
-            pp.y += quakeAmt; // can also add to x and/or z
+            pp.y += quakeAmt;
             pp.x += quakeAmt;
             mainCamera.transform.position = pp;
         }

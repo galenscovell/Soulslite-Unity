@@ -5,8 +5,7 @@ public class PlayerDashState : StateMachineBehaviour
 {
     private PlayerAgent player;
     private DashTrail dashTrail;
-
-    public float dashSpeed;
+    private float dashSpeed = 1000f;
 
 
     public void Setup(PlayerAgent playerEntity, DashTrail trail)
@@ -25,21 +24,21 @@ public class PlayerDashState : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         dashTrail.SetEnabled(true);
-        player.speedMultiplier = dashSpeed;
-        player.nextVelocity = player.facingDirection * player.speedMultiplier;
+        player.SetSpeed(dashSpeed);
+        player.nextVelocity = player.facingDirection * player.GetSpeed();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
 
-        if (stateTime >= 0.2f)
+        if (player.AbleToMove() && stateTime >= 0.2f)
         {
             dashTrail.SetEnabled(false);
-            player.canMove = false;
+            player.DisableMotion();
+            player.SetSpeed(player.GetNormalSpeed());
         }
-
-        if (stateTime >= 1)
+        else if (stateTime >= 1)
         {
             animator.SetBool("Dashing", false);
         }
@@ -47,6 +46,6 @@ public class PlayerDashState : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.canMove = true;
+        player.EnableMotion();
     }
 }

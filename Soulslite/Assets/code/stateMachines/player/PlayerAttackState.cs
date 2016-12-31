@@ -19,19 +19,20 @@ public class PlayerAttackState : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.nextVelocity = player.facingDirection * player.speedMultiplier;
+        player.nextVelocity = player.facingDirection * player.GetSpeed();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        player.nextVelocity = player.facingDirection * player.GetSpeed();
+
         float stateTime = stateInfo.normalizedTime;
-
-        if (stateTime >= 0.2f)
+        if (player.AbleToMove() && stateTime >= 0.2f)
         {
-            player.canMove = false;
+            player.DisableMotion();
+            player.SetSpeed(player.GetNormalSpeed());
         }
-
-        if (stateTime >= 1)
+        else if (stateTime >= 1)
         {
             animator.SetTrigger("Attack");
         }
@@ -39,6 +40,6 @@ public class PlayerAttackState : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.canMove = true;
+        player.EnableMotion();
     }
 }

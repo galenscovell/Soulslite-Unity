@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 
 public class TestEnemyAgent : Enemy
 {
     private SeekBehavior behavior;
     private Seeker seeker;
+
+    private TestenemyAttackState attackState;
+    private int attackStateHash = Animator.StringToHash("Base Layer.TestenemyAttackState");
 
 
     /**************************
@@ -13,8 +17,12 @@ public class TestEnemyAgent : Enemy
     private new void Start() 
     {
         base.Start();
+
         behavior = new SeekBehavior();
         seeker = GetComponent<Seeker>();
+
+        attackState = animator.GetBehaviour<TestenemyAttackState>();
+        attackState.Setup(this);
     }
 
 
@@ -33,8 +41,12 @@ public class TestEnemyAgent : Enemy
          *****************/
         if (passive)
         {
-            IdleAnimCheck();
-            if (TargetInVision())
+            if (IdleAnimCheck())
+            {
+                animator.SetBool("IdleAnim", true);
+            }
+
+            if (TargetInView())
             {
                 passive = false;
                 EndIdleAnim();
@@ -45,7 +57,12 @@ public class TestEnemyAgent : Enemy
          *****************/
         else
         {
-            if (!attacking)
+            // Check if attack ready
+            bool attackReady = AttackCheck();
+
+            currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+            if (currentStateInfo.fullPathHash != attackStateHash)
             {
                 // Repath
                 if (repathCounter <= 0)
@@ -57,21 +74,20 @@ public class TestEnemyAgent : Enemy
                 // Follow set path
                 if (behavior.HasPath())
                 {
-                    // Target not in attack range or not within vision
-                    if (!InAttackRange() || !TargetInVision())
+                    // Target in range, view, and attack ready
+                    if (InAttackRange() && TargetInView() && attackReady)
+                    {
+                        animator.SetTrigger("Attack");
+                    }
+                    else
                     {
                         if (behavior.HasReachedWaypoint(body.position))
                         {
-                            speedMultiplier = 40f;
+                            speedMultiplier = normalSpeed;
                             behavior.IncrementPath();
                             Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
                             nextVelocity = dirToWaypoint * speedMultiplier;
                         }
-                    }
-                    // Start attack
-                    else
-                    {
-                        attacking = true;
                     }
                 }
                 // No path to follow, stop motion
@@ -81,8 +97,6 @@ public class TestEnemyAgent : Enemy
                 }
             }
         }
-
-        animator.SetBool("Attacking", attacking);
 
         // Will update body velocity and facing direction
         base.FixedUpdate();
@@ -94,46 +108,31 @@ public class TestEnemyAgent : Enemy
      **************************/
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
+
     }
 
 
-   /**************************
-    *         Attack         *
-    **************************/
-    /// <summary>
-    /// Enemy prepares for leap (no motion)
-    /// </summary>
-    private void TestenemyStartAttack()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        nextVelocity = Vector2.zero;
-        directionToTarget = (TrackTarget() - body.position).normalized;
+        if (collision.gameObject.tag == "Player-attack")
+        {
+            StartCoroutine(Hurt());
+        }
     }
 
-    /// <summary>
-    /// Enemy begins leap towards tracked target
-    /// </summary>
-    private void TestenemyStartLeap()
-    {
-        speedMultiplier = 220f;
-        nextVelocity = directionToTarget * speedMultiplier;
-    }
 
-    /// <summary>
-    /// Enemy lands from leap (no motion)
-    /// </summary>
-    private void TestenemyEndLeap()
+    /**************************
+     *          Hurt          *
+     **************************/
+    private IEnumerator Hurt()
     {
-        nextVelocity = Vector2.zero;
-        directionToTarget = Vector2.zero;
-    }
+        //if (currentStateInfo.fullPathHash == attackStateHash) attackState.Interrupt(animator);
+        //if (currentStateInfo.fullPathHash == dashStateHash) dashState.Interrupt(animator);
 
-    /// <summary>
-    /// Enemy attack has finished
-    /// </summary>
-    private void TestenemyEndAttack()
-    {
-        nextVelocity = Vector2.zero;
-        attacking = false;
+        //animator.Play("PlayerHurtState");
+
+        spriteRenderer.material.SetFloat("_FlashAmount", 0.85f);
+        yield return new WaitForSeconds(0.05f);
+        spriteRenderer.material.SetFloat("_FlashAmount", 0f);
     }
 }

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 
 public class PlayerAgent : BaseEntity
@@ -14,6 +14,8 @@ public class PlayerAgent : BaseEntity
 
     private PlayerHurtState hurtState;
     private int hurtStateHash = Animator.StringToHash("Base Layer.PlayerHurtState");
+
+    private CameraShaker cameraShaker;
 
 
     /**************************
@@ -31,6 +33,8 @@ public class PlayerAgent : BaseEntity
 
         hurtState = animator.GetBehaviour<PlayerHurtState>();
         hurtState.Setup(this);
+
+        cameraShaker = GetComponent<CameraShaker>();
     }
 
 
@@ -47,7 +51,7 @@ public class PlayerAgent : BaseEntity
             currentStateInfo.fullPathHash != dashStateHash &&
             currentStateInfo.fullPathHash != hurtStateHash)
         {
-            speedMultiplier = 60f;
+            speedMultiplier = normalSpeed;
             nextVelocity.x = Input.GetAxis("LeftAxisX") * speedMultiplier;
             nextVelocity.y = Input.GetAxis("LeftAxisY") * speedMultiplier;
 
@@ -73,7 +77,7 @@ public class PlayerAgent : BaseEntity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        StartCoroutine(Hurt());
+        // StartCoroutine(Hurt());
     }
 
 
@@ -82,13 +86,21 @@ public class PlayerAgent : BaseEntity
      **************************/
     private IEnumerator Hurt()
     {
-        if (currentStateInfo.fullPathHash == attackStateHash) attackState.Interrupt(animator);
-        if (currentStateInfo.fullPathHash == dashStateHash) dashState.Interrupt(animator);
+        if (currentStateInfo.fullPathHash == attackStateHash)
+        {
+            attackState.Interrupt(animator);
+        }
+        if (currentStateInfo.fullPathHash == dashStateHash)
+        {
+            dashState.Interrupt(animator);
+        }
 
         animator.Play("PlayerHurtState");
 
+        cameraShaker.Activate();
+
         spriteRenderer.material.SetFloat("_FlashAmount", 0.85f);
-        yield return new WaitForSeconds(0.025f);
+        yield return new WaitForSeconds(0.05f);
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
     }
 }

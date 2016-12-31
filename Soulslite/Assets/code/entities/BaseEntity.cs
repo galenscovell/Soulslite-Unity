@@ -7,10 +7,15 @@ public class BaseEntity : MonoBehaviour
     protected Rigidbody2D body;
     protected SpriteRenderer spriteRenderer;
 
+    protected bool canMove = true;
+    protected float speedMultiplier;
+
+    public float normalSpeed;
+
+    [HideInInspector]
     public Vector2 facingDirection = Vector2.zero;
+    [HideInInspector]
     public Vector2 nextVelocity = Vector2.zero;
-    public float speedMultiplier;
-    public bool canMove = true;
     
 
     /**************************
@@ -80,5 +85,48 @@ public class BaseEntity : MonoBehaviour
     protected bool IsMoving()
     {
         return Vector2.Distance(nextVelocity, Vector2.zero) > 0.2f;
+    }
+
+
+    /**************************
+     *        Getters         *
+     **************************/
+    public Rigidbody2D GetBody()
+    {
+        return body;
+    }
+
+    public float GetSpeed()
+    {
+        return speedMultiplier;
+    }
+
+    public float GetNormalSpeed()
+    {
+        return normalSpeed;
+    }
+
+    public bool AbleToMove()
+    {
+        return canMove;
+    }
+
+
+    /**************************
+     *        Setters         *
+     **************************/
+    public void DisableMotion()
+    {
+        canMove = false;
+    }
+
+    public void EnableMotion()
+    {
+        canMove = true;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        speedMultiplier = speed;
     }
 }

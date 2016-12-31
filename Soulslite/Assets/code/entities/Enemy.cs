@@ -3,10 +3,10 @@
 
 public class Enemy : BaseEntity
 {
+    protected AnimatorStateInfo currentStateInfo;
     protected bool passive = true;
-    protected bool attacking = false;
-    protected Vector2 directionToTarget;
 
+    protected int attackCounter;
     protected int idleCounter;
     protected int repathCounter;
 
@@ -16,6 +16,9 @@ public class Enemy : BaseEntity
     public int visionDistance;
     public int attackDistance;
 
+    [HideInInspector]
+    public Vector2 directionToTarget;
+
 
     /**************************
      *          Init          *
@@ -23,8 +26,10 @@ public class Enemy : BaseEntity
     protected new void Start()
     {
         base.Start();
-        repathCounter = repathRate;
+
+        attackCounter = Random.Range(30, 120);
         idleCounter = Random.Range(90, 360);
+        repathCounter = repathRate;
     }
 
 
@@ -50,7 +55,7 @@ public class Enemy : BaseEntity
     /// 
     /// </summary>
     /// <returns></returns>
-    protected Vector2 TrackTarget()
+    public Vector2 TrackTarget()
     {
         Vector2 trackedPosition = Vector2.zero;
         if (pathTracking > 0)
@@ -74,7 +79,7 @@ public class Enemy : BaseEntity
     /// 
     /// </summary>
     /// <returns></returns>
-    protected bool TargetInVision()
+    protected bool TargetInView()
     {
         Vector2 rayDirection = target.position - body.position;
         RaycastHit2D hit = Physics2D.Raycast(body.position, rayDirection, visionDistance);
@@ -92,16 +97,32 @@ public class Enemy : BaseEntity
 
 
     /**************************
+     *        Attack          *
+     **************************/
+    protected bool AttackCheck()
+    {
+        attackCounter--;
+        if (attackCounter <= 0)
+        {
+            attackCounter = Random.Range(30, 120);
+            return true;
+        }
+        return false;
+    }
+
+
+    /**************************
      *          Idle          *
      **************************/
-    protected void IdleAnimCheck()
+    protected bool IdleAnimCheck()
     {
         idleCounter--;
         if (idleCounter <= 0)
         {
-            animator.SetBool("IdleAnim", true);
             idleCounter = Random.Range(120, 360);
+            return true;
         }
+        return false;
     }
 
     protected void EndIdleAnim()
