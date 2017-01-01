@@ -111,6 +111,22 @@ public class BaseEntity : MonoBehaviour
         return canMove;
     }
 
+    public Vector2 GetFacingOrthogonal()
+    {
+        Vector2 facingOrthogonal = new Vector2(0, 0);
+        if (Mathf.Abs(facingDirection.x) > Mathf.Abs(facingDirection.y))
+        {
+            if (facingDirection.x > 0) facingOrthogonal.x += 1;
+            else facingOrthogonal.x -= 1;
+        }
+        else
+        {
+            if (facingDirection.y > 0) facingOrthogonal.y += 1;
+            else facingOrthogonal.y -= 1;
+        }
+        return facingOrthogonal;
+    }
+
 
     /**************************
      *        Setters         *

@@ -19,7 +19,6 @@ public class PlayerHurtState : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-
         if (stateTime >= 1)
         {
             animator.SetTrigger("Hurt");

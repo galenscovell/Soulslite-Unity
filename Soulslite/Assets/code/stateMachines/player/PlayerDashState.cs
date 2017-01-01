@@ -5,7 +5,7 @@ public class PlayerDashState : StateMachineBehaviour
 {
     private PlayerAgent player;
     private DashTrail dashTrail;
-    private float dashSpeed = 1000f;
+    private float dashSpeed = 1200f;
 
 
     public void Setup(PlayerAgent playerEntity, DashTrail trail)
@@ -31,8 +31,7 @@ public class PlayerDashState : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-
-        if (player.AbleToMove() && stateTime >= 0.2f)
+        if (player.AbleToMove() && stateTime >= 0.15f)
         {
             dashTrail.SetEnabled(false);
             player.DisableMotion();

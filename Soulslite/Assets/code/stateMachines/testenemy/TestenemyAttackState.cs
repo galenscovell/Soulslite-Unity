@@ -32,7 +32,6 @@ public class TestenemyAttackState : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-
         if (!targeted && stateTime >= 0.15f && stateTime < 0.2f)
         {
             enemy.directionToTarget = (enemy.TrackTarget() - enemy.GetBody().position).normalized;

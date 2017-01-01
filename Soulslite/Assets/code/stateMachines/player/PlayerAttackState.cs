@@ -24,10 +24,12 @@ public class PlayerAttackState : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.nextVelocity = player.facingDirection * player.GetSpeed();
-
         float stateTime = stateInfo.normalizedTime;
-        if (player.AbleToMove() && stateTime >= 0.2f)
+        if (stateTime < 0.2f)
+        {
+            player.nextVelocity = player.facingDirection * player.GetSpeed();
+        }
+        else if (player.AbleToMove() && stateTime >= 0.2f)
         {
             player.DisableMotion();
             player.SetSpeed(player.GetNormalSpeed());
