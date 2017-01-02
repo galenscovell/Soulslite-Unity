@@ -7,7 +7,7 @@ public class PlayerAgent : BaseEntity
     private AnimatorStateInfo currentStateInfo;
 
     private PlayerAttackState attackState;
-    private int attackStateHash = Animator.StringToHash("Base Layer.PlayerAttackState");
+    private int attackStateHash = Animator.StringToHash("Base Layer.PlayerAttackState1");
 
     private PlayerDashState dashState;
     private int dashStateHash = Animator.StringToHash("Base Layer.PlayerDashState");
@@ -77,30 +77,35 @@ public class PlayerAgent : BaseEntity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // StartCoroutine(Hurt());
+        if (collision.tag != "Enemy" && collision.tag != "EnvironmentObstacle")
+        {
+            if (currentStateInfo.fullPathHash == hurtStateHash)
+            {
+                return;
+            }
+
+            if (currentStateInfo.fullPathHash == attackStateHash)
+            {
+                attackState.Interrupt(animator);
+            }
+
+            if (currentStateInfo.fullPathHash == dashStateHash)
+            {
+                dashState.Interrupt(animator);
+            }
+
+            Hurt();
+        }
     }
 
 
     /**************************
      *          Hurt          *
      **************************/
-    private IEnumerator Hurt()
+    private void Hurt()
     {
-        if (currentStateInfo.fullPathHash == attackStateHash)
-        {
-            attackState.Interrupt(animator);
-        }
-        if (currentStateInfo.fullPathHash == dashStateHash)
-        {
-            dashState.Interrupt(animator);
-        }
-
         animator.Play("PlayerHurtState");
-
         cameraShaker.Activate();
-
-        spriteRenderer.material.SetFloat("_FlashAmount", 0.85f);
-        yield return new WaitForSeconds(0.05f);
-        spriteRenderer.material.SetFloat("_FlashAmount", 0f);
+        StartCoroutine(HurtFlash());
     }
 }

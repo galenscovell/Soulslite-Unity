@@ -51,10 +51,6 @@ public class Enemy : BaseEntity
     /**************************
      *         Senses         *
      **************************/
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     public Vector2 TrackTarget()
     {
         Vector2 trackedPosition = Vector2.zero;
@@ -75,10 +71,6 @@ public class Enemy : BaseEntity
     /**************************
      *         Ranges         *
      **************************/
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     protected bool TargetInView()
     {
         Vector2 rayDirection = target.position - body.position;
@@ -86,10 +78,6 @@ public class Enemy : BaseEntity
         return hit && hit.collider.tag == target.tag;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     protected bool InAttackRange()
     {
         return Vector2.Distance(body.position, target.position) < attackDistance;

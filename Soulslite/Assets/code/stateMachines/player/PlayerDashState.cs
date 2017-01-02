@@ -33,14 +33,16 @@ public class PlayerDashState : StateMachineBehaviour
         float stateTime = stateInfo.normalizedTime;
         if (player.AbleToMove() && stateTime >= 0.15f)
         {
-            dashTrail.SetEnabled(false);
             player.DisableMotion();
             player.SetSpeed(player.GetNormalSpeed());
         }
         else if (stateTime >= 1)
         {
+            dashTrail.SetEnabled(false);
             animator.SetBool("Dashing", false);
         }
+
+        // Handle combo dashing here -- if button pressed within time frame start over in new dir
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

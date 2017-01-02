@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 
 public class BaseEntity : MonoBehaviour
@@ -8,6 +9,7 @@ public class BaseEntity : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
 
     protected bool canMove = true;
+    protected bool mirrored = false;
     protected float speedMultiplier;
 
     public float normalSpeed;
@@ -74,7 +76,10 @@ public class BaseEntity : MonoBehaviour
     protected void SetFacingDirection()
     {
         facingDirection = nextVelocity.normalized;
-        animator.SetFloat("DirectionX", facingDirection.x);
+
+        if (mirrored) animator.SetFloat("DirectionX", -facingDirection.x);
+        else animator.SetFloat("DirectionX", facingDirection.x);
+
         animator.SetFloat("DirectionY", facingDirection.y);
     }
 
@@ -85,6 +90,17 @@ public class BaseEntity : MonoBehaviour
     protected bool IsMoving()
     {
         return Vector2.Distance(nextVelocity, Vector2.zero) > 0.2f;
+    }
+
+
+    /**************************
+     *          Hurt          *
+     **************************/
+    protected IEnumerator HurtFlash()
+    {
+        spriteRenderer.material.SetFloat("_FlashAmount", 0.9f);
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.material.SetFloat("_FlashAmount", 0f);
     }
 
 
@@ -144,5 +160,15 @@ public class BaseEntity : MonoBehaviour
     public void SetSpeed(float speed)
     {
         speedMultiplier = speed;
+    }
+
+    public void EnableMirrored()
+    {
+        mirrored = true;
+    }
+
+    public void DisableMirrored()
+    {
+        mirrored = false;
     }
 }

@@ -10,6 +10,9 @@ public class TestEnemyAgent : Enemy
     private TestenemyAttackState attackState;
     private int attackStateHash = Animator.StringToHash("Base Layer.TestenemyAttackState");
 
+    private TestenemyHurtState hurtState;
+    private int hurtStateHash = Animator.StringToHash("Base Layer.TestenemyHurtState");
+
 
     /**************************
      *          Init          *
@@ -23,6 +26,9 @@ public class TestEnemyAgent : Enemy
 
         attackState = animator.GetBehaviour<TestenemyAttackState>();
         attackState.Setup(this);
+
+        hurtState = animator.GetBehaviour<TestenemyHurtState>();
+        hurtState.Setup(this);
     }
 
 
@@ -81,12 +87,16 @@ public class TestEnemyAgent : Enemy
                     }
                     else
                     {
-                        if (behavior.HasReachedWaypoint(body.position))
+                        if (behavior.WaypointReached(body.position))
                         {
                             speedMultiplier = normalSpeed;
-                            behavior.IncrementPath();
-                            Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
-                            nextVelocity = dirToWaypoint * speedMultiplier;
+                            Vector2 nextWaypoint = behavior.GetNextWaypoint();
+
+                            if (nextWaypoint != null)
+                            {
+                                Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
+                                nextVelocity = dirToWaypoint * speedMultiplier;
+                            }
                         }
                     }
                 }
@@ -114,9 +124,15 @@ public class TestEnemyAgent : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (currentStateInfo.fullPathHash == hurtStateHash)
+        {
+            return;
+        }
+
         if (collision.gameObject.tag == "Player-attack")
         {
-            StartCoroutine(Hurt());
+            hurtState.SetHurtVelocity(collision.attachedRigidbody.velocity);
+            Hurt();
         }
     }
 
@@ -124,15 +140,9 @@ public class TestEnemyAgent : Enemy
     /**************************
      *          Hurt          *
      **************************/
-    private IEnumerator Hurt()
+    private void Hurt()
     {
-        //if (currentStateInfo.fullPathHash == attackStateHash) attackState.Interrupt(animator);
-        //if (currentStateInfo.fullPathHash == dashStateHash) dashState.Interrupt(animator);
-
-        //animator.Play("PlayerHurtState");
-
-        spriteRenderer.material.SetFloat("_FlashAmount", 0.85f);
-        yield return new WaitForSeconds(0.05f);
-        spriteRenderer.material.SetFloat("_FlashAmount", 0f);
+        animator.Play("TestenemyHurtState");
+        StartCoroutine(HurtFlash());
     }
 }

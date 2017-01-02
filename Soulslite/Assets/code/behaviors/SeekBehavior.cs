@@ -16,17 +16,21 @@ public class SeekBehavior
         return path != null && currentWaypoint < path.vectorPath.Count;
     }
 
-    public void IncrementPath()
-    {
-        currentWaypoint++;
-    }
-
     public Vector2 GetNextWaypoint()
     {
-        return path.vectorPath[currentWaypoint];
+        currentWaypoint++;
+
+        if (HasPath())
+        {
+            return path.vectorPath[currentWaypoint];
+        }
+        else
+        {
+            return default(Vector2);
+        }
     }
 
-    public bool HasReachedWaypoint(Vector2 currentPosition)
+    public bool WaypointReached(Vector2 currentPosition)
     {
         return Vector2.Distance(currentPosition, path.vectorPath[currentWaypoint]) < nextWaypointDistance;
     }
@@ -45,7 +49,6 @@ public class SeekBehavior
             if (path != null) path.Release(this);
 
             path = p;
-            // Reset the waypoint counter
             currentWaypoint = 0;
         }
         else
