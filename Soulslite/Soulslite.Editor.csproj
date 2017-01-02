@@ -119,7 +119,7 @@
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="Pathfinding.Ionic.Zip.Reduced">
-      <HintPath>Assets\AstarPathfindingProject\Plugins\DotNetZip\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
+      <HintPath>Assets\Game\lib\AstarPathfindingProject\Plugins\DotNetZip\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -129,61 +129,61 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\AstarPathfindingProject\Editor\AnimationLinkEditor.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\AstarPathEditor.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\AstarUpdateChecker.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\AstarUpdateWindow.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\CustomGraphEditorAttribute.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\EditorGUIx.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\GraphEditors\GraphEditor.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\GraphEditors\GridGeneratorEditor.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\GraphEditors\NavMeshGeneratorEditor.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\GraphEditors\PointGeneratorEditor.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\GraphUpdateSceneEditor.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\Misc\AstarEnumFlagDrawer.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\ModifierEditors\RaycastModifierEditor.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\ModifierEditors\SmoothModifierEditor.cs" />
-    <Compile Include="Assets\AstarPathfindingProject\Editor\SeekerEditor.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\CustomTiledImporterAttribute.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\ICustomTiledImporter.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.Material.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.Mesh.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.Prefab.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.Texture.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.Xml.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\ImportUtils.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\SortingLayerExposedEditor.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\Tiled2UnityMenuItems.cs" />
-    <Compile Include="Assets\Tiled2Unity\Scripts\Editor\TiledAssetPostProcessor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\AnimationLinkEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\AstarPathEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\AstarUpdateChecker.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\AstarUpdateWindow.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\CustomGraphEditorAttribute.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorGUIx.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphEditors\GraphEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphEditors\GridGeneratorEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphEditors\NavMeshGeneratorEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphEditors\PointGeneratorEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphUpdateSceneEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\Misc\AstarEnumFlagDrawer.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\ModifierEditors\RaycastModifierEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\ModifierEditors\SmoothModifierEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\SeekerEditor.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\CustomTiledImporterAttribute.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\ICustomTiledImporter.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.Material.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.Mesh.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.Prefab.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.Texture.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.Xml.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\ImportTiled2Unity.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\ImportUtils.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\SortingLayerExposedEditor.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\Tiled2UnityMenuItems.cs" />
+    <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\TiledAssetPostProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh.shader" />
-    <None Include="Assets\AstarPathfindingProject\Editor\EditorAssets\Materials\NavmeshOutline.shader" />
-    <None Include="Assets\AstarPathfindingProject\ExampleScenes\Materials\DiffuseAlwaysVisible.shader" />
-    <None Include="Assets\AstarPathfindingProject\ExampleScenes\Materials\Projector Light.shader" />
-    <None Include="Assets\AstarPathfindingProject\ExampleScenes\Materials\Projector Multiply.shader" />
-    <None Include="Assets\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />
-    <None Include="Assets\AstarPathfindingProject\Plugins\DotNetZip\DotNetZipLicense.txt" />
-    <None Include="Assets\AstarPathfindingProject\Plugins\dependencies.txt" />
-    <None Include="Assets\AstarPathfindingProject\Readme.txt" />
-    <None Include="Assets\AstarPathfindingProject\Readme_upgrading.txt" />
-    <None Include="Assets\AstarPathfindingProject\link.xml" />
-    <None Include="Assets\Tiled2Unity\Imported\_ReadMe.txt" />
-    <None Include="Assets\Tiled2Unity\Imported\test.tiled2unity.xml" />
-    <None Include="Assets\Tiled2Unity\License.txt" />
-    <None Include="Assets\Tiled2Unity\Materials\_ReadMe.txt" />
-    <None Include="Assets\Tiled2Unity\Meshes\_ReadMe.txt" />
-    <None Include="Assets\Tiled2Unity\Prefabs\_ReadMe.txt" />
-    <None Include="Assets\Tiled2Unity\Shaders\shaColorKey.shader" />
-    <None Include="Assets\Tiled2Unity\Shaders\shaDefault.shader" />
-    <None Include="Assets\Tiled2Unity\Shaders\shaDepth.shader" />
-    <None Include="Assets\Tiled2Unity\Shaders\shaDepthColorKey.shader" />
-    <None Include="Assets\Tiled2Unity\Shaders\shaDiffuseDepth.shader" />
-    <None Include="Assets\Tiled2Unity\Shaders\shaTiledMap.shader" />
-    <None Include="Assets\Tiled2Unity\Textures\_ReadMe.txt" />
-    <None Include="Assets\Tiled2Unity\Tiled2Unity.export.txt" />
-    <None Include="Assets\shaders\DiffuseFlash.shader" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh.shader" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\NavmeshOutline.shader" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\DiffuseAlwaysVisible.shader" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\Projector Light.shader" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\Projector Multiply.shader" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\DotNetZip\DotNetZipLicense.txt" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\dependencies.txt" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\Readme.txt" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\Readme_upgrading.txt" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\link.xml" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Imported\_ReadMe.txt" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Imported\test.tiled2unity.xml" />
+    <None Include="Assets\Game\lib\Tiled2Unity\License.txt" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Materials\_ReadMe.txt" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Meshes\_ReadMe.txt" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Prefabs\_ReadMe.txt" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaColorKey.shader" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaDefault.shader" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaDepth.shader" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaDepthColorKey.shader" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaDiffuseDepth.shader" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaTiledMap.shader" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Textures\_ReadMe.txt" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Tiled2Unity.export.txt" />
+    <None Include="Assets\Game\shaders\DiffuseFlash.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
