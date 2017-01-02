@@ -9,16 +9,23 @@ public class TestenemyAttackState : StateMachineBehaviour
     private bool prepared = false;
     private bool reset = false;
 
+    // Denotes when this state can be interrupted
+    private bool vulnerable = true;
+
 
     public void Setup(Enemy e)
     {
         enemy = e;
     }
 
-    public void Interrupt(Animator animator)
+    public bool Interrupt(Animator animator)
     {
-        enemy.nextVelocity = Vector2.zero;
-        animator.SetTrigger("Attack");
+        if (vulnerable)
+        {
+            animator.SetBool("Attacking", false);
+            return true;
+        }
+        return false;
     }
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -27,6 +34,7 @@ public class TestenemyAttackState : StateMachineBehaviour
         targeted = false;
         prepared = false;
         reset = false;
+        vulnerable = false;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -41,7 +49,7 @@ public class TestenemyAttackState : StateMachineBehaviour
         {
             enemy.EnableMotion();
             enemy.SetSpeed(220f);
-            enemy.nextVelocity = enemy.directionToTarget * enemy.GetSpeed();
+            enemy.SetNextVelocity(enemy.directionToTarget * enemy.GetSpeed());
             prepared = true;
         }
         else if (!reset && stateTime >= 0.75f && stateTime < 0.8f)
@@ -52,7 +60,8 @@ public class TestenemyAttackState : StateMachineBehaviour
         }
         else if (stateTime >= 1)
         {
-            animator.SetTrigger("Attack");
+            animator.SetBool("Attacking", false);
+            vulnerable = true;
         }
     }
 

@@ -83,7 +83,7 @@ public class TestEnemyAgent : Enemy
                     // Target in range, view, and attack ready
                     if (InAttackRange() && TargetInView() && attackReady)
                     {
-                        animator.SetTrigger("Attack");
+                        animator.SetBool("Attacking", true);
                     }
                     else
                     {
@@ -95,7 +95,7 @@ public class TestEnemyAgent : Enemy
                             if (nextWaypoint != null)
                             {
                                 Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
-                                nextVelocity = dirToWaypoint * speedMultiplier;
+                                SetNextVelocity(dirToWaypoint * speedMultiplier);
                             }
                         }
                     }
@@ -103,7 +103,7 @@ public class TestEnemyAgent : Enemy
                 // No path to follow, stop motion
                 else
                 {
-                    nextVelocity = Vector2.zero;
+                    SetNextVelocity(Vector2.zero);
                 }
             }
         }
@@ -124,14 +124,19 @@ public class TestEnemyAgent : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (currentStateInfo.fullPathHash == hurtStateHash)
-        {
-            return;
-        }
-
         if (collision.gameObject.tag == "Player-attack")
         {
-            hurtState.SetHurtVelocity(collision.attachedRigidbody.velocity);
+            if (currentStateInfo.fullPathHash == attackStateHash && !attackState.Interrupt(animator))
+            {
+                return;
+            }
+
+            if (currentStateInfo.fullPathHash == hurtStateHash)
+            {
+                return;
+            }
+
+            hurtState.SetHurtVelocity(collision.attachedRigidbody.velocity.normalized);
             Hurt();
         }
     }

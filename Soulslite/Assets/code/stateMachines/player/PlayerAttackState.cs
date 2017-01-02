@@ -5,21 +5,29 @@ public class PlayerAttackState : StateMachineBehaviour
 {
     private PlayerAgent player;
 
+    // Denotes when this state can be interrupted
+    private bool vulnerable = true;
+
 
     public void Setup(PlayerAgent playerEntity)
     {
         player = playerEntity;
     }
 
-    public void Interrupt(Animator animator)
+    public bool Interrupt(Animator animator)
     {
-        player.nextVelocity = Vector2.zero;
-        animator.SetTrigger("Attack");
+        if (vulnerable)
+        {
+            animator.SetBool("Attacking", false);
+            return true;
+        }
+        return false;
     }
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.nextVelocity = player.facingDirection * player.GetSpeed();
+        player.SetNextVelocity(player.facingDirection * player.GetSpeed());
+        vulnerable = true;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -27,7 +35,7 @@ public class PlayerAttackState : StateMachineBehaviour
         float stateTime = stateInfo.normalizedTime;
         if (stateTime < 0.2f)
         {
-            player.nextVelocity = player.facingDirection * player.GetSpeed();
+            player.SetNextVelocity(player.facingDirection * player.GetSpeed());
         }
         else if (player.AbleToMove() && stateTime >= 0.2f)
         {
@@ -36,7 +44,7 @@ public class PlayerAttackState : StateMachineBehaviour
         }
         else if (stateTime >= 1)
         {
-            animator.SetTrigger("Attack");
+            animator.SetBool("Attacking", false);
         }
     }
 

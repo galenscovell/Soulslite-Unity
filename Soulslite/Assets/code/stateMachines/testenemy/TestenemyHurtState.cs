@@ -27,13 +27,14 @@ public class TestenemyHurtState : StateMachineBehaviour
         float stateTime = stateInfo.normalizedTime;
         if (stateTime < 0.4f)
         {
-            enemy.SetSpeed(80f);
-            enemy.nextVelocity = hurtVelocity;
+            enemy.SetSpeed(120f);
+            enemy.SetNextVelocity(hurtVelocity);
         }
         else if (stateTime >= 0.4f && stateTime < 1)
         {
             enemy.SetSpeed(enemy.normalSpeed);
             enemy.DisableMotion();
+            enemy.DisableMirrored();
         }
         else if (stateTime >= 1)
         {
@@ -43,7 +44,6 @@ public class TestenemyHurtState : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        enemy.DisableMirrored();
         enemy.EnableMotion();
     }
 }

@@ -51,12 +51,14 @@ public class PlayerAgent : BaseEntity
             currentStateInfo.fullPathHash != dashStateHash &&
             currentStateInfo.fullPathHash != hurtStateHash)
         {
-            speedMultiplier = normalSpeed;
-            nextVelocity.x = Input.GetAxis("LeftAxisX") * speedMultiplier;
-            nextVelocity.y = Input.GetAxis("LeftAxisY") * speedMultiplier;
+            SetSpeed(GetNormalSpeed());
+            SetNextVelocity(new Vector2(
+                Input.GetAxis("LeftAxisX") * speedMultiplier,
+                Input.GetAxis("LeftAxisY") * speedMultiplier
+            ));
 
             if (Input.GetButtonDown("Button0")) animator.SetBool("Dashing", true);
-            if (Input.GetButtonDown("Button1")) animator.SetTrigger("Attack");
+            if (Input.GetButtonDown("Button1")) animator.SetBool("Attacking", true);
         }
     }
 
@@ -84,9 +86,9 @@ public class PlayerAgent : BaseEntity
                 return;
             }
 
-            if (currentStateInfo.fullPathHash == attackStateHash)
+            if (currentStateInfo.fullPathHash == attackStateHash && !attackState.Interrupt(animator))
             {
-                attackState.Interrupt(animator);
+                return;
             }
 
             if (currentStateInfo.fullPathHash == dashStateHash)

@@ -59,7 +59,7 @@ public class BaseEntity : MonoBehaviour
         // Entity is not allowed to move
         else
         {
-            nextVelocity = Vector2.zero;
+            SetNextVelocity(Vector2.zero);
         }
 
         // Set new body velocity based on updated nextVelocity
@@ -160,6 +160,11 @@ public class BaseEntity : MonoBehaviour
     public void SetSpeed(float speed)
     {
         speedMultiplier = speed;
+    }
+
+    public void SetNextVelocity(Vector2 velocity)
+    {
+        nextVelocity = velocity;
     }
 
     public void EnableMirrored()

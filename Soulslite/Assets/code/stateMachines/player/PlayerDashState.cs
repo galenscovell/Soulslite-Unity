@@ -17,7 +17,6 @@ public class PlayerDashState : StateMachineBehaviour
     public void Interrupt(Animator animator)
     {
         dashTrail.SetEnabled(false);
-        player.nextVelocity = Vector2.zero;
         animator.SetBool("Dashing", false);
     }
 
@@ -25,7 +24,7 @@ public class PlayerDashState : StateMachineBehaviour
     {
         dashTrail.SetEnabled(true);
         player.SetSpeed(dashSpeed);
-        player.nextVelocity = player.facingDirection * player.GetSpeed();
+        player.SetNextVelocity(player.facingDirection * player.GetSpeed());
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
