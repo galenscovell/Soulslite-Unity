@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public class PlayerAgent : BaseEntity
@@ -15,7 +14,7 @@ public class PlayerAgent : BaseEntity
     private PlayerHurtState hurtState;
     private int hurtStateHash = Animator.StringToHash("Base Layer.PlayerHurtState");
 
-    private CameraShaker cameraShaker;
+    private CameraShaker camerShaker;
 
 
     /**************************
@@ -34,7 +33,7 @@ public class PlayerAgent : BaseEntity
         hurtState = animator.GetBehaviour<PlayerHurtState>();
         hurtState.Setup(this);
 
-        cameraShaker = GetComponent<CameraShaker>();
+        camerShaker = GetComponent<CameraShaker>();
     }
 
 
@@ -59,6 +58,22 @@ public class PlayerAgent : BaseEntity
 
             if (Input.GetButtonDown("Button0")) animator.SetBool("Dashing", true);
             if (Input.GetButtonDown("Button1")) animator.SetBool("Attacking", true);
+        }
+        else if (currentStateInfo.fullPathHash == dashStateHash)
+        {
+            if (Input.GetButtonDown("Button0"))
+            {
+                Vector2 dashDirection = new Vector2(
+                    Input.GetAxis("LeftAxisX"), Input.GetAxis("LeftAxisY")
+                );
+
+                if (dashDirection.magnitude == 0)
+                {
+                    dashDirection = facingDirection;
+                }
+
+                dashState.Chain(animator, dashDirection);
+            }
         }
     }
 
@@ -106,9 +121,9 @@ public class PlayerAgent : BaseEntity
      **************************/
     private new void Hurt()
     {
-        animator.Play("PlayerHurtState");
-        cameraShaker.Activate();
-
         base.Hurt();
+        camerShaker.Activate();
+
+        animator.Play("PlayerHurtState");
     }
 }

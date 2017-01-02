@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public class TestEnemyAgent : Enemy
@@ -12,6 +11,8 @@ public class TestEnemyAgent : Enemy
 
     private TestenemyHurtState hurtState;
     private int hurtStateHash = Animator.StringToHash("Base Layer.TestenemyHurtState");
+
+    private CameraShaker camerShaker;
 
 
     /**************************
@@ -29,6 +30,8 @@ public class TestEnemyAgent : Enemy
 
         hurtState = animator.GetBehaviour<TestenemyHurtState>();
         hurtState.Setup(this);
+
+        camerShaker = GetComponent<CameraShaker>();
     }
 
 
@@ -139,11 +142,6 @@ public class TestEnemyAgent : Enemy
     {
         if (collision.gameObject.tag == "Player-attack")
         {
-            if (currentStateInfo.fullPathHash == attackStateHash && !attackState.Interrupt(animator))
-            {
-                return;
-            }
-
             if (currentStateInfo.fullPathHash == hurtStateHash)
             {
                 return;
@@ -160,8 +158,17 @@ public class TestEnemyAgent : Enemy
      **************************/
     private new void Hurt()
     {
-        animator.Play("TestenemyHurtState");
-
+        // Flash and damage
         base.Hurt();
+        camerShaker.Activate();
+
+        // If in non-interruptible state, do not change to hurt state
+        if (currentStateInfo.fullPathHash == attackStateHash && !attackState.Interrupt(animator))
+        {
+            return;
+        }
+
+        // Change to hurt state
+        animator.Play("TestenemyHurtState");
     }
 }

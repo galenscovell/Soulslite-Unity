@@ -12,18 +12,18 @@ public class CameraController : MonoBehaviour
     public GameObject player;
 
 
-    void Awake() 
+    private void Awake()
     {
         camera = gameObject.GetComponent<Camera>();
         camera.orthographicSize = orthographicHeight;
     }
 
-    void Start() 
+    private void Start()
     {
         playerOffset = transform.position - player.transform.position;
     }
 
-    void LateUpdate() 
+    private void LateUpdate()
     {
         transform.position = Vector3.SmoothDamp(transform.position, player.transform.position + playerOffset, ref velocity, dampTime);
     }
