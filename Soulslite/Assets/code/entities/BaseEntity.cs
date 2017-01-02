@@ -70,9 +70,6 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *          Util          *
      **************************/
-    /// <summary>
-    /// Set facing direction as normalized current velocity.
-    /// </summary>
     protected void SetFacingDirection()
     {
         facingDirection = nextVelocity.normalized;
@@ -83,10 +80,6 @@ public class BaseEntity : MonoBehaviour
         animator.SetFloat("DirectionY", facingDirection.y);
     }
 
-    /// <summary>
-    /// Return whether the current body velocity is considered 'moving'.
-    /// </summary>
-    /// <returns>true if velocity is significant</returns>
     protected bool IsMoving()
     {
         return Vector2.Distance(nextVelocity, Vector2.zero) > 0.2f;
@@ -96,6 +89,11 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *          Hurt          *
      **************************/
+    protected void Hurt()
+    {
+        StartCoroutine(HurtFlash());
+    }
+
     protected IEnumerator HurtFlash()
     {
         spriteRenderer.material.SetFloat("_FlashAmount", 0.9f);

@@ -42,9 +42,11 @@ public class TestEnemyAgent : Enemy
 
     private new void FixedUpdate()
     {
-        /*****************
+        currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        /****************
          * PASSIVE
-         *****************/
+         ****************/
         if (passive)
         {
             if (IdleAnimCheck())
@@ -58,33 +60,42 @@ public class TestEnemyAgent : Enemy
                 EndIdleAnim();
             }
         }
-        /*****************
+        /****************
          * ACTIVE
-         *****************/
+         ****************/
         else
         {
-            // Check if attack ready
             bool attackReady = AttackCheck();
 
-            currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
+            /****************
+             * NOT ATTACKING
+             ****************/
             if (currentStateInfo.fullPathHash != attackStateHash)
             {
-                // Repath
+                /****************
+                 * REPATH
+                 ****************/
                 if (repathCounter <= 0)
                 {
                     repathCounter = repathRate;
                     behavior.SetPath(seeker, body.position, TrackTarget());
                 }
 
-                // Follow set path
+                /****************
+                 * FOLLOWING
+                 ****************/
                 if (behavior.HasPath())
                 {
-                    // Target in range, view, and attack ready
+                    /****************
+                     * START ATTACK
+                     ****************/
                     if (InAttackRange() && TargetInView() && attackReady)
                     {
                         animator.SetBool("Attacking", true);
                     }
+                    /****************
+                     * CONTINUE
+                     ****************/
                     else
                     {
                         if (behavior.WaypointReached(body.position))
@@ -100,7 +111,9 @@ public class TestEnemyAgent : Enemy
                         }
                     }
                 }
-                // No path to follow, stop motion
+                /****************
+                 * NO PATH
+                 ****************/
                 else
                 {
                     SetNextVelocity(Vector2.zero);
@@ -143,11 +156,12 @@ public class TestEnemyAgent : Enemy
 
 
     /**************************
-     *          Hurt          *
+     *         Hurt          *
      **************************/
-    private void Hurt()
+    private new void Hurt()
     {
         animator.Play("TestenemyHurtState");
-        StartCoroutine(HurtFlash());
+
+        base.Hurt();
     }
 }

@@ -104,10 +104,11 @@ public class PlayerAgent : BaseEntity
     /**************************
      *          Hurt          *
      **************************/
-    private void Hurt()
+    private new void Hurt()
     {
         animator.Play("PlayerHurtState");
         cameraShaker.Activate();
-        StartCoroutine(HurtFlash());
+
+        base.Hurt();
     }
 }
