@@ -12,7 +12,7 @@ public class TestEnemyAgent : Enemy
     private TestenemyHurtState hurtState;
     private int hurtStateHash = Animator.StringToHash("Base Layer.TestenemyHurtState");
 
-    private CameraShaker camerShaker;
+    private CameraShaker cameraShaker;
 
 
     /**************************
@@ -25,13 +25,15 @@ public class TestEnemyAgent : Enemy
         behavior = new SeekBehavior();
         seeker = GetComponent<Seeker>();
 
+        AudioSource attackSound = soundEffects[0];
+
         attackState = animator.GetBehaviour<TestenemyAttackState>();
-        attackState.Setup(this);
+        attackState.Setup(this, attackSound);
 
         hurtState = animator.GetBehaviour<TestenemyHurtState>();
         hurtState.Setup(this);
 
-        camerShaker = GetComponent<CameraShaker>();
+        cameraShaker = GetComponent<CameraShaker>();
     }
 
 
@@ -160,7 +162,7 @@ public class TestEnemyAgent : Enemy
     {
         // Flash and damage
         base.Hurt();
-        camerShaker.Activate();
+        cameraShaker.Activate();
 
         // If in non-interruptible state, do not change to hurt state
         if (currentStateInfo.fullPathHash == attackStateHash && !attackState.Interrupt(animator))

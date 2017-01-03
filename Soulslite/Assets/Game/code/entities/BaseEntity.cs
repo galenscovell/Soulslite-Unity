@@ -12,6 +12,8 @@ public class BaseEntity : MonoBehaviour
     protected bool mirrored = false;
     protected float speedMultiplier;
 
+    protected AudioSource[] soundEffects;
+
     public float normalSpeed;
 
     [HideInInspector]
@@ -28,6 +30,8 @@ public class BaseEntity : MonoBehaviour
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        soundEffects = GetComponents<AudioSource>();
     }
 
 
@@ -123,22 +127,6 @@ public class BaseEntity : MonoBehaviour
     public bool AbleToMove()
     {
         return canMove;
-    }
-
-    public Vector2 GetFacingOrthogonal()
-    {
-        Vector2 facingOrthogonal = new Vector2(0, 0);
-        if (Mathf.Abs(facingDirection.x) > Mathf.Abs(facingDirection.y))
-        {
-            if (facingDirection.x > 0) facingOrthogonal.x += 1;
-            else facingOrthogonal.x -= 1;
-        }
-        else
-        {
-            if (facingDirection.y > 0) facingOrthogonal.y += 1;
-            else facingOrthogonal.y -= 1;
-        }
-        return facingOrthogonal;
     }
 
 

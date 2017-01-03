@@ -90,6 +90,7 @@
     <Compile Include="Assets\Game\code\stateMachines\player\PlayerAttackState.cs" />
     <Compile Include="Assets\Game\code\stateMachines\player\PlayerDashState.cs" />
     <Compile Include="Assets\Game\code\stateMachines\player\PlayerHurtState.cs" />
+    <Compile Include="Assets\Game\code\stateMachines\player\PlayerMovementState.cs" />
     <Compile Include="Assets\Game\code\stateMachines\testenemy\TestenemyAttackState.cs" />
     <Compile Include="Assets\Game\code\stateMachines\testenemy\TestenemyHurtState.cs" />
     <Compile Include="Assets\Game\code\stateMachines\testenemy\TestenemyIdleAnimState.cs" />

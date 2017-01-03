@@ -4,6 +4,7 @@
 public class TestenemyAttackState : StateMachineBehaviour
 {
     private Enemy enemy;
+    private AudioSource attackSound;
 
     private bool targeted = false;
     private bool prepared = false;
@@ -13,9 +14,10 @@ public class TestenemyAttackState : StateMachineBehaviour
     private bool vulnerable = true;
 
 
-    public void Setup(Enemy e)
+    public void Setup(Enemy e, AudioSource sound)
     {
         enemy = e;
+        attackSound = sound;
     }
 
     public bool Interrupt(Animator animator)
@@ -57,6 +59,7 @@ public class TestenemyAttackState : StateMachineBehaviour
             enemy.SetSpeed(enemy.GetNormalSpeed());
             enemy.DisableMotion();
             reset = true;
+            attackSound.PlayOneShot(attackSound.clip);
         }
         else if (stateTime >= 1)
         {

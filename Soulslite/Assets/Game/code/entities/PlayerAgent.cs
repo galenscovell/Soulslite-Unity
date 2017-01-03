@@ -14,7 +14,10 @@ public class PlayerAgent : BaseEntity
     private PlayerHurtState hurtState;
     private int hurtStateHash = Animator.StringToHash("Base Layer.PlayerHurtState");
 
-    private CameraShaker camerShaker;
+    private PlayerMovementState movementState;
+    private int movementStateHash = Animator.StringToHash("Base Layer.PlayerMovementState");
+
+    private CameraShaker cameraShaker;
 
 
     /**************************
@@ -24,16 +27,23 @@ public class PlayerAgent : BaseEntity
     {
         base.Start();
 
+        AudioSource attackSound = soundEffects[0];
+        AudioSource dashSound = soundEffects[1];
+        AudioSource footstepSound = soundEffects[2];
+
         attackState = animator.GetBehaviour<PlayerAttackState>();
-        attackState.Setup(this);
+        attackState.Setup(this, attackSound);
 
         dashState = animator.GetBehaviour<PlayerDashState>();
-        dashState.Setup(this, GetComponent<DashTrail>());
+        dashState.Setup(this, GetComponent<DashTrail>(), dashSound);
 
         hurtState = animator.GetBehaviour<PlayerHurtState>();
         hurtState.Setup(this);
 
-        camerShaker = GetComponent<CameraShaker>();
+        movementState = animator.GetBehaviour<PlayerMovementState>();
+        movementState.Setup(this, footstepSound);
+
+        cameraShaker = GetComponent<CameraShaker>();
     }
 
 
@@ -122,7 +132,7 @@ public class PlayerAgent : BaseEntity
     private new void Hurt()
     {
         base.Hurt();
-        camerShaker.Activate();
+        cameraShaker.Activate();
 
         animator.Play("PlayerHurtState");
     }

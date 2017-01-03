@@ -27,7 +27,7 @@ public class Enemy : BaseEntity
     {
         base.Start();
 
-        attackCounter = Random.Range(90, 240);
+        attackCounter = Random.Range(90, 180);
         idleCounter = Random.Range(120, 360);
         repathCounter = repathRate;
     }
