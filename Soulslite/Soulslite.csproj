@@ -83,6 +83,8 @@
     <Compile Include="Assets\Game\code\effects\CameraShaker.cs" />
     <Compile Include="Assets\Game\code\effects\DashTrail.cs" />
     <Compile Include="Assets\Game\code\effects\DashTrailObject.cs" />
+    <Compile Include="Assets\Game\code\effects\RainSystem.cs" />
+    <Compile Include="Assets\Game\code\effects\Raindrop.cs" />
     <Compile Include="Assets\Game\code\entities\BaseEntity.cs" />
     <Compile Include="Assets\Game\code\entities\Enemy.cs" />
     <Compile Include="Assets\Game\code\entities\PlayerAgent.cs" />

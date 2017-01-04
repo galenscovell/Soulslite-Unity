@@ -8,7 +8,7 @@ public class PlayerDashState : StateMachineBehaviour
     private AudioSource dashSound;
     
     private int chainCounter = 0;
-    private float dashSpeed = 800f;
+    private float dashSpeed = 1000f;
 
     private float animationSpeed = 1f;
     private float maxAnimationSpeed = 1.5f;
@@ -57,7 +57,7 @@ public class PlayerDashState : StateMachineBehaviour
         {
             animationSpeed = maxAnimationSpeed;
             dashSound.pitch = 1.375f;
-            newSpeed = 1250f;
+            newSpeed = 1450f;
         }
 
         animator.speed = animationSpeed;
@@ -77,7 +77,7 @@ public class PlayerDashState : StateMachineBehaviour
             player.DisableMotion();
             player.SetSpeed(player.GetNormalSpeed());
         }
-        else if (stateTime >= 0.6f && stateTime < 1f)
+        else if (stateTime >= 0.5f && stateTime < 0.8f)
         {
             chainableState = true;
         }

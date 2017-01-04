@@ -5,9 +5,9 @@ public class CameraController : MonoBehaviour
 {
     private new Camera camera;
     private Vector3 playerOffset;
-    private float dampTime = 0.2f;
     private Vector3 velocity = Vector3.zero;
 
+    public float dampTime = 0.2f;
     public int orthographicHeight = 120;
     public GameObject player;
 
