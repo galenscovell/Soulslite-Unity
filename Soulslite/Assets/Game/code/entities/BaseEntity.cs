@@ -81,6 +81,15 @@ public class BaseEntity : MonoBehaviour
         if (mirrored) animator.SetFloat("DirectionX", -facingDirection.x);
         else animator.SetFloat("DirectionX", facingDirection.x);
 
+        //if (facingDirection.x < 0)
+        //{
+        //    spriteRenderer.flipX = true;
+        //}
+        //else
+        //{
+        //    spriteRenderer.flipX = false;
+        //}
+
         animator.SetFloat("DirectionY", facingDirection.y);
     }
 
