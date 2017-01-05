@@ -50,13 +50,13 @@ public class PlayerDashState : StateMachineBehaviour
         if (chainCounter < 5)
         {
             animationSpeed = 1 + (chainCounter * 0.1f);
-            dashSound.pitch = 1 + (chainCounter * 0.075f);
+            dashSound.pitch = 1 + (chainCounter * 0.1f);
             newSpeed = dashSpeed + (dashSpeed * (chainCounter * 0.075f));
         }
         else
         {
             animationSpeed = maxAnimationSpeed;
-            dashSound.pitch = 1.375f;
+            dashSound.pitch = 1.5f;
             newSpeed = 1450f;
         }
 
