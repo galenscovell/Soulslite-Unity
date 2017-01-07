@@ -47,14 +47,14 @@ public class TestenemyAttackState : StateMachineBehaviour
             enemy.directionToTarget = (enemy.TrackTarget() - enemy.GetBody().position).normalized;
             targeted = true;
         }
-        else if (!prepared && stateTime >= 0.6f && stateTime < 0.65f)
+        else if (!prepared && stateTime >= 0.5f && stateTime < 0.65f)
         {
             enemy.EnableMotion();
-            enemy.SetSpeed(220f);
+            enemy.SetSpeed(240f);
             enemy.SetNextVelocity(enemy.directionToTarget * enemy.GetSpeed());
             prepared = true;
         }
-        else if (!reset && stateTime >= 0.75f && stateTime < 0.8f)
+        else if (!reset && stateTime >= 0.65f && stateTime < 0.8f)
         {
             enemy.SetSpeed(enemy.GetNormalSpeed());
             enemy.DisableMotion();

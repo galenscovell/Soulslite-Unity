@@ -66,12 +66,12 @@ public class PlayerAgent : BaseEntity
                 Input.GetAxis("LeftAxisY") * speedMultiplier
             ));
 
-            if (Input.GetButtonDown("Button0")) animator.SetBool("Dashing", true);
-            if (Input.GetButtonDown("Button1")) animator.SetBool("Attacking", true);
+            if (Input.GetButtonDown("Button0")) animator.SetBool("Attacking", true);
+            if (Input.GetButtonDown("Button1")) animator.SetBool("Dashing", true);
         }
         else if (currentStateInfo.fullPathHash == dashStateHash)
         {
-            if (Input.GetButtonDown("Button0"))
+            if (Input.GetButtonDown("Button1"))
             {
                 Vector2 dashDirection = new Vector2(
                     Input.GetAxis("LeftAxisX"), Input.GetAxis("LeftAxisY")

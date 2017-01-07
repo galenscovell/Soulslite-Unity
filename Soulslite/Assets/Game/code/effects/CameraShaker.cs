@@ -10,7 +10,7 @@ public class CameraShaker : MonoBehaviour
 
     public void Activate()
     {
-        shakeAmt = 100 * .01f;
+        shakeAmt = 100 * .02f;
         InvokeRepeating("CameraShake", 0, .01f);
         Invoke("StopShaking", 0.2f);
     }
