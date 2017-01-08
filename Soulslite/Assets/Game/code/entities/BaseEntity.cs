@@ -110,7 +110,7 @@ public class BaseEntity : MonoBehaviour
     protected IEnumerator HurtFlash()
     {
         spriteRenderer.material.SetFloat("_FlashAmount", 0.9f);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.15f);
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
     }
 

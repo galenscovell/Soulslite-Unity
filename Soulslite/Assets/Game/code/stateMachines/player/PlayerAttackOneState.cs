@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-public class PlayerAttackState : StateMachineBehaviour
+public class PlayerAttackOneState : StateMachineBehaviour
 {
     private PlayerAgent player;
     private AudioSource attackSound;
@@ -20,6 +20,7 @@ public class PlayerAttackState : StateMachineBehaviour
     {
         if (vulnerable)
         {
+            animator.SetInteger("AttackVersion", 1);
             animator.SetBool("Attacking", false);
             return true;
         }
@@ -30,7 +31,7 @@ public class PlayerAttackState : StateMachineBehaviour
     {
         player.SetNextVelocity(player.facingDirection * player.GetSpeed());
         vulnerable = true;
-        attackSound.Play();
+        attackSound.PlayOneShot(attackSound.clip);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -47,6 +48,7 @@ public class PlayerAttackState : StateMachineBehaviour
         }
         else if (stateTime >= 1)
         {
+            animator.SetInteger("AttackVersion", 1);
             animator.SetBool("Attacking", false);
         }
     }

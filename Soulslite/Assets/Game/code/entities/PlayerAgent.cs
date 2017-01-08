@@ -5,8 +5,10 @@ public class PlayerAgent : BaseEntity
 {
     private AnimatorStateInfo currentStateInfo;
 
-    private PlayerAttackState attackState;
-    private int attackStateHash = Animator.StringToHash("Base Layer.PlayerAttackState1");
+    private PlayerAttackOneState attackOneState;
+    private int attackOneStateHash = Animator.StringToHash("Base Layer.PlayerAttackOneState");
+    private PlayerAttackTwoState attackTwoState;
+    private int attackTwoStateHash = Animator.StringToHash("Base Layer.PlayerAttackTwoState");
 
     private PlayerDashState dashState;
     private int dashStateHash = Animator.StringToHash("Base Layer.PlayerDashState");
@@ -27,18 +29,22 @@ public class PlayerAgent : BaseEntity
     {
         base.Start();
 
-        AudioSource attackSound = soundEffects[0];
-        AudioSource dashSound = soundEffects[1];
-        AudioSource footstepSound = soundEffects[2];
+        AudioSource attackOneSound = soundEffects[0];
+        AudioSource attackTwoSound = soundEffects[1];
+        AudioSource dashSound = soundEffects[2];
+        AudioSource footstepSound = soundEffects[3];
+        AudioSource hurtSound = soundEffects[4];
 
-        attackState = animator.GetBehaviour<PlayerAttackState>();
-        attackState.Setup(this, attackSound);
+        attackOneState = animator.GetBehaviour<PlayerAttackOneState>();
+        attackOneState.Setup(this, attackOneSound);
+        attackTwoState = animator.GetBehaviour<PlayerAttackTwoState>();
+        attackTwoState.Setup(this, attackTwoSound);
 
         dashState = animator.GetBehaviour<PlayerDashState>();
         dashState.Setup(this, GetComponent<DashTrail>(), dashSound);
 
         hurtState = animator.GetBehaviour<PlayerHurtState>();
-        hurtState.Setup(this);
+        hurtState.Setup(this, hurtSound);
 
         movementState = animator.GetBehaviour<PlayerMovementState>();
         movementState.Setup(this, footstepSound);
@@ -56,7 +62,8 @@ public class PlayerAgent : BaseEntity
 
         currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (currentStateInfo.fullPathHash != attackStateHash &&
+        if (currentStateInfo.fullPathHash != attackOneStateHash &&
+            currentStateInfo.fullPathHash != attackTwoStateHash &&
             currentStateInfo.fullPathHash != dashStateHash &&
             currentStateInfo.fullPathHash != hurtStateHash)
         {
@@ -66,8 +73,15 @@ public class PlayerAgent : BaseEntity
                 Input.GetAxis("LeftAxisY") * speedMultiplier
             ));
 
-            if (Input.GetButtonDown("Button0")) animator.SetBool("Attacking", true);
-            if (Input.GetButtonDown("Button1")) animator.SetBool("Dashing", true);
+            if (Input.GetButtonDown("Button0"))
+            {
+                animator.SetBool("Attacking", true);
+            }
+
+            if (Input.GetButtonDown("Button1"))
+            {
+                animator.SetBool("Dashing", true);
+            }
         }
         else if (currentStateInfo.fullPathHash == dashStateHash)
         {
@@ -111,7 +125,12 @@ public class PlayerAgent : BaseEntity
                 return;
             }
 
-            if (currentStateInfo.fullPathHash == attackStateHash && !attackState.Interrupt(animator))
+            if (currentStateInfo.fullPathHash == attackOneStateHash && !attackOneState.Interrupt(animator))
+            {
+                return;
+            }
+
+            if (currentStateInfo.fullPathHash == attackTwoStateHash && !attackTwoState.Interrupt(animator))
             {
                 return;
             }

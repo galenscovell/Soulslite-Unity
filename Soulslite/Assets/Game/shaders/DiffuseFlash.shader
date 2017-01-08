@@ -1,4 +1,4 @@
-﻿Shader "Custom/Diffuse Flash"
+﻿Shader "Sprites/Diffuse Flash"
 {
 	Properties
 	{
@@ -27,8 +27,8 @@
 		Blend SrcAlpha OneMinusSrcAlpha
 
 		CGPROGRAM
-#pragma surface surf Lambert alpha vertex:vert
-#pragma multi_compile DUMMY PIXELSNAP_ON
+		#pragma surface surf Lambert alpha vertex:vert
+		#pragma multi_compile DUMMY PIXELSNAP_ON
 
 		sampler2D _MainTex;
 		fixed4 _Color;
@@ -42,9 +42,9 @@
 
 		void vert(inout appdata_full v, out Input o)
 		{
-	#if defined(PIXELSNAP_ON) && !defined(SHADER_API_FLASH)
-			v.vertex = UnityPixelSnap(v.vertex);
-	#endif
+			#if defined(PIXELSNAP_ON) && !defined(SHADER_API_FLASH)
+				v.vertex = UnityPixelSnap(v.vertex);
+			#endif
 			v.normal = float3(0,0,-1);
 
 			UNITY_INITIALIZE_OUTPUT(Input, o);
