@@ -19,7 +19,7 @@ public class TestenemyHurtState : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        enemy.EnableMirrored();
+        enemy.EnableFlippedX();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -34,7 +34,7 @@ public class TestenemyHurtState : StateMachineBehaviour
         {
             enemy.SetSpeed(enemy.normalSpeed);
             enemy.DisableMotion();
-            enemy.DisableMirrored();
+            enemy.DisableFlippedX();
         }
         else if (stateTime >= 1)
         {

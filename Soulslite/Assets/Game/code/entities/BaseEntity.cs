@@ -9,7 +9,7 @@ public class BaseEntity : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
 
     protected bool canMove = true;
-    protected bool mirrored = false;
+    protected bool flipX = false;
     protected float speedMultiplier;
 
     protected AudioSource[] soundEffects;
@@ -78,18 +78,11 @@ public class BaseEntity : MonoBehaviour
     {
         facingDirection = nextVelocity.normalized;
 
-        if (mirrored) animator.SetFloat("DirectionX", -facingDirection.x);
-        else animator.SetFloat("DirectionX", facingDirection.x);
+        // If x is negative, completely flip entity to mirror colliders and animations
+        if (facingDirection.x < 0) transform.localScale = new Vector2(-1, 1);
+        else transform.localScale = new Vector2(1, 1);
 
-        //if (facingDirection.x < 0)
-        //{
-        //    spriteRenderer.flipX = true;
-        //}
-        //else
-        //{
-        //    spriteRenderer.flipX = false;
-        //}
-
+        animator.SetFloat("DirectionX", facingDirection.x);
         animator.SetFloat("DirectionY", facingDirection.y);
     }
 
@@ -162,13 +155,13 @@ public class BaseEntity : MonoBehaviour
         nextVelocity = velocity;
     }
 
-    public void EnableMirrored()
+    public void EnableFlippedX()
     {
-        mirrored = true;
+        flipX = true;
     }
 
-    public void DisableMirrored()
+    public void DisableFlippedX()
     {
-        mirrored = false;
+        flipX = false;
     }
 }
