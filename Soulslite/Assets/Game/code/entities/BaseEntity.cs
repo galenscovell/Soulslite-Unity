@@ -11,7 +11,7 @@ public class BaseEntity : MonoBehaviour
 
     public AudioClip[] soundEffects;
     protected bool canMove = true;
-    protected float speedMultiplier;
+    protected float speed;
 
     public bool flipX = false;
     public float defaultSpeed;
@@ -68,7 +68,7 @@ public class BaseEntity : MonoBehaviour
         }
 
         // Set new body velocity based on updated nextVelocity
-        body.velocity = nextVelocity.normalized * speedMultiplier;
+        body.velocity = nextVelocity.normalized * speed;
     }
 
 
@@ -135,10 +135,10 @@ public class BaseEntity : MonoBehaviour
 
     public float GetSpeed()
     {
-        return speedMultiplier;
+        return speed;
     }
 
-    public float GetNormalSpeed()
+    public float GetDefaultSpeed()
     {
         return defaultSpeed;
     }
@@ -167,9 +167,9 @@ public class BaseEntity : MonoBehaviour
         canMove = true;
     }
 
-    public void SetSpeed(float speed)
+    public void SetSpeed(float s)
     {
-        speedMultiplier = speed;
+        speed = s;
     }
 
     public void SetNextVelocity(Vector2 velocity)

@@ -92,6 +92,7 @@
     <Compile Include="Assets\Game\code\entities\PlayerAgent.cs" />
     <Compile Include="Assets\Game\code\entities\TestEnemyAgent.cs" />
     <Compile Include="Assets\Game\code\stateMachines\player\PlayerAttackOneState.cs" />
+    <Compile Include="Assets\Game\code\stateMachines\player\PlayerAttackThreeState.cs" />
     <Compile Include="Assets\Game\code\stateMachines\player\PlayerAttackTwoState.cs" />
     <Compile Include="Assets\Game\code\stateMachines\player\PlayerDashState.cs" />
     <Compile Include="Assets\Game\code\stateMachines\player\PlayerHurtState.cs" />

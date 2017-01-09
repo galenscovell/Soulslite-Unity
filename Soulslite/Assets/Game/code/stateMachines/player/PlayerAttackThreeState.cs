@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-public class PlayerAttackTwoState : StateMachineBehaviour
+public class PlayerAttackThreeState : StateMachineBehaviour
 {
     private PlayerAgent player;
 
@@ -28,11 +28,6 @@ public class PlayerAttackTwoState : StateMachineBehaviour
         return false;
     }
 
-    public void Chain(Animator animator, int attackVersion)
-    {
-        animator.SetInteger("AttackVersion", attackVersion);
-    }
-
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player.SetNextVelocity(player.facingDirection * player.GetSpeed());
@@ -43,18 +38,17 @@ public class PlayerAttackTwoState : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-        if (stateTime < 0.2f)
+        if (stateTime < 0.25f)
         {
             player.SetNextVelocity(player.facingDirection * player.GetSpeed());
         }
-        else if (player.AbleToMove() && stateTime >= 0.2f)
+        else if (player.AbleToMove() && stateTime >= 0.25f)
         {
             player.DisableMotion();
             player.SetSpeed(player.GetDefaultSpeed());
         }
         else if (stateTime >= 1)
         {
-            player.ChainAttack();
             animator.SetInteger("AttackVersion", 1);
             animator.SetBool("Attacking", false);
         }

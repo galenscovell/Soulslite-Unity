@@ -57,7 +57,7 @@ public class TestenemyAttackState : StateMachineBehaviour
         }
         else if (!reset && stateTime >= 0.65f && stateTime < 0.8f)
         {
-            enemy.SetSpeed(enemy.GetNormalSpeed());
+            enemy.SetSpeed(enemy.GetDefaultSpeed());
             enemy.DisableMotion();
             enemy.PlaySfxWithPitchBetween(sfxIndex, 0.9f, 1.3f);
             reset = true;

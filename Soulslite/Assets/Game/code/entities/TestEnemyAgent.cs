@@ -7,9 +7,9 @@ public class TestEnemyAgent : Enemy
     private Seeker seeker;
 
     private TestenemyAttackState attackState;
-    private int attackStateHash = Animator.StringToHash("Base Layer.TestenemyAttackState");
-
     private TestenemyHurtState hurtState;
+
+    private int attackStateHash = Animator.StringToHash("Base Layer.TestenemyAttackState");
     private int hurtStateHash = Animator.StringToHash("Base Layer.TestenemyHurtState");
 
     private CameraShaker cameraShaker;
@@ -25,11 +25,11 @@ public class TestEnemyAgent : Enemy
         behavior = new SeekBehavior();
         seeker = GetComponent<Seeker>();
 
-        // Ints in state Setups are the sfx index
         attackState = animator.GetBehaviour<TestenemyAttackState>();
-        attackState.Setup(this, 0);
-
         hurtState = animator.GetBehaviour<TestenemyHurtState>();
+
+        // Ints in state Setups are the sfx index
+        attackState.Setup(this, 0);
         hurtState.Setup(this);
 
         cameraShaker = GetComponent<CameraShaker>();
@@ -106,13 +106,13 @@ public class TestEnemyAgent : Enemy
                     {
                         if (behavior.WaypointReached(body.position))
                         {
-                            speedMultiplier = defaultSpeed;
+                            speed = defaultSpeed;
                             Vector2 nextWaypoint = behavior.GetNextWaypoint();
 
                             if (nextWaypoint != null)
                             {
                                 Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
-                                SetNextVelocity(dirToWaypoint * speedMultiplier);
+                                SetNextVelocity(dirToWaypoint * speed);
                             }
                         }
                     }

@@ -77,7 +77,7 @@ public class PlayerDashState : StateMachineBehaviour
         if (player.AbleToMove() && stateTime >= 0.2f)
         {
             player.DisableMotion();
-            player.SetSpeed(player.GetNormalSpeed());
+            player.SetSpeed(player.GetDefaultSpeed());
         }
         else if (stateTime >= 0.5f && stateTime < 0.8f)
         {

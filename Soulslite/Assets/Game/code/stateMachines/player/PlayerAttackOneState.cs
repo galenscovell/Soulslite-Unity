@@ -21,11 +21,16 @@ public class PlayerAttackOneState : StateMachineBehaviour
     {
         if (vulnerable)
         {
-            animator.SetInteger("AttackVersion", 1);
+            animator.SetInteger("AttackVersion", 2);
             animator.SetBool("Attacking", false);
             return true;
         }
         return false;
+    }
+
+    public void Chain(Animator animator, int attackVersion)
+    {
+        animator.SetInteger("AttackVersion", attackVersion);
     }
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -45,11 +50,12 @@ public class PlayerAttackOneState : StateMachineBehaviour
         else if (player.AbleToMove() && stateTime >= 0.2f)
         {
             player.DisableMotion();
-            player.SetSpeed(player.GetNormalSpeed());
+            player.SetSpeed(player.GetDefaultSpeed());
         }
         else if (stateTime >= 1)
         {
-            animator.SetInteger("AttackVersion", 1);
+            player.ChainAttack();
+            animator.SetInteger("AttackVersion", 2);
             animator.SetBool("Attacking", false);
         }
     }
