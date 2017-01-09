@@ -4,7 +4,6 @@
 public class TestenemyAttackState : StateMachineBehaviour
 {
     private Enemy enemy;
-    private AudioSource attackSound;
 
     private bool targeted = false;
     private bool prepared = false;
@@ -13,11 +12,13 @@ public class TestenemyAttackState : StateMachineBehaviour
     // Denotes when this state can be interrupted
     private bool vulnerable = true;
 
+    private int sfxIndex;
 
-    public void Setup(Enemy e, AudioSource sound)
+
+    public void Setup(Enemy e, int assignedSfxIndex)
     {
         enemy = e;
-        attackSound = sound;
+        sfxIndex = assignedSfxIndex;
     }
 
     public bool Interrupt(Animator animator)
@@ -58,8 +59,8 @@ public class TestenemyAttackState : StateMachineBehaviour
         {
             enemy.SetSpeed(enemy.GetNormalSpeed());
             enemy.DisableMotion();
+            enemy.PlaySfxWithPitchBetween(sfxIndex, 0.9f, 1.3f);
             reset = true;
-            attackSound.PlayOneShot(attackSound.clip);
         }
         else if (stateTime >= 1)
         {

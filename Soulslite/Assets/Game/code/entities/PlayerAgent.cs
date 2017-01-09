@@ -29,25 +29,20 @@ public class PlayerAgent : BaseEntity
     {
         base.Start();
 
-        AudioSource attackOneSound = soundEffects[0];
-        AudioSource attackTwoSound = soundEffects[1];
-        AudioSource dashSound = soundEffects[2];
-        AudioSource footstepSound = soundEffects[3];
-        AudioSource hurtSound = soundEffects[4];
-
+        // Ints in state Setups are sfx index
         attackOneState = animator.GetBehaviour<PlayerAttackOneState>();
-        attackOneState.Setup(this, attackOneSound);
+        attackOneState.Setup(this, 0);
         attackTwoState = animator.GetBehaviour<PlayerAttackTwoState>();
-        attackTwoState.Setup(this, attackTwoSound);
+        attackTwoState.Setup(this, 1);
 
         dashState = animator.GetBehaviour<PlayerDashState>();
-        dashState.Setup(this, GetComponent<DashTrail>(), dashSound);
-
-        hurtState = animator.GetBehaviour<PlayerHurtState>();
-        hurtState.Setup(this, hurtSound);
+        dashState.Setup(this, GetComponent<DashTrail>(), 3);
 
         movementState = animator.GetBehaviour<PlayerMovementState>();
-        movementState.Setup(this, footstepSound);
+        movementState.Setup(this, 4);
+
+        hurtState = animator.GetBehaviour<PlayerHurtState>();
+        hurtState.Setup(this, 5);
 
         cameraShaker = GetComponent<CameraShaker>();
     }

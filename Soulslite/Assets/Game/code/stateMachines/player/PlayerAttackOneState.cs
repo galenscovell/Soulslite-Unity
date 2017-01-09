@@ -4,16 +4,17 @@
 public class PlayerAttackOneState : StateMachineBehaviour
 {
     private PlayerAgent player;
-    private AudioSource attackSound;
 
     // Denotes when this state can be interrupted
     private bool vulnerable = true;
 
+    private int sfxIndex;
 
-    public void Setup(PlayerAgent playerEntity, AudioSource sound)
+
+    public void Setup(PlayerAgent playerEntity, int assignedSfxIndex)
     {
         player = playerEntity;
-        attackSound = sound;
+        sfxIndex = assignedSfxIndex;
     }
 
     public bool Interrupt(Animator animator)
@@ -31,8 +32,7 @@ public class PlayerAttackOneState : StateMachineBehaviour
     {
         player.SetNextVelocity(player.facingDirection * player.GetSpeed());
         vulnerable = true;
-        attackSound.pitch = Random.Range(0.9f, 1.3f);
-        attackSound.PlayOneShot(attackSound.clip);
+        player.PlaySfxWithPitchBetween(sfxIndex, 0.9f, 1.3f);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

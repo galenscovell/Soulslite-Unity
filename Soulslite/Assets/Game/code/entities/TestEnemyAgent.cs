@@ -25,10 +25,9 @@ public class TestEnemyAgent : Enemy
         behavior = new SeekBehavior();
         seeker = GetComponent<Seeker>();
 
-        AudioSource attackSound = soundEffects[0];
-
+        // Ints in state Setups are the sfx index
         attackState = animator.GetBehaviour<TestenemyAttackState>();
-        attackState.Setup(this, attackSound);
+        attackState.Setup(this, 0);
 
         hurtState = animator.GetBehaviour<TestenemyHurtState>();
         hurtState.Setup(this);

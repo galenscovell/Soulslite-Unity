@@ -5,14 +5,14 @@ using UnityEngine;
 public class PlayerMovementState : StateMachineBehaviour
 {
     private PlayerAgent player;
-    private AudioSource footstepSound;
+    private int sfxIndex;
     private IEnumerator coroutine;
 
 
-    public void Setup(PlayerAgent playerEntity, AudioSource sound)
+    public void Setup(PlayerAgent playerEntity, int assignedSfxIndex)
     {
         player = playerEntity;
-        footstepSound = sound;
+        sfxIndex = assignedSfxIndex;
         coroutine = Footsteps();
     }
 
@@ -21,8 +21,7 @@ public class PlayerMovementState : StateMachineBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.225f);
-            footstepSound.pitch = Random.Range(0.9f, 1.2f);
-            footstepSound.PlayOneShot(footstepSound.clip);
+            player.PlaySfxWithPitchBetween(sfxIndex, 0.9f, 1.2f);
             yield return new WaitForSeconds(0.225f);
         }
     }

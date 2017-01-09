@@ -5,10 +5,11 @@ using UnityEngine;
 public class BaseEntity : MonoBehaviour
 {
     protected Animator animator;
+    protected AudioSource audioSource;
     protected Rigidbody2D body;
     protected SpriteRenderer spriteRenderer;
-    protected AudioSource[] soundEffects;
 
+    public AudioClip[] soundEffects;
     protected bool canMove = true;
     protected float speedMultiplier;
 
@@ -27,10 +28,9 @@ public class BaseEntity : MonoBehaviour
     protected void Start()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         body = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        soundEffects = GetComponents<AudioSource>();
 
         if (flipX) EnableFlippedX();
     }
@@ -106,6 +106,22 @@ public class BaseEntity : MonoBehaviour
         spriteRenderer.material.SetFloat("_FlashAmount", 0.9f);
         yield return new WaitForSeconds(0.15f);
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
+    }
+
+
+    /**************************
+     *         Audio          *
+     **************************/
+    public void PlaySfx(int index, float pitch)
+    {
+        audioSource.pitch = pitch;
+        audioSource.PlayOneShot(soundEffects[index]);
+    }
+
+    public void PlaySfxWithPitchBetween(int index, float low, float high)
+    {
+        audioSource.pitch = Random.Range(low, high);
+        audioSource.PlayOneShot(soundEffects[index]);
     }
 
 
