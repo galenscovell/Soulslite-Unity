@@ -32,7 +32,7 @@ public class TestenemyHurtState : StateMachineBehaviour
         }
         else if (stateTime >= 0.4f && stateTime < 1)
         {
-            enemy.SetSpeed(enemy.normalSpeed);
+            enemy.SetSpeed(enemy.defaultSpeed);
             enemy.DisableMotion();
             enemy.DisableFlippedX();
         }

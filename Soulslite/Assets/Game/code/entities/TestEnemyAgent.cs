@@ -61,6 +61,8 @@ public class TestEnemyAgent : Enemy
 
             if (TargetInView())
             {
+                if (HasFlippedX()) DisableFlippedX();
+
                 passive = false;
                 EndIdleAnim();
             }
@@ -105,7 +107,7 @@ public class TestEnemyAgent : Enemy
                     {
                         if (behavior.WaypointReached(body.position))
                         {
-                            speedMultiplier = normalSpeed;
+                            speedMultiplier = defaultSpeed;
                             Vector2 nextWaypoint = behavior.GetNextWaypoint();
 
                             if (nextWaypoint != null)

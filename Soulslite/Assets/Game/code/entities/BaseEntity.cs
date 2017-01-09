@@ -7,14 +7,13 @@ public class BaseEntity : MonoBehaviour
     protected Animator animator;
     protected Rigidbody2D body;
     protected SpriteRenderer spriteRenderer;
-
-    protected bool canMove = true;
-    protected bool flipX = false;
-    protected float speedMultiplier;
-
     protected AudioSource[] soundEffects;
 
-    public float normalSpeed;
+    protected bool canMove = true;
+    protected float speedMultiplier;
+
+    public bool flipX = false;
+    public float defaultSpeed;
 
     [HideInInspector]
     public Vector2 facingDirection = Vector2.zero;
@@ -32,6 +31,8 @@ public class BaseEntity : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         soundEffects = GetComponents<AudioSource>();
+
+        if (flipX) EnableFlippedX();
     }
 
 
@@ -79,8 +80,8 @@ public class BaseEntity : MonoBehaviour
         facingDirection = nextVelocity.normalized;
 
         // If x is negative, completely flip entity to mirror colliders and animations
-        if (facingDirection.x < 0) transform.localScale = new Vector2(-1, 1);
-        else transform.localScale = new Vector2(1, 1);
+        if (facingDirection.x < 0) transform.localScale = new Vector3(-1, 1, 1);
+        else transform.localScale = new Vector3(1, 1, 1);
 
         animator.SetFloat("DirectionX", facingDirection.x);
         animator.SetFloat("DirectionY", facingDirection.y);
@@ -123,12 +124,17 @@ public class BaseEntity : MonoBehaviour
 
     public float GetNormalSpeed()
     {
-        return normalSpeed;
+        return defaultSpeed;
     }
 
     public bool AbleToMove()
     {
         return canMove;
+    }
+
+    public bool HasFlippedX()
+    {
+        return spriteRenderer.flipX == true;
     }
 
 
@@ -157,11 +163,11 @@ public class BaseEntity : MonoBehaviour
 
     public void EnableFlippedX()
     {
-        flipX = true;
+        spriteRenderer.flipX = true;
     }
 
     public void DisableFlippedX()
     {
-        flipX = false;
+        spriteRenderer.flipX = false;
     }
 }

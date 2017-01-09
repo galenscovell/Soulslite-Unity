@@ -21,6 +21,7 @@ public class PlayerMovementState : StateMachineBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.225f);
+            footstepSound.pitch = Random.Range(0.9f, 1.2f);
             footstepSound.PlayOneShot(footstepSound.clip);
             yield return new WaitForSeconds(0.225f);
         }

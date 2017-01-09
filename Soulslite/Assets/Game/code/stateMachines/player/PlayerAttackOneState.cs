@@ -31,6 +31,7 @@ public class PlayerAttackOneState : StateMachineBehaviour
     {
         player.SetNextVelocity(player.facingDirection * player.GetSpeed());
         vulnerable = true;
+        attackSound.pitch = Random.Range(0.9f, 1.3f);
         attackSound.PlayOneShot(attackSound.clip);
     }
 
