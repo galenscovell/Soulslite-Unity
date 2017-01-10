@@ -3,18 +3,18 @@
 
 public class TestenemyHurtState : StateMachineBehaviour
 {
-    private Enemy enemy;
-    private Vector2 hurtVelocity;
+    private TestEnemyAgent enemy;
+    private Vector2 flungVelocity;
 
 
-    public void Setup(Enemy e)
+    public void Setup(TestEnemyAgent e)
     {
         enemy = e;
     }
 
-    public void SetHurtVelocity(Vector2 velocity)
+    public void SetFlungVelocity(Vector2 velocity)
     {
-        hurtVelocity = velocity;
+        flungVelocity = velocity;
     }
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -25,20 +25,19 @@ public class TestenemyHurtState : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-        if (stateTime < 0.4f)
+        if (stateTime < 0.45f)
         {
-            enemy.SetSpeed(120f);
-            enemy.SetNextVelocity(hurtVelocity);
+            enemy.SetSpeed(180f);
+            enemy.SetNextVelocity(flungVelocity);
         }
-        else if (stateTime >= 0.4f && stateTime < 1)
+        else if (stateTime >= 0.45f && stateTime < 1)
         {
             enemy.SetSpeed(enemy.defaultSpeed);
             enemy.DisableMotion();
-            enemy.DisableFlippedX();
         }
         else if (stateTime >= 1)
         {
-            animator.SetTrigger("Hurt");
+            enemy.Die();
         }
     }
 

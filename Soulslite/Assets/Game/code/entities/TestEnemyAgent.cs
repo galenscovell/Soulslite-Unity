@@ -48,87 +48,90 @@ public class TestEnemyAgent : Enemy
     {
         currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        /****************
-         * PASSIVE
-         ****************/
-        if (passive)
+        if (!IsDead())
         {
-            if (IdleAnimCheck())
-            {
-                animator.SetBool("IdleAnim", true);
-            }
-
-            if (TargetInView())
-            {
-                if (HasFlippedX()) DisableFlippedX();
-
-                passive = false;
-                EndIdleAnim();
-            }
-        }
-        /****************
-         * ACTIVE
-         ****************/
-        else
-        {
-            bool attackReady = AttackCheck();
-
             /****************
-             * NOT ATTACKING
+             * PASSIVE
              ****************/
-            if (currentStateInfo.fullPathHash != attackStateHash)
+            if (passive)
             {
-                /****************
-                 * REPATH
-                 ****************/
-                if (repathCounter <= 0)
+                if (IdleAnimCheck())
                 {
-                    repathCounter = repathRate;
-                    behavior.SetPath(seeker, body.position, TrackTarget());
+                    animator.SetBool("IdleAnim", true);
                 }
 
+                if (TargetInView())
+                {
+                    if (HasFlippedX()) DisableFlippedX();
+
+                    passive = false;
+                    EndIdleAnim();
+                }
+            }
+            /****************
+             * ACTIVE
+             ****************/
+            else
+            {
+                bool attackReady = AttackCheck();
+
                 /****************
-                 * FOLLOWING
+                 * NOT ATTACKING
                  ****************/
-                if (behavior.HasPath())
+                if (currentStateInfo.fullPathHash != attackStateHash)
                 {
                     /****************
-                     * START ATTACK
+                     * REPATH
                      ****************/
-                    if (InAttackRange() && TargetInView() && attackReady)
+                    if (repathCounter <= 0)
                     {
-                        animator.SetBool("Attacking", true);
+                        repathCounter = repathRate;
+                        behavior.SetPath(seeker, body.position, TrackTarget());
                     }
-                    /****************
-                     * CONTINUE
-                     ****************/
-                    else
-                    {
-                        if (behavior.WaypointReached(body.position))
-                        {
-                            speed = defaultSpeed;
-                            Vector2 nextWaypoint = behavior.GetNextWaypoint();
 
-                            if (nextWaypoint != null)
+                    /****************
+                     * FOLLOWING
+                     ****************/
+                    if (behavior.HasPath())
+                    {
+                        /****************
+                         * START ATTACK
+                         ****************/
+                        if (InAttackRange() && TargetInView() && attackReady)
+                        {
+                            animator.SetBool("Attacking", true);
+                        }
+                        /****************
+                         * CONTINUE
+                         ****************/
+                        else
+                        {
+                            if (behavior.WaypointReached(body.position))
                             {
-                                Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
-                                SetNextVelocity(dirToWaypoint * speed);
+                                speed = defaultSpeed;
+                                Vector2 nextWaypoint = behavior.GetNextWaypoint();
+
+                                if (nextWaypoint != null)
+                                {
+                                    Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
+                                    SetNextVelocity(dirToWaypoint * speed);
+                                }
                             }
                         }
                     }
-                }
-                /****************
-                 * NO PATH
-                 ****************/
-                else
-                {
-                    SetNextVelocity(Vector2.zero);
+                    /****************
+                     * NO PATH
+                     ****************/
+                    else
+                    {
+                        SetNextVelocity(Vector2.zero);
+                    }
                 }
             }
-        }
 
-        // Will update body velocity and facing direction
-        base.FixedUpdate();
+            // Will update body velocity and facing direction
+            base.FixedUpdate();
+        }
     }
 
 
@@ -150,8 +153,14 @@ public class TestEnemyAgent : Enemy
                 return;
             }
 
-            hurtState.SetHurtVelocity(collision.attachedRigidbody.velocity.normalized);
             Hurt();
+            DecreaseHealth(1);
+
+            if (HealthZero() && !IsDead())
+            {
+                hurtState.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
+                animator.Play("TestenemyHurtState");
+            }
         }
     }
 
@@ -164,14 +173,16 @@ public class TestEnemyAgent : Enemy
         // Flash and damage
         base.Hurt();
         cameraShaker.Activate();
+    }
 
-        // If in non-interruptible state, do not change to hurt state
-        if (currentStateInfo.fullPathHash == attackStateHash && !attackState.Interrupt(animator))
-        {
-            return;
-        }
 
-        // Change to hurt state
-        animator.Play("TestenemyHurtState");
+    /**************************
+     *         Death          *
+     **************************/
+    public void Die()
+    {
+        EnableDeath();
+        animator.SetBool("Attacking", false);
+        animator.SetBool("Dead", true);
     }
 }

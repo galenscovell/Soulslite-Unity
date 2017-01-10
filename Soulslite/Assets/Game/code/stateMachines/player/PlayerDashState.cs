@@ -52,14 +52,14 @@ public class PlayerDashState : StateMachineBehaviour
         if (chainCounter < 5)
         {
             animationSpeed = 1 + (chainCounter * 0.1f);
-            currentPitch = 1 + (chainCounter * 0.1f);
-            newSpeed = dashSpeed + (dashSpeed * (chainCounter * 0.075f));
+            currentPitch = 1 + (chainCounter * 0.06f);
+            newSpeed = dashSpeed + (dashSpeed * (chainCounter * 0.1f));
         }
         else
         {
             animationSpeed = maxAnimationSpeed;
-            currentPitch = 1.5f;
-            newSpeed = 1450f;
+            currentPitch = 1.3f;
+            newSpeed = 1500f;
         }
 
         animator.speed = animationSpeed;

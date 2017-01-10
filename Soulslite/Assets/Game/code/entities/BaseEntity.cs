@@ -13,6 +13,11 @@ public class BaseEntity : MonoBehaviour
     protected bool canMove = true;
     protected float speed;
 
+    // Health
+    public int maxHealth;
+    protected int health;
+    protected bool dead;
+
     public bool flipX = false;
     public float defaultSpeed;
 
@@ -33,6 +38,8 @@ public class BaseEntity : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         if (flipX) EnableFlippedX();
+
+        health = maxHealth;
     }
 
 
@@ -47,7 +54,7 @@ public class BaseEntity : MonoBehaviour
     protected void FixedUpdate()
     {
         // Entity is allowed to move
-        if (canMove)
+        if (canMove && !dead)
         {
             // If moving, set direction moved in
             if (IsMoving())
@@ -90,6 +97,56 @@ public class BaseEntity : MonoBehaviour
     protected bool IsMoving()
     {
         return Vector2.Distance(nextVelocity, Vector2.zero) > 0.2f;
+    }
+
+
+    /**************************
+     *         Health         *
+     **************************/
+    protected void DecreaseHealth(int amount)
+    {
+        health -= amount;
+        if (health < 0)
+        {
+            health = 0;
+        }
+    }
+
+    protected void IncreaseHealth(int amount)
+    {
+        health += amount;
+        if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
+    }
+
+    protected bool HealthZero()
+    {
+        return health <= 0;
+    }
+
+
+    /**************************
+     *         Death          *
+     **************************/
+    protected void EnableDeath()
+    {
+        dead = true;
+        gameObject.layer = 10;
+        spriteRenderer.material.color = new Color(0.65f, 0.65f, 0.65f);
+    }
+
+    protected void DisableDeath()
+    {
+        DisableFlippedX();
+        dead = false;
+        gameObject.layer = 0;
+    }
+
+    protected bool IsDead()
+    {
+        return dead == true;
     }
 
 
