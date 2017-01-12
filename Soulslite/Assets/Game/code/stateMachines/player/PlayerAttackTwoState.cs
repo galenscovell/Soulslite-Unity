@@ -37,7 +37,7 @@ public class PlayerAttackTwoState : StateMachineBehaviour
     {
         player.SetNextVelocity(player.facingDirection * player.GetSpeed());
         vulnerable = true;
-        player.PlaySfxWithPitchBetween(sfxIndex, 0.9f, 1.3f);
+        player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 0.75f);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

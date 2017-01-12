@@ -25,12 +25,12 @@ public class TestenemyHurtState : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-        if (stateTime < 0.45f)
+        if (stateTime < 0.325f)
         {
             enemy.SetSpeed(180f);
             enemy.SetNextVelocity(flungVelocity);
         }
-        else if (stateTime >= 0.45f && stateTime < 1)
+        else if (stateTime >= 0.325f && stateTime < 1)
         {
             enemy.SetSpeed(enemy.defaultSpeed);
             enemy.DisableMotion();

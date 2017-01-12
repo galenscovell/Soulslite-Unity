@@ -17,7 +17,7 @@ public class PlayerHurtState : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player.DisableMotion();
-        player.PlaySfx(sfxIndex, 1);
+        player.PlaySfx(sfxIndex, 1, 1);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

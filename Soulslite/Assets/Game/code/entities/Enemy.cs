@@ -27,7 +27,7 @@ public class Enemy : BaseEntity
     {
         base.Start();
 
-        attackCounter = Random.Range(90, 120);
+        attackCounter = Random.Range(60, 90);
         idleCounter = Random.Range(120, 360);
         repathCounter = repathRate;
     }
@@ -44,6 +44,18 @@ public class Enemy : BaseEntity
     protected new void FixedUpdate()
     {
         base.FixedUpdate();
+
+        // Enemies all operate on x axis only, so we can mirror at all times
+        // If x is negative, completely flip entity to mirror colliders and animations
+        if (facingDirection.x < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+
         repathCounter--;
     }
 
@@ -92,7 +104,7 @@ public class Enemy : BaseEntity
         attackCounter--;
         if (attackCounter <= 0)
         {
-            attackCounter = Random.Range(90, 120);
+            attackCounter = Random.Range(60, 90);
             return true;
         }
         return false;

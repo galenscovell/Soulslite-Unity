@@ -19,6 +19,7 @@ public class PlayerAgent : BaseEntity
     private int hurtStateHash = Animator.StringToHash("Base Layer.PlayerHurtState");
     private int idleStateHash = Animator.StringToHash("Base Layer.PlayerIdleState");
     private int movementStateHash = Animator.StringToHash("Base Layer.PlayerMovementState");
+    private int rangeStateHash = Animator.StringToHash("Base Layer.PlayerRangeState");
 
     private CameraShaker cameraShaker;
     private int attackChainWaitFrames;
@@ -120,6 +121,22 @@ public class PlayerAgent : BaseEntity
                 }
 
                 dashState.Chain(animator, dashDirection);
+            }
+        }
+        /****************
+         * RANGED
+         ****************/
+        else if (currentStateInfo.fullPathHash == rangeStateHash)
+        {
+            Vector2 direction = new Vector2(
+                Input.GetAxis("LeftAxisX"),
+                Input.GetAxis("LeftAxisY")
+            );
+
+            // Reduce precision of axis for more forgiving ranged aiming
+            if (direction.magnitude > 0.7f)
+            {
+                SetFacingDirection(direction);
             }
         }
     }

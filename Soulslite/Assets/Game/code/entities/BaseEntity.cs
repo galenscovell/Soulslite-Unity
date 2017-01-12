@@ -59,7 +59,7 @@ public class BaseEntity : MonoBehaviour
             // If moving, set direction moved in
             if (IsMoving())
             {
-                SetFacingDirection();
+                SetFacingDirection(nextVelocity);
                 animator.SetBool("Moving", true);
             }
             // If idle, use last direction moved in as facing direction
@@ -82,13 +82,9 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *          Util          *
      **************************/
-    protected void SetFacingDirection()
+    protected void SetFacingDirection(Vector2 direction)
     {
-        facingDirection = nextVelocity.normalized;
-
-        // If x is negative, completely flip entity to mirror colliders and animations
-        if (facingDirection.x < 0) transform.localScale = new Vector3(-1, 1, 1);
-        else transform.localScale = new Vector3(1, 1, 1);
+        facingDirection = direction.normalized;
 
         animator.SetFloat("DirectionX", facingDirection.x);
         animator.SetFloat("DirectionY", facingDirection.y);
@@ -169,15 +165,17 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *         Audio          *
      **************************/
-    public void PlaySfx(int index, float pitch)
+    public void PlaySfx(int index, float pitch, float volume)
     {
         audioSource.pitch = pitch;
+        audioSource.volume = volume;
         audioSource.PlayOneShot(soundEffects[index]);
     }
 
-    public void PlaySfxWithPitchBetween(int index, float low, float high)
+    public void PlaySfxRandomPitch(int index, float low, float high, float volume)
     {
         audioSource.pitch = Random.Range(low, high);
+        audioSource.volume = volume;
         audioSource.PlayOneShot(soundEffects[index]);
     }
 

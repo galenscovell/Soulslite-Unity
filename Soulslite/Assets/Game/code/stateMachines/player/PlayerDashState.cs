@@ -68,7 +68,7 @@ public class PlayerDashState : StateMachineBehaviour
         player.SetNextVelocity(player.facingDirection * player.GetSpeed());
         chainableState = false;
 
-        player.PlaySfx(sfxIndex, currentPitch);
+        player.PlaySfx(sfxIndex, currentPitch, 1);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
