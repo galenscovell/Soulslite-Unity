@@ -96,11 +96,14 @@ public class PlayerAgent : BaseEntity
 
                 animator.SetBool("Attacking", true);
             }
-
-            // Start dash
-            if (Input.GetButtonDown("Button1"))
+            // Start Dash
+            else if (Input.GetButtonDown("Button1"))
             {
                 animator.SetBool("Dashing", true);
+            }
+            else if (Input.GetButtonDown("Button7"))
+            {
+                animator.SetBool("Ranged", true);
             }
         }
         /****************
@@ -128,6 +131,8 @@ public class PlayerAgent : BaseEntity
          ****************/
         else if (currentStateInfo.fullPathHash == rangeStateHash)
         {
+            SetNextVelocity(Vector2.zero);
+
             Vector2 direction = new Vector2(
                 Input.GetAxis("LeftAxisX"),
                 Input.GetAxis("LeftAxisY")
@@ -137,6 +142,11 @@ public class PlayerAgent : BaseEntity
             if (direction.magnitude > 0.7f)
             {
                 SetFacingDirection(direction);
+            }
+
+            if (!Input.GetButton("Button7"))
+            {
+                animator.SetBool("Ranged", false);
             }
         }
     }
