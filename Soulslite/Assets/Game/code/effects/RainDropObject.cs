@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-public class Raindrop : MonoBehaviour
+public class RainDropObject : MonoBehaviour
 {
     public RainSystem rainSystem;
 

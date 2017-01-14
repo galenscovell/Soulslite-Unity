@@ -195,7 +195,8 @@ public class PlayerAgent : BaseEntity
                 dashState.Interrupt(animator);
             }
 
-            Hurt();
+            Vector2 collisionDirection = transform.position - collision.transform.position;
+            Hurt(collisionDirection);
         }
     }
 
@@ -217,9 +218,9 @@ public class PlayerAgent : BaseEntity
     /**************************
      *          Hurt          *
      **************************/
-    private new void Hurt()
+    private new void Hurt(Vector2 collisionDirection)
     {
-        base.Hurt();
+        base.Hurt(collisionDirection);
         cameraShaker.Activate();
 
         animator.Play("PlayerHurtState");

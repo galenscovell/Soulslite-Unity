@@ -80,12 +80,14 @@
   <ItemGroup>
     <Compile Include="Assets\Game\code\CameraController.cs" />
     <Compile Include="Assets\Game\code\behaviors\SeekBehavior.cs" />
+    <Compile Include="Assets\Game\code\effects\BloodSplashObject.cs" />
+    <Compile Include="Assets\Game\code\effects\BloodSystem.cs" />
     <Compile Include="Assets\Game\code\effects\CameraShaker.cs" />
     <Compile Include="Assets\Game\code\effects\DashTrail.cs" />
     <Compile Include="Assets\Game\code\effects\DashTrailObject.cs" />
-    <Compile Include="Assets\Game\code\effects\RainParticle.cs" />
+    <Compile Include="Assets\Game\code\effects\RainDropObject.cs" />
+    <Compile Include="Assets\Game\code\effects\RainSplashObject.cs" />
     <Compile Include="Assets\Game\code\effects\RainSystem.cs" />
-    <Compile Include="Assets\Game\code\effects\Raindrop.cs" />
     <Compile Include="Assets\Game\code\effects\SpriteOutline.cs" />
     <Compile Include="Assets\Game\code\entities\BaseEntity.cs" />
     <Compile Include="Assets\Game\code\entities\Enemy.cs" />

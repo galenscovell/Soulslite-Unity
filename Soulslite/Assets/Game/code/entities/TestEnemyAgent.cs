@@ -153,7 +153,9 @@ public class TestEnemyAgent : Enemy
                 return;
             }
 
-            Hurt();
+            Vector2 collisionDirection = transform.position - collision.transform.position;
+
+            Hurt(collisionDirection);
             DecreaseHealth(1);
 
             if (HealthZero() && !IsDead())
@@ -168,10 +170,10 @@ public class TestEnemyAgent : Enemy
     /**************************
      *         Hurt          *
      **************************/
-    private new void Hurt()
+    private new void Hurt(Vector2 collisionDirection)
     {
-        // Flash and damage
-        base.Hurt();
+        // Flash, particle fx and damage
+        base.Hurt(collisionDirection);
         cameraShaker.Activate();
     }
 

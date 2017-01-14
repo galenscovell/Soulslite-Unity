@@ -149,8 +149,9 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *          Hurt          *
      **************************/
-    protected void Hurt()
+    protected void Hurt(Vector2 collisionDirection)
     {
+        BloodSystem.bloodSystem.SpawnBloodObject(body.position, collisionDirection);
         StartCoroutine(HurtFlash());
     }
 

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 
-public class RainParticle : MonoBehaviour
+public class BloodSplashObject : MonoBehaviour
 {
-    public RainSystem rainSystem;
+    public BloodSystem bloodSystem;
 
     private float defaultLifetime;
     private float currentLifetime;
@@ -11,7 +11,7 @@ public class RainParticle : MonoBehaviour
 
     private void Awake()
     {
-        defaultLifetime = 1f;
+        defaultLifetime = 0.3f;
     }
 
     private void OnEnable()
@@ -20,7 +20,7 @@ public class RainParticle : MonoBehaviour
         currentLifetime = defaultLifetime;
     }
 
-	private void Update()
+    private void Update()
     {
         // If particle system is active
         if (gameObject.activeInHierarchy)
@@ -29,7 +29,7 @@ public class RainParticle : MonoBehaviour
             if (currentLifetime < 0)
             {
                 // Mark particle system as ready for despawning
-                rainSystem.DespawnParticle(gameObject);
+                bloodSystem.DespawnBloodObject(gameObject);
             }
             // Otherwise decrement lifetime
             else
@@ -37,5 +37,5 @@ public class RainParticle : MonoBehaviour
                 currentLifetime -= Time.deltaTime;
             }
         }
-	}
+    }
 }

@@ -4,26 +4,25 @@ using UnityEngine;
 
 public class RainSystem : MonoBehaviour
 {
-    private int spawnedRaindrops;
-    private float minX, maxX, minY, maxY;
-
     public new Camera camera;
-    public GameObject rainDropParticle;
+    public GameObject rainSplashObject;
     public GameObject rainDropObject;
     public int maxRaindrops;
 
     private List<GameObject> rainDrops;
-    private List<GameObject> rainParticles;
+    private List<GameObject> rainSplashes;
 
+    private float minX, maxX, minY, maxY;
+    private int spawnedRaindrops;
     private int dropObjectIndex;
-    private int particleIndex;
+    private int splashObjectIndex;
 
 
     private void Start()
     {
         // Create two object pools for raindrops and particle systems
         rainDrops = new List<GameObject>();
-        rainParticles = new List<GameObject>();
+        rainSplashes = new List<GameObject>();
 
         for (int i = 0; i < maxRaindrops; i++)
         {
@@ -32,14 +31,14 @@ public class RainSystem : MonoBehaviour
             dropObj.transform.parent = transform;
             rainDrops.Add(dropObj);
 
-            GameObject particleObj = Instantiate(rainDropParticle);
+            GameObject particleObj = Instantiate(rainSplashObject);
             particleObj.SetActive(false);
             particleObj.transform.parent = transform;
-            rainParticles.Add(particleObj);
+            rainSplashes.Add(particleObj);
         }
 
         dropObjectIndex = 0;
-        particleIndex = 0;
+        splashObjectIndex = 0;
     }
 
 	private void Update()
@@ -73,14 +72,14 @@ public class RainSystem : MonoBehaviour
         spawnedRaindrops--;
 
         // Ensure particle index is within pool size
-        if (particleIndex >= maxRaindrops) particleIndex = 0;
+        if (splashObjectIndex >= maxRaindrops) splashObjectIndex = 0;
 
         // Enable particle system at raindrops last position
-        GameObject rainParticle = rainParticles[particleIndex];
+        GameObject rainParticle = rainSplashes[splashObjectIndex];
         rainParticle.transform.position = gameObj.transform.position;
         rainParticle.SetActive(true);
 
-        particleIndex++;
+        splashObjectIndex++;
     }
 
     public void DespawnParticle(GameObject gameObj)
