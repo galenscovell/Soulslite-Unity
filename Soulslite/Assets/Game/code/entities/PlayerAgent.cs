@@ -93,15 +93,15 @@ public class PlayerAgent : BaseEntity
                 {
                     attackChainWaitFrames = 45;
                 }
-
                 animator.SetBool("Attacking", true);
             }
-            // Start Dash
+            // Start dash
             else if (Input.GetButtonDown("Button1"))
             {
                 animator.SetBool("Dashing", true);
             }
-            else if (Input.GetButtonDown("Button7"))
+            // Start ranged attack mode
+            else if (Input.GetButtonDown("Button5"))
             {
                 animator.SetBool("Ranged", true);
             }
@@ -131,8 +131,8 @@ public class PlayerAgent : BaseEntity
          ****************/
         else if (currentStateInfo.fullPathHash == rangeStateHash)
         {
+            // Prevent actual movement, but allow rotation for direction control
             SetNextVelocity(Vector2.zero);
-
             Vector2 direction = new Vector2(
                 Input.GetAxis("LeftAxisX"),
                 Input.GetAxis("LeftAxisY")
@@ -144,8 +144,16 @@ public class PlayerAgent : BaseEntity
                 SetFacingDirection(direction);
             }
 
-            if (!Input.GetButton("Button7"))
+            // Start ranged attack
+            if (Input.GetButtonDown("Button0"))
             {
+                animator.SetBool("Attacking", true);
+            }
+
+            // End ranged attack mode when button released
+            if (!Input.GetButton("Button5"))
+            {
+                animator.SetBool("Attacking", false);
                 animator.SetBool("Ranged", false);
             }
         }
