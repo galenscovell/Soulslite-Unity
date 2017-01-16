@@ -23,7 +23,7 @@ public class PlayerRangedShot : StateMachineBehaviour
     {
         player.DisableMotion();
         player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
-        BulletSystem.bulletSystem.SpawnBullet(player.GetBody().position, player.facingDirection.normalized, "PlayerBullet");
+        BulletSystem.bulletSystem.SpawnBullet(player.GetPlayerGunBarrel(), player.facingDirection.normalized, "PlayerBullet");
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

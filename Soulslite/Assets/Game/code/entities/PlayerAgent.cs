@@ -4,6 +4,7 @@
 public class PlayerAgent : BaseEntity
 {
     private AnimatorStateInfo currentStateInfo;
+    private Transform playerGunBarrel;
     private int attackChainWaitFrames;
 
     // State machines
@@ -27,6 +28,8 @@ public class PlayerAgent : BaseEntity
     {
         base.Start();
 
+        playerGunBarrel = transform.Find("playerGun").gameObject.transform;
+
         attack1 = animator.GetBehaviour<PlayerAttack1>();
         attack2 = animator.GetBehaviour<PlayerAttack2>();
         attack3 = animator.GetBehaviour<PlayerAttack3>();
@@ -48,7 +51,7 @@ public class PlayerAgent : BaseEntity
         idle.Setup(this);
         movement.Setup(this, 4);
         rangedStart.Setup(this, 5);
-        rangedReady.Setup(this);
+        rangedReady.Setup(this, GetComponent<LineRenderer>());
         rangedShot.Setup(this, 6);
         rangedExit.Setup(this);
     }
@@ -140,11 +143,14 @@ public class PlayerAgent : BaseEntity
         SetNextVelocity(Vector2.zero);
         Vector2 direction = GetAxisInput();
 
-        // Reduce precision of axis for more forgiving ranged aiming
-        if (direction.magnitude > 0.7f)
+        // Reduce precision of axis input
+        if (direction.magnitude > 0.8f)
         {
             SetFacingDirection(direction);
         }
+
+        // Limit facing direction to 8-way only
+        SnapFacingDirection8Way();
 
         // Start ranged attack shot
         if (Input.GetButtonDown("Button0"))
@@ -222,6 +228,11 @@ public class PlayerAgent : BaseEntity
     public void ChainAttack()
     {
         animator.SetInteger("AttackChain", animator.GetInteger("AttackChain") + 1);
+    }
+
+    public Vector3 GetPlayerGunBarrel()
+    {
+        return playerGunBarrel.position;
     }
 
 

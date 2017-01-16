@@ -83,7 +83,7 @@ public class RainSystem : MonoBehaviour
         // Ensure object index is within pool size
         if (dropObjectIndex >= maxRaindrops) dropObjectIndex = 0;
 
-        // Pull out a raindrop object, put it under rainsystem object and mark it active
+        // Pull out a raindrop object, set it to spawn location, and mark it active
         GameObject nextDrop = rainDrops[dropObjectIndex];
         nextDrop.transform.position = position;
         nextDrop.SetActive(true);

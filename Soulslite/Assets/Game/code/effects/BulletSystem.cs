@@ -34,7 +34,7 @@ public class BulletSystem : MonoBehaviour
 
     private void Start()
     {
-        // Create separate object pools for fires, bullets and bullet collisions
+        // Create separate object pools for fires, bullets and collisions
         bulletFires = new List<GameObject>();
         bullets = new List<GameObject>();
         bulletCollisions = new List<GameObject>();
@@ -75,9 +75,15 @@ public class BulletSystem : MonoBehaviour
         if (bulletFireIndex >= maxBullets) bulletFireIndex = 0;
         if (bulletObjectIndex >= maxBullets) bulletObjectIndex = 0;
 
-        // Create bullet fire particle effect at spawn location
+        // Pull out bullet fire particle effect at spawn location
+        // Also rotate it to face in firing direction
+        GameObject fireObj = bulletFires[bulletFireIndex];
+        fireObj.transform.rotation = Quaternion.LookRotation(direction);
+        fireObj.transform.position = position;
+        fireObj.SetActive(true);
 
-        // Pull out a bullet object, put it under bulletsystem object and mark it active
+        // Pull out a bullet object and mark it active
+        // Also set its tag for collision layers and set it to spawn location
         GameObject bulletObj = bullets[bulletObjectIndex];
         bulletObj.tag = designatedTag;
         bulletObj.transform.position = position;

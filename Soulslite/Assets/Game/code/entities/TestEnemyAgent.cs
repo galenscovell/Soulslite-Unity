@@ -9,6 +9,7 @@ public class TestEnemyAgent : Enemy
     // State machines
     private TestenemyAttack attack;
     private TestenemyHurt hurt;
+    private TestenemyIdling idling;
 
 
     /**************************
@@ -23,10 +24,12 @@ public class TestEnemyAgent : Enemy
 
         attack = animator.GetBehaviour<TestenemyAttack>();
         hurt = animator.GetBehaviour<TestenemyHurt>();
+        idling = animator.GetBehaviour<TestenemyIdling>();
 
         // Ints in state Setups are the sfx index
         attack.Setup(this, 0);
         hurt.Setup(this);
+        idling.Setup(this);
     }
 
 
@@ -44,7 +47,7 @@ public class TestEnemyAgent : Enemy
 
         if (!IsDead())
         {
-            if (passive)
+            if (animator.GetBool("Passive"))
             {
                 PassiveUpdate();
             }
@@ -66,15 +69,14 @@ public class TestEnemyAgent : Enemy
     {
         if (IdleAnimCheck())
         {
-            animator.Play("TestenemyIdleAnim");
+            animator.SetBool("Idling", true);
         }
 
         if (TargetInView())
         {
             if (HasFlippedX()) DisableFlippedX();
-
-            passive = false;
-            EndIdleAnim();
+            animator.SetBool("Passive", false);
+            animator.SetBool("Idling", false);
         }
     }
 
@@ -158,6 +160,14 @@ public class TestEnemyAgent : Enemy
 
             Hurt(collisionDirection);
             DecreaseHealth(1);
+
+            // Make enemy active if player hits them, even if outside range
+            if (passive)
+            {
+                if (HasFlippedX()) DisableFlippedX();
+                animator.SetBool("Passive", false);
+                animator.SetBool("Idling", false);
+            }
 
             if (HealthZero() && !IsDead())
             {

@@ -22,9 +22,9 @@ public class BaseEntity : MonoBehaviour
     public float defaultSpeed;
 
     [HideInInspector]
-    public Vector2 facingDirection = Vector2.zero;
+    public Vector2 facingDirection;
     [HideInInspector]
-    public Vector2 nextVelocity = Vector2.zero;
+    public Vector2 nextVelocity;
     
 
     /**************************
@@ -40,6 +40,11 @@ public class BaseEntity : MonoBehaviour
         if (flipX) EnableFlippedX();
 
         health = maxHealth;
+
+        facingDirection = new Vector2(
+            animator.GetFloat("DirectionX"),
+            animator.GetFloat("DirectionY")
+        );
     }
 
 
@@ -93,6 +98,52 @@ public class BaseEntity : MonoBehaviour
     protected bool IsMoving()
     {
         return Vector2.Distance(nextVelocity, Vector2.zero) > 0.2f;
+    }
+
+    protected void SnapFacingDirection8Way()
+    {
+        float facingAngle = 0f;
+        if (facingDirection.x < 0)
+        {
+            facingAngle = 360 - (Mathf.Atan2(facingDirection.x, facingDirection.y) * Mathf.Rad2Deg * -1);
+        }
+        else
+        {
+            facingAngle = Mathf.Atan2(facingDirection.x, facingDirection.y) * Mathf.Rad2Deg;
+        }
+
+        if (facingAngle > 315 && facingAngle < 45)
+        {
+            SetFacingDirection(new Vector2(0, 1));
+        }
+        else if (facingAngle > 0 && facingAngle < 90)
+        {
+            SetFacingDirection(new Vector2(1, 1));
+        }
+        else if (facingAngle > 45 && facingAngle < 135)
+        {
+            SetFacingDirection(new Vector2(1, 0));
+        }
+        else if (facingAngle > 90 && facingAngle < 180)
+        {
+            SetFacingDirection(new Vector2(1, -1));
+        }
+        else if (facingAngle > 135 && facingAngle < 225)
+        {
+            SetFacingDirection(new Vector2(0, -1));
+        }
+        else if (facingAngle > 180 && facingAngle < 270)
+        {
+            SetFacingDirection(new Vector2(-1, -1));
+        }
+        else if (facingAngle > 225 && facingAngle < 315)
+        {
+            SetFacingDirection(new Vector2(-1, 0));
+        }
+        else if (facingAngle > 270 && facingAngle < 360)
+        {
+            SetFacingDirection(new Vector2(-1, 1));
+        }
     }
 
 

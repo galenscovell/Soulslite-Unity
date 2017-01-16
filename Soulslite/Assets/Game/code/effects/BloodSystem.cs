@@ -46,10 +46,9 @@ public class BloodSystem : MonoBehaviour
             // Ensure object index is within pool size
             if (bloodObjectIndex >= maxBloodObjects) bloodObjectIndex = 0;
 
-            // Pull out an object, put it under parent object and mark it active
             GameObject nextObj = bloodParticleObjects[bloodObjectIndex];
 
-            // Rotate blood to spray in collision direction and set it to target position
+            // Rotate blood to spray in collision direction, set it to target position, and mark it active
             nextObj.transform.rotation = Quaternion.LookRotation(direction);
             nextObj.transform.position = position;
             nextObj.SetActive(true);

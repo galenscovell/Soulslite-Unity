@@ -124,9 +124,4 @@ public class Enemy : BaseEntity
         }
         return false;
     }
-
-    protected void EndIdleAnim()
-    {
-        animator.SetBool("IdleAnim", false);
-    }
 }
