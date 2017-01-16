@@ -3,17 +3,14 @@
 
 public class RainDropObject : MonoBehaviour
 {
-    public RainSystem rainSystem;
-
     private float defaultLifetime;
     private float currentLifetime;
-    private float speed;
+    private int speed = 11;
 
 
     private void Awake()
     {
         defaultLifetime = Random.Range(0.1f, 0.3f);
-        speed = 11f;
     }
 
     private void OnEnable()
@@ -40,7 +37,7 @@ public class RainDropObject : MonoBehaviour
             // Otherwise mark it as ready for despawning
             else
             {
-                rainSystem.DespawnRaindrop(gameObject);
+                RainSystem.rainSystem.DespawnRaindrop(gameObject);
             }
         }
 	}

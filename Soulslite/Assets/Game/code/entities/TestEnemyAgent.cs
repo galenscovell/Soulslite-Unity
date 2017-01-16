@@ -147,7 +147,7 @@ public class TestEnemyAgent : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player-attack")
+        if (collision.gameObject.tag == "PlayerAttack" || collision.gameObject.tag == "PlayerBullet")
         {
             if (currentStateInfo.fullPathHash == hurt.GetHash())
             {

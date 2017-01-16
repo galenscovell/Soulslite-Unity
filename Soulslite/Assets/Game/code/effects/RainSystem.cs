@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RainSystem : MonoBehaviour
 {
+    public static RainSystem rainSystem;
+
     public new Camera camera;
     public GameObject rainSplashObject;
     public GameObject rainDropObject;
@@ -19,6 +21,15 @@ public class RainSystem : MonoBehaviour
     private int dropObjectIndex;
     private int splashObjectIndex;
 
+
+    private void Awake()
+    {
+        // Singleton
+        if (rainSystem != null) Destroy(rainSystem);
+        else rainSystem = this;
+
+        DontDestroyOnLoad(this);
+    }
 
     private void Start()
     {
@@ -57,21 +68,28 @@ public class RainSystem : MonoBehaviour
             if (spawnedRaindrops < maxRaindrops)
             {
                 // Find random x and y within (and slightly outside of) camera bounds
-                float randomX = Random.Range(minX, maxX);
-                float randomY = Random.Range(minY, maxY);
+                Vector2 position = new Vector2(
+                    Random.Range(minX, maxX),
+                    Random.Range(minY, maxY)
+                );
 
-                // Ensure object index is within pool size
-                if (dropObjectIndex >= maxRaindrops) dropObjectIndex = 0;
-
-                // Pull out a raindrop object, put it under rainsystem object and mark it active
-                GameObject nextDrop = rainDrops[dropObjectIndex];
-                nextDrop.transform.position = new Vector2(randomX, randomY);
-                nextDrop.SetActive(true);
-
-                spawnedRaindrops++;
-                dropObjectIndex++;
+                SpawnRaindrop(position);
             }
         }
+    }
+
+    private void SpawnRaindrop(Vector2 position)
+    {
+        // Ensure object index is within pool size
+        if (dropObjectIndex >= maxRaindrops) dropObjectIndex = 0;
+
+        // Pull out a raindrop object, put it under rainsystem object and mark it active
+        GameObject nextDrop = rainDrops[dropObjectIndex];
+        nextDrop.transform.position = position;
+        nextDrop.SetActive(true);
+
+        spawnedRaindrops++;
+        dropObjectIndex++;
     }
 
     public void DespawnRaindrop(GameObject gameObj)

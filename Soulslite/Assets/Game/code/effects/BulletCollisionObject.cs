@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-public class BloodSplashObject : MonoBehaviour
+public class BulletCollisionObject : MonoBehaviour
 {
     private ParticleSystem pSystem;
 
@@ -15,7 +15,7 @@ public class BloodSplashObject : MonoBehaviour
     {
         if (gameObject.activeInHierarchy && !pSystem.IsAlive())
         {
-            BloodSystem.bloodSystem.DespawnBlood(gameObject);
+            BulletSystem.bulletSystem.DespawnParticle(gameObject);
         }
     }
 }

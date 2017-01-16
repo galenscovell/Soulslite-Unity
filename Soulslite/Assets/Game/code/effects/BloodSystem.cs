@@ -38,7 +38,7 @@ public class BloodSystem : MonoBehaviour
         bloodObjectIndex = 0;
     }
 
-    public void SpawnBloodObject(Vector2 position, Vector2 direction)
+    public void SpawnBlood(Vector2 position, Vector2 direction)
     {
         // Spawn blood effect at position moving in a direction
         if (spawnedBloodObjects < maxBloodObjects)
@@ -60,7 +60,7 @@ public class BloodSystem : MonoBehaviour
 
     }
 
-    public void DespawnBloodObject(GameObject gameObj)
+    public void DespawnBlood(GameObject gameObj)
     {
         // Disable object
         gameObj.SetActive(false);
