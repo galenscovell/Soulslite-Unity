@@ -131,6 +131,7 @@ public class BaseEntity : MonoBehaviour
         dead = true;
         gameObject.layer = 10;
         spriteRenderer.material.color = new Color(0.65f, 0.65f, 0.65f);
+        animator.SetBool("Dead", true);
     }
 
     protected void DisableDeath()
@@ -138,6 +139,7 @@ public class BaseEntity : MonoBehaviour
         DisableFlippedX();
         dead = false;
         gameObject.layer = 0;
+        animator.SetBool("Dead", false);
     }
 
     protected bool IsDead()

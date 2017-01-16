@@ -115,7 +115,7 @@ public class TestEnemyAgent : Enemy
                 {
                     if (behavior.WaypointReached(body.position))
                     {
-                        speed = defaultSpeed;
+                        SetSpeed(defaultSpeed);
                         Vector2 nextWaypoint = behavior.GetNextWaypoint();
 
                         if (nextWaypoint != null)
@@ -184,8 +184,7 @@ public class TestEnemyAgent : Enemy
      **************************/
     public void Die()
     {
-        EnableDeath();
         animator.SetBool("Attacking", false);
-        animator.SetBool("Dead", true);
+        EnableDeath();
     }
 }

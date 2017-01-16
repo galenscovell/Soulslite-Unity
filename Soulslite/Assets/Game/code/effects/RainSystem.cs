@@ -8,6 +8,8 @@ public class RainSystem : MonoBehaviour
     public GameObject rainSplashObject;
     public GameObject rainDropObject;
     public int maxRaindrops;
+    public int maxSplashes;
+    public int rainRate;
 
     private List<GameObject> rainDrops;
     private List<GameObject> rainSplashes;
@@ -30,7 +32,11 @@ public class RainSystem : MonoBehaviour
             dropObj.SetActive(false);
             dropObj.transform.parent = transform;
             rainDrops.Add(dropObj);
+        }
 
+        // We need more particle objects than drops since they have longer lifespans
+        for (int i = 0; i < maxSplashes; i++)
+        {
             GameObject particleObj = Instantiate(rainSplashObject);
             particleObj.SetActive(false);
             particleObj.transform.parent = transform;
@@ -43,25 +49,28 @@ public class RainSystem : MonoBehaviour
 
 	private void Update()
     {
-        // Pull out drop objects from pool if max number of spawned drops isn't reached
-        if (spawnedRaindrops < maxRaindrops)
+        UpdateCameraBounds();
+
+        // Pull out up to rainRate drop objects from pool if max number of drops isn't reached
+        for (var x = 0; x < rainRate; x++)
         {
-            UpdateCameraBounds();
+            if (spawnedRaindrops < maxRaindrops)
+            {
+                // Find random x and y within (and slightly outside of) camera bounds
+                float randomX = Random.Range(minX, maxX);
+                float randomY = Random.Range(minY, maxY);
 
-            // Find random x and y within (and slightly outside of) camera bounds
-            float randomX = Random.Range(minX, maxX);
-            float randomY = Random.Range(minY, maxY);
+                // Ensure object index is within pool size
+                if (dropObjectIndex >= maxRaindrops) dropObjectIndex = 0;
 
-            // Ensure object index is within pool size
-            if (dropObjectIndex >= maxRaindrops) dropObjectIndex = 0;
+                // Pull out a raindrop object, put it under rainsystem object and mark it active
+                GameObject nextDrop = rainDrops[dropObjectIndex];
+                nextDrop.transform.position = new Vector2(randomX, randomY);
+                nextDrop.SetActive(true);
 
-            // Pull out a raindrop object, put it under rainsystem object and mark it active
-            GameObject nextDrop = rainDrops[dropObjectIndex];
-            nextDrop.transform.position = new Vector2(randomX, randomY);
-            nextDrop.SetActive(true);
-
-            spawnedRaindrops++;
-            dropObjectIndex++;
+                spawnedRaindrops++;
+                dropObjectIndex++;
+            }
         }
     }
 
@@ -72,7 +81,7 @@ public class RainSystem : MonoBehaviour
         spawnedRaindrops--;
 
         // Ensure particle index is within pool size
-        if (splashObjectIndex >= maxRaindrops) splashObjectIndex = 0;
+        if (splashObjectIndex >= maxSplashes) splashObjectIndex = 0;
 
         // Enable particle system at raindrops last position
         GameObject rainParticle = rainSplashes[splashObjectIndex];

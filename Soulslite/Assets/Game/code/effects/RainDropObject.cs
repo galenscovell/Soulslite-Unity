@@ -13,7 +13,7 @@ public class RainDropObject : MonoBehaviour
     private void Awake()
     {
         defaultLifetime = Random.Range(0.1f, 0.3f);
-        speed = 12f;
+        speed = 11f;
     }
 
     private void OnEnable()
@@ -32,7 +32,7 @@ public class RainDropObject : MonoBehaviour
             {
                 // Move it downwards and slightly to the left
                 transform.position = new Vector3(
-                    transform.position.x - 3f,
+                    transform.position.x - 2f,
                     transform.position.y - speed
                 );
                 currentLifetime -= Time.deltaTime;

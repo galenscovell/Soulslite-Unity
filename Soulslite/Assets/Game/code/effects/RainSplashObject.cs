@@ -11,7 +11,7 @@ public class RainSplashObject : MonoBehaviour
 
     private void Awake()
     {
-        defaultLifetime = 1f;
+        defaultLifetime = 0.4f;
     }
 
     private void OnEnable()
@@ -20,7 +20,7 @@ public class RainSplashObject : MonoBehaviour
         currentLifetime = defaultLifetime;
     }
 
-	private void Update()
+    private void Update()
     {
         // If particle system is active
         if (gameObject.activeInHierarchy)
