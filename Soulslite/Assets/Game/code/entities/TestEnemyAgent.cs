@@ -44,87 +44,95 @@ public class TestEnemyAgent : Enemy
 
         if (!IsDead())
         {
-            /****************
-             * PASSIVE
-             ****************/
             if (passive)
             {
-                if (IdleAnimCheck())
-                {
-                    animator.Play("TestenemyIdleAnim");
-                }
-
-                if (TargetInView())
-                {
-                    if (HasFlippedX()) DisableFlippedX();
-
-                    passive = false;
-                    EndIdleAnim();
-                }
+                PassiveUpdate();
             }
-            /****************
-             * ACTIVE
-             ****************/
             else
             {
-                bool attackReady = AttackCheck();
-
-                /****************
-                 * NOT ATTACKING
-                 ****************/
-                if (currentStateInfo.fullPathHash != attack.GetHash())
-                {
-                    /****************
-                     * REPATH
-                     ****************/
-                    if (repathCounter <= 0)
-                    {
-                        repathCounter = repathRate;
-                        behavior.SetPath(seeker, body.position, TrackTarget());
-                    }
-
-                    /****************
-                     * FOLLOWING
-                     ****************/
-                    if (behavior.HasPath())
-                    {
-                        /****************
-                         * START ATTACK
-                         ****************/
-                        if (InAttackRange() && TargetInView() && attackReady)
-                        {
-                            animator.SetBool("Attacking", true);
-                        }
-                        /****************
-                         * CONTINUE
-                         ****************/
-                        else
-                        {
-                            if (behavior.WaypointReached(body.position))
-                            {
-                                speed = defaultSpeed;
-                                Vector2 nextWaypoint = behavior.GetNextWaypoint();
-
-                                if (nextWaypoint != null)
-                                {
-                                    Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
-                                    SetNextVelocity(dirToWaypoint * speed);
-                                }
-                            }
-                        }
-                    }
-                    /****************
-                     * NO PATH
-                     ****************/
-                    else
-                    {
-                        SetNextVelocity(Vector2.zero);
-                    }
-                }
+                ActiveUpdate();
             }
 
             // Will update body velocity and facing direction
             base.FixedUpdate();
+        }
+    }
+
+
+    /**************************
+     *      Enemy States      *
+     **************************/
+    private void PassiveUpdate()
+    {
+        if (IdleAnimCheck())
+        {
+            animator.Play("TestenemyIdleAnim");
+        }
+
+        if (TargetInView())
+        {
+            if (HasFlippedX()) DisableFlippedX();
+
+            passive = false;
+            EndIdleAnim();
+        }
+    }
+
+    private void ActiveUpdate()
+    {
+        bool attackReady = AttackCheck();
+
+        /****************
+         * NOT ATTACKING
+         ****************/
+        if (currentStateInfo.fullPathHash != attack.GetHash())
+        {
+            /****************
+             * REPATH
+             ****************/
+            if (repathCounter <= 0)
+            {
+                repathCounter = repathRate;
+                behavior.SetPath(seeker, body.position, TrackTarget());
+            }
+
+            /****************
+             * FOLLOWING
+             ****************/
+            if (behavior.HasPath())
+            {
+                /****************
+                 * START ATTACK
+                 ****************/
+                if (InAttackRange() && TargetInView() && attackReady)
+                {
+                    animator.SetBool("Attacking", true);
+                }
+                /****************
+                 * CONTINUE
+                 ****************/
+                else
+                {
+                    if (behavior.WaypointReached(body.position))
+                    {
+                        speed = defaultSpeed;
+                        Vector2 nextWaypoint = behavior.GetNextWaypoint();
+
+                        if (nextWaypoint != null)
+                        {
+                            Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
+                            SetNextVelocity(dirToWaypoint * speed);
+                        }
+                    }
+                }
+            }
+            /****************
+             * NO PATH
+             ****************/
+            else
+            {
+                SetNextVelocity(Vector2.zero);
+            }
         }
     }
 
@@ -136,7 +144,6 @@ public class TestEnemyAgent : Enemy
     {
 
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

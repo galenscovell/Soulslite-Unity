@@ -12,13 +12,12 @@ public class PlayerAgent : BaseEntity
     private PlayerAttack3 attack3;
     private PlayerDash dash;
     private PlayerHurt hurt;
+    private PlayerIdle idle;
     private PlayerMovement movement;
     private PlayerRangedStart rangedStart;
-    // private PlayerRangedReady rangedReady;
+    private PlayerRangedReady rangedReady;
     private PlayerRangedShot rangedShot;
-
-    private int idleHash = Animator.StringToHash("Base Layer.PlayerIdle");
-    private int rangedReadyHash = Animator.StringToHash("Base Layer.PlayerRanged.PlayerRangedReady");
+    private PlayerRangedExit rangedExit;
 
 
     /**************************
@@ -33,9 +32,12 @@ public class PlayerAgent : BaseEntity
         attack3 = animator.GetBehaviour<PlayerAttack3>();
         dash = animator.GetBehaviour<PlayerDash>();
         hurt = animator.GetBehaviour<PlayerHurt>();
+        idle = animator.GetBehaviour<PlayerIdle>();
         movement = animator.GetBehaviour<PlayerMovement>();
         rangedStart = animator.GetBehaviour<PlayerRangedStart>();
+        rangedReady = animator.GetBehaviour<PlayerRangedReady>();
         rangedShot = animator.GetBehaviour<PlayerRangedShot>();
+        rangedExit = animator.GetBehaviour<PlayerRangedExit>();
 
         // Ints in state Setups are sfx index
         attack1.Setup(this, 0);
@@ -43,9 +45,12 @@ public class PlayerAgent : BaseEntity
         attack3.Setup(this, 1);
         dash.Setup(this, GetComponent<DashTrail>(), 2);
         hurt.Setup(this, 3);
+        idle.Setup(this);
         movement.Setup(this, 4);
         rangedStart.Setup(this, 5);
+        rangedReady.Setup(this);
         rangedShot.Setup(this, 6);
+        rangedExit.Setup(this);
     }
 
 
@@ -58,91 +63,19 @@ public class PlayerAgent : BaseEntity
         UpdateAttackChain();
         currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        /****************
-         * MOVE OR IDLE
-         ****************/
-        if (currentStateInfo.fullPathHash == movement.GetHash() || currentStateInfo.fullPathHash == idleHash)
+        if (currentStateInfo.fullPathHash == movement.GetHash() || currentStateInfo.fullPathHash == idle.GetHash())
         {
-            SetSpeed(GetDefaultSpeed());
-            SetNextVelocity(new Vector2(
-                Input.GetAxis("LeftAxisX") * speed,
-                Input.GetAxis("LeftAxisY") * speed
-            ));
-
-            // Start attack
-            if (Input.GetButtonDown("Button0"))
-            {
-                if (animator.GetInteger("AttackChain") == 2 && attackChainWaitFrames > 0)
-                {
-                    animator.SetInteger("AttackVersion", 3);
-                    attackChainWaitFrames = 0;
-                }
-                else
-                {
-                    attackChainWaitFrames = 45;
-                }
-                animator.SetBool("Attacking", true);
-            }
-            // Start dash
-            else if (Input.GetButtonDown("Button1"))
-            {
-                animator.SetBool("Dashing", true);
-            }
-            // Start ranged attack mode
-            else if (Input.GetButton("Button5"))
-            {
-                animator.SetBool("Ranged", true);
-            }
+            DefaultUpdate();
         }
-        /****************
-         * DASHING
-         ****************/
         else if (currentStateInfo.fullPathHash == dash.GetHash())
         {
-            // Chain dash
-            if (Input.GetButtonDown("Button1"))
-            {
-                Vector2 dashDirection = new Vector2(
-                    Input.GetAxis("LeftAxisX"), Input.GetAxis("LeftAxisY")
-                );
-
-                if (dashDirection.magnitude == 0)
-                {
-                    dashDirection = facingDirection;
-                }
-                dash.Chain(animator, dashDirection);
-            }
+            DashUpdate();
         }
-        /****************
-         * RANGED
-         ****************/
-        else if (currentStateInfo.fullPathHash == rangedReadyHash)
+        else if (currentStateInfo.fullPathHash == rangedStart.GetHash() ||
+            currentStateInfo.fullPathHash == rangedReady.GetHash() ||
+            currentStateInfo.fullPathHash == rangedExit.GetHash())
         {
-            // Prevent actual movement, but allow rotation for direction control
-            SetNextVelocity(Vector2.zero);
-            Vector2 direction = new Vector2(
-                Input.GetAxis("LeftAxisX"),
-                Input.GetAxis("LeftAxisY")
-            );
-
-            // Reduce precision of axis for more forgiving ranged aiming
-            if (direction.magnitude > 0.7f)
-            {
-                SetFacingDirection(direction);
-            }
-
-            // Start ranged attack shot
-            if (Input.GetButtonDown("Button0"))
-            {
-                animator.SetBool("Attacking", true);
-            }
-
-            // End ranged attack mode when button released
-            if (!Input.GetButton("Button5"))
-            {
-                animator.SetBool("Attacking", false);
-                animator.SetBool("Ranged", false);
-            }
+            RangedUpdate();
         }
     }
 
@@ -150,6 +83,81 @@ public class PlayerAgent : BaseEntity
     {
         // Will update body velocity and facing direction
         base.FixedUpdate();
+    }
+
+
+    /**************************
+     *     Player States      *
+     **************************/
+    private void DefaultUpdate()
+    {
+        SetSpeed(GetDefaultSpeed());
+        SetNextVelocity(GetAxisInput() * speed);
+
+        // Start attack
+        if (Input.GetButtonDown("Button0"))
+        {
+            if (animator.GetInteger("AttackChain") == 2 && attackChainWaitFrames > 0)
+            {
+                animator.SetInteger("AttackVersion", 3);
+                attackChainWaitFrames = 0;
+            }
+            else
+            {
+                attackChainWaitFrames = 45;
+            }
+            animator.SetBool("Attacking", true);
+        }
+        // Start dash
+        else if (Input.GetButtonDown("Button1"))
+        {
+            animator.SetBool("Dashing", true);
+        }
+        // Start ranged attack mode
+        else if (Input.GetButton("Button5"))
+        {
+            animator.SetBool("Ranged", true);
+        }
+    }
+
+    private void DashUpdate()
+    {
+        // Chain dash
+        if (Input.GetButtonDown("Button1"))
+        {
+            Vector2 dashDirection = GetAxisInput();
+            if (dashDirection.magnitude == 0)
+            {
+                dashDirection = facingDirection;
+            }
+            dash.Chain(animator, dashDirection);
+        }
+    }
+
+    private void RangedUpdate()
+    {
+        // Prevent actual movement, but allow rotation for direction control
+        SetNextVelocity(Vector2.zero);
+        Vector2 direction = GetAxisInput();
+
+        // Reduce precision of axis for more forgiving ranged aiming
+        if (direction.magnitude > 0.7f)
+        {
+            SetFacingDirection(direction);
+        }
+
+        // Start ranged attack shot
+        if (Input.GetButtonDown("Button0"))
+        {
+            animator.SetBool("Attacking", true);
+        }
+
+        // End ranged attack mode when button released
+        if (!Input.GetButton("Button5"))
+        {
+            animator.SetBool("Attacking", false);
+            animator.SetBool("Ranged", false);
+        }
     }
 
 
@@ -202,14 +210,8 @@ public class PlayerAgent : BaseEntity
     public void UpdateAttackChain()
     {
         // Keep attack chain time for a few frames after stopping attack
-        if (attackChainWaitFrames > 0)
-        {
-            attackChainWaitFrames--;
-        }
-        else
-        {
-            ResetAttackChain();
-        }
+        if (attackChainWaitFrames > 0) attackChainWaitFrames--;
+        else ResetAttackChain();
     }
 
     public void ResetAttackChain()
@@ -232,5 +234,14 @@ public class PlayerAgent : BaseEntity
         CameraController.cameraController.ActivateShake();
 
         animator.Play(hurt.GetHash());
+    }
+
+
+    /**************************
+     *         Input          *
+     **************************/
+    private Vector2 GetAxisInput()
+    {
+        return new Vector2(Input.GetAxis("LeftAxisX"), Input.GetAxis("LeftAxisY"));
     }
 }
