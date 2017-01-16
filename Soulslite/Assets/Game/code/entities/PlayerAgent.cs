@@ -4,25 +4,21 @@
 public class PlayerAgent : BaseEntity
 {
     private AnimatorStateInfo currentStateInfo;
-
-    private PlayerAttackOneState attackOneState;
-    private PlayerAttackTwoState attackTwoState;
-    private PlayerAttackThreeState attackThreeState;
-    private PlayerDashState dashState;
-    private PlayerHurtState hurtState;
-    private PlayerMovementState movementState;
-
-    private int attackOneStateHash = Animator.StringToHash("Base Layer.PlayerAttackOneState");
-    private int attackTwoStateHash = Animator.StringToHash("Base Layer.PlayerAttackTwoState");
-    private int attackThreeStateHash = Animator.StringToHash("Base Layer.PlayerAttackThreeState");
-    private int dashStateHash = Animator.StringToHash("Base Layer.PlayerDashState");
-    private int hurtStateHash = Animator.StringToHash("Base Layer.PlayerHurtState");
-    private int idleStateHash = Animator.StringToHash("Base Layer.PlayerIdleState");
-    private int movementStateHash = Animator.StringToHash("Base Layer.PlayerMovementState");
-    private int rangeStateHash = Animator.StringToHash("Base Layer.PlayerRangeState");
-
-    private CameraShaker cameraShaker;
     private int attackChainWaitFrames;
+
+    // State machines
+    private PlayerAttack1 attack1;
+    private PlayerAttack2 attack2;
+    private PlayerAttack3 attack3;
+    private PlayerDash dash;
+    private PlayerHurt hurt;
+    private PlayerMovement movement;
+    private PlayerRangedStart rangedStart;
+    // private PlayerRangedReady rangedReady;
+    private PlayerRangedShot rangedShot;
+
+    private int idleHash = Animator.StringToHash("Base Layer.PlayerIdle");
+    private int rangedReadyHash = Animator.StringToHash("Base Layer.PlayerRanged.PlayerRangedReady");
 
 
     /**************************
@@ -32,22 +28,24 @@ public class PlayerAgent : BaseEntity
     {
         base.Start();
 
-        attackOneState = animator.GetBehaviour<PlayerAttackOneState>();
-        attackTwoState = animator.GetBehaviour<PlayerAttackTwoState>();
-        attackThreeState = animator.GetBehaviour<PlayerAttackThreeState>();
-        dashState = animator.GetBehaviour<PlayerDashState>();
-        movementState = animator.GetBehaviour<PlayerMovementState>();
-        hurtState = animator.GetBehaviour<PlayerHurtState>();
+        attack1 = animator.GetBehaviour<PlayerAttack1>();
+        attack2 = animator.GetBehaviour<PlayerAttack2>();
+        attack3 = animator.GetBehaviour<PlayerAttack3>();
+        dash = animator.GetBehaviour<PlayerDash>();
+        hurt = animator.GetBehaviour<PlayerHurt>();
+        movement = animator.GetBehaviour<PlayerMovement>();
+        rangedStart = animator.GetBehaviour<PlayerRangedStart>();
+        rangedShot = animator.GetBehaviour<PlayerRangedShot>();
 
         // Ints in state Setups are sfx index
-        attackOneState.Setup(this, 0);
-        attackTwoState.Setup(this, 1);
-        attackThreeState.Setup(this, 1);
-        dashState.Setup(this, GetComponent<DashTrail>(), 2);
-        movementState.Setup(this, 3);
-        hurtState.Setup(this, 4);
-
-        cameraShaker = GetComponent<CameraShaker>();
+        attack1.Setup(this, 0);
+        attack2.Setup(this, 1);
+        attack3.Setup(this, 1);
+        dash.Setup(this, GetComponent<DashTrail>(), 2);
+        hurt.Setup(this, 3);
+        movement.Setup(this, 4);
+        rangedStart.Setup(this, 5);
+        rangedShot.Setup(this, 6);
     }
 
 
@@ -57,23 +55,13 @@ public class PlayerAgent : BaseEntity
     private new void Update()
     {
         base.Update();
-
-        // Keep attack chain time for a few frames after stopping attack
-        if (attackChainWaitFrames > 0)
-        {
-            attackChainWaitFrames--;
-        }
-        else
-        {
-            ResetAttackChain();
-        }
-
+        UpdateAttackChain();
         currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
         /****************
          * MOVE OR IDLE
          ****************/
-        if (currentStateInfo.fullPathHash == movementStateHash || currentStateInfo.fullPathHash == idleStateHash)
+        if (currentStateInfo.fullPathHash == movement.GetHash() || currentStateInfo.fullPathHash == idleHash)
         {
             SetSpeed(GetDefaultSpeed());
             SetNextVelocity(new Vector2(
@@ -101,7 +89,7 @@ public class PlayerAgent : BaseEntity
                 animator.SetBool("Dashing", true);
             }
             // Start ranged attack mode
-            else if (Input.GetButtonDown("Button5"))
+            else if (Input.GetButton("Button5"))
             {
                 animator.SetBool("Ranged", true);
             }
@@ -109,7 +97,7 @@ public class PlayerAgent : BaseEntity
         /****************
          * DASHING
          ****************/
-        else if (currentStateInfo.fullPathHash == dashStateHash)
+        else if (currentStateInfo.fullPathHash == dash.GetHash())
         {
             // Chain dash
             if (Input.GetButtonDown("Button1"))
@@ -122,14 +110,13 @@ public class PlayerAgent : BaseEntity
                 {
                     dashDirection = facingDirection;
                 }
-
-                dashState.Chain(animator, dashDirection);
+                dash.Chain(animator, dashDirection);
             }
         }
         /****************
          * RANGED
          ****************/
-        else if (currentStateInfo.fullPathHash == rangeStateHash)
+        else if (currentStateInfo.fullPathHash == rangedReadyHash)
         {
             // Prevent actual movement, but allow rotation for direction control
             SetNextVelocity(Vector2.zero);
@@ -144,7 +131,7 @@ public class PlayerAgent : BaseEntity
                 SetFacingDirection(direction);
             }
 
-            // Start ranged attack
+            // Start ranged attack shot
             if (Input.GetButtonDown("Button0"))
             {
                 animator.SetBool("Attacking", true);
@@ -178,29 +165,29 @@ public class PlayerAgent : BaseEntity
     {
         if (collision.tag != "Enemy" && collision.tag != "EnvironmentObstacle")
         {
-            if (currentStateInfo.fullPathHash == hurtStateHash)
+            if (currentStateInfo.fullPathHash == hurt.GetHash())
             {
                 return;
             }
 
-            if (currentStateInfo.fullPathHash == attackOneStateHash && !attackOneState.Interrupt(animator))
+            if (currentStateInfo.fullPathHash == attack1.GetHash() && !attack1.Interrupt(animator))
             {
                 return;
             }
 
-            if (currentStateInfo.fullPathHash == attackTwoStateHash && !attackTwoState.Interrupt(animator))
+            if (currentStateInfo.fullPathHash == attack2.GetHash() && !attack2.Interrupt(animator))
             {
                 return;
             }
 
-            if (currentStateInfo.fullPathHash == attackThreeStateHash && !attackThreeState.Interrupt(animator))
+            if (currentStateInfo.fullPathHash == attack3.GetHash() && !attack3.Interrupt(animator))
             {
                 return;
             }
 
-            if (currentStateInfo.fullPathHash == dashStateHash)
+            if (currentStateInfo.fullPathHash == dash.GetHash())
             {
-                dashState.Interrupt(animator);
+                dash.Interrupt(animator);
             }
 
             Vector2 collisionDirection = transform.position - collision.transform.position;
@@ -212,6 +199,19 @@ public class PlayerAgent : BaseEntity
     /**************************
      *        Attack          *
      **************************/
+    public void UpdateAttackChain()
+    {
+        // Keep attack chain time for a few frames after stopping attack
+        if (attackChainWaitFrames > 0)
+        {
+            attackChainWaitFrames--;
+        }
+        else
+        {
+            ResetAttackChain();
+        }
+    }
+
     public void ResetAttackChain()
     {
         animator.SetInteger("AttackChain", 0);
@@ -229,8 +229,8 @@ public class PlayerAgent : BaseEntity
     private new void Hurt(Vector2 collisionDirection)
     {
         base.Hurt(collisionDirection);
-        cameraShaker.Activate();
+        CameraController.cameraController.ActivateShake();
 
-        animator.Play("PlayerHurtState");
+        animator.Play(hurt.GetHash());
     }
 }

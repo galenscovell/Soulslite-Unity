@@ -6,13 +6,9 @@ public class TestEnemyAgent : Enemy
     private SeekBehavior behavior;
     private Seeker seeker;
 
-    private TestenemyAttackState attackState;
-    private TestenemyHurtState hurtState;
-
-    private int attackStateHash = Animator.StringToHash("Base Layer.TestenemyAttackState");
-    private int hurtStateHash = Animator.StringToHash("Base Layer.TestenemyHurtState");
-
-    private CameraShaker cameraShaker;
+    // State machines
+    private TestenemyAttack attack;
+    private TestenemyHurt hurt;
 
 
     /**************************
@@ -25,14 +21,12 @@ public class TestEnemyAgent : Enemy
         behavior = new SeekBehavior();
         seeker = GetComponent<Seeker>();
 
-        attackState = animator.GetBehaviour<TestenemyAttackState>();
-        hurtState = animator.GetBehaviour<TestenemyHurtState>();
+        attack = animator.GetBehaviour<TestenemyAttack>();
+        hurt = animator.GetBehaviour<TestenemyHurt>();
 
         // Ints in state Setups are the sfx index
-        attackState.Setup(this, 0);
-        hurtState.Setup(this);
-
-        cameraShaker = GetComponent<CameraShaker>();
+        attack.Setup(this, 0);
+        hurt.Setup(this);
     }
 
 
@@ -57,7 +51,7 @@ public class TestEnemyAgent : Enemy
             {
                 if (IdleAnimCheck())
                 {
-                    animator.SetBool("IdleAnim", true);
+                    animator.Play("TestenemyIdleAnim");
                 }
 
                 if (TargetInView())
@@ -78,7 +72,7 @@ public class TestEnemyAgent : Enemy
                 /****************
                  * NOT ATTACKING
                  ****************/
-                if (currentStateInfo.fullPathHash != attackStateHash)
+                if (currentStateInfo.fullPathHash != attack.GetHash())
                 {
                     /****************
                      * REPATH
@@ -148,7 +142,7 @@ public class TestEnemyAgent : Enemy
     {
         if (collision.gameObject.tag == "Player-attack")
         {
-            if (currentStateInfo.fullPathHash == hurtStateHash)
+            if (currentStateInfo.fullPathHash == hurt.GetHash())
             {
                 return;
             }
@@ -160,8 +154,8 @@ public class TestEnemyAgent : Enemy
 
             if (HealthZero() && !IsDead())
             {
-                hurtState.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
-                animator.Play("TestenemyHurtState");
+                hurt.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
+                animator.Play(hurt.GetHash());
             }
         }
     }
@@ -174,7 +168,7 @@ public class TestEnemyAgent : Enemy
     {
         // Flash, particle fx and damage
         base.Hurt(collisionDirection);
-        cameraShaker.Activate();
+        CameraController.cameraController.ActivateShake();
     }
 
 
