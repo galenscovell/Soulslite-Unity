@@ -4,7 +4,6 @@
 public class PlayerAgent : BaseEntity
 {
     private AnimatorStateInfo currentStateInfo;
-    private Transform playerGunBarrel;
     private int attackChainWaitFrames;
 
     // State machines
@@ -15,10 +14,8 @@ public class PlayerAgent : BaseEntity
     private PlayerHurt hurt;
     private PlayerIdle idle;
     private PlayerMovement movement;
-    private PlayerRangedStart rangedStart;
-    private PlayerRangedReady rangedReady;
-    private PlayerRangedShot rangedShot;
-    private PlayerRangedExit rangedExit;
+    private PlayerRanged ranged;
+    private PlayerRangedAttack rangedAttack;
 
 
     /**************************
@@ -28,7 +25,7 @@ public class PlayerAgent : BaseEntity
     {
         base.Start();
 
-        playerGunBarrel = transform.Find("playerGun").gameObject.transform;
+        PlayerGunLimb playerGunLimb = transform.Find("playerGun").GetComponent<PlayerGunLimb>();
 
         attack1 = animator.GetBehaviour<PlayerAttack1>();
         attack2 = animator.GetBehaviour<PlayerAttack2>();
@@ -37,10 +34,8 @@ public class PlayerAgent : BaseEntity
         hurt = animator.GetBehaviour<PlayerHurt>();
         idle = animator.GetBehaviour<PlayerIdle>();
         movement = animator.GetBehaviour<PlayerMovement>();
-        rangedStart = animator.GetBehaviour<PlayerRangedStart>();
-        rangedReady = animator.GetBehaviour<PlayerRangedReady>();
-        rangedShot = animator.GetBehaviour<PlayerRangedShot>();
-        rangedExit = animator.GetBehaviour<PlayerRangedExit>();
+        ranged = animator.GetBehaviour<PlayerRanged>();
+        rangedAttack = animator.GetBehaviour<PlayerRangedAttack>();
 
         // Ints in state Setups are sfx index
         attack1.Setup(this, 0);
@@ -50,10 +45,8 @@ public class PlayerAgent : BaseEntity
         hurt.Setup(this, 3);
         idle.Setup(this);
         movement.Setup(this, 4);
-        rangedStart.Setup(this, 5);
-        rangedReady.Setup(this, GetComponent<LineRenderer>());
-        rangedShot.Setup(this, 6);
-        rangedExit.Setup(this);
+        ranged.Setup(this, playerGunLimb, GetComponent<LineRenderer>(), 5);
+        rangedAttack.Setup(this, playerGunLimb, 6);
     }
 
 
@@ -74,9 +67,8 @@ public class PlayerAgent : BaseEntity
         {
             DashUpdate();
         }
-        else if (currentStateInfo.fullPathHash == rangedStart.GetHash() ||
-            currentStateInfo.fullPathHash == rangedReady.GetHash() ||
-            currentStateInfo.fullPathHash == rangedExit.GetHash())
+        else if (currentStateInfo.fullPathHash == ranged.GetHash() ||
+            currentStateInfo.fullPathHash == rangedAttack.GetHash())
         {
             RangedUpdate();
         }
@@ -119,6 +111,7 @@ public class PlayerAgent : BaseEntity
         // Start ranged attack mode
         else if (Input.GetButton("Button5"))
         {
+            ranged.LoadGun();
             animator.SetBool("Ranged", true);
         }
     }
@@ -139,18 +132,13 @@ public class PlayerAgent : BaseEntity
 
     private void RangedUpdate()
     {
-        // Prevent actual movement, but allow rotation for direction control
-        SetNextVelocity(Vector2.zero);
         Vector2 direction = GetAxisInput();
 
         // Reduce precision of axis input
-        if (direction.magnitude > 0.8f)
+        if (direction.magnitude > 0.6f)
         {
             SetFacingDirection(direction);
         }
-
-        // Limit facing direction to 8-way only
-        SnapFacingDirection8Way();
 
         // Start ranged attack shot
         if (Input.GetButtonDown("Button0"))
@@ -230,11 +218,6 @@ public class PlayerAgent : BaseEntity
         animator.SetInteger("AttackChain", animator.GetInteger("AttackChain") + 1);
     }
 
-    public Vector3 GetPlayerGunBarrel()
-    {
-        return playerGunBarrel.position;
-    }
-
 
     /**************************
      *          Hurt          *
@@ -245,6 +228,18 @@ public class PlayerAgent : BaseEntity
         CameraController.cameraController.ActivateShake();
 
         animator.Play(hurt.GetHash());
+    }
+
+    /**************************
+     *         Death          *
+     **************************/
+    public void Die()
+    {
+        animator.SetBool("Attacking", false);
+        animator.SetBool("Dashing", false);
+        animator.SetBool("Idling", false);
+        animator.SetBool("Ranged", false);
+        EnableDeath();
     }
 
 
