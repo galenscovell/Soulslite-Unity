@@ -5,14 +5,14 @@ public class CameraController : MonoBehaviour
 {
     public static CameraController cameraController;
 
+    public float dampTime;
+    public int orthographicHeight = 120;
+
     private new Camera camera;
-    private Vector3 playerOffset;
+    private GameObject targetObject;
+    private Vector3 cameraOffset = new Vector3(0, 0, -10);
     private Vector3 velocity = Vector3.zero;
     private float shakeAmt = 0;
-
-    public float dampTime = 0.2f;
-    public int orthographicHeight = 120;
-    public GameObject player;
 
 
     private void Awake()
@@ -23,24 +23,26 @@ public class CameraController : MonoBehaviour
         // Singleton
         if (cameraController != null) Destroy(cameraController);
         else cameraController = this;
-
         DontDestroyOnLoad(this);
-    }
-
-    private void Start()
-    {
-        playerOffset = transform.position - player.transform.position;
     }
 
     private void LateUpdate()
     {
-        transform.position = Vector3.SmoothDamp(transform.position, player.transform.position + playerOffset, ref velocity, dampTime);
+        transform.position = Vector3.SmoothDamp(transform.position, targetObject.transform.position + cameraOffset, ref velocity, dampTime);
+
+        // transform.position = Vector3.SmoothDamp(transform.position, targetObject.transform.position + cameraOffset, ref velocity, dampTime);
+    }
+
+    public void ChangeTarget(GameObject target)
+    {
+        targetObject = target;
+        // cameraOffset = transform.position = targetObject.transform.position;
     }
 
 
-    /****************
-     * SHAKE
-     ****************/
+    /**************************
+     *         Shake          *
+     **************************/
     public void ActivateShake()
     {
         shakeAmt = 100 * .02f;

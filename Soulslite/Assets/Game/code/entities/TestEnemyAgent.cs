@@ -77,6 +77,8 @@ public class TestEnemyAgent : Enemy
             if (HasFlippedX()) DisableFlippedX();
             animator.SetBool("Passive", false);
             animator.SetBool("Idling", false);
+
+            LevelLogic.levelLogic.TargetFocalPoint(1);
         }
     }
 

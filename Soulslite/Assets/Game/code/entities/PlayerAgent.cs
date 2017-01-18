@@ -135,7 +135,7 @@ public class PlayerAgent : BaseEntity
         Vector2 direction = GetAxisInput();
 
         // Reduce precision of axis input
-        if (direction.magnitude > 0.6f)
+        if (direction.magnitude > 0.4f)
         {
             SetFacingDirection(direction);
         }
