@@ -80,6 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Game\code\GameSystem.cs" />
     <Compile Include="Assets\Game\code\behaviors\SeekBehavior.cs" />
     <Compile Include="Assets\Game\code\effects\BloodSplashObject.cs" />
     <Compile Include="Assets\Game\code\effects\BloodSystem.cs" />
@@ -112,8 +113,9 @@
     <Compile Include="Assets\Game\code\stateMachines\testenemy\TestenemyHurt.cs" />
     <Compile Include="Assets\Game\code\stateMachines\testenemy\TestenemyIdling.cs" />
     <Compile Include="Assets\Game\code\util\CameraController.cs" />
-    <Compile Include="Assets\Game\code\util\LevelLogic.cs" />
+    <Compile Include="Assets\Game\code\util\SceneLayout.cs" />
     <Compile Include="Assets\Game\code\util\PhaseSetting.cs" />
+    <Compile Include="Assets\Game\code\util\SceneLoader.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\AILerp.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\AIPath.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\NavmeshController.cs" />
@@ -153,15 +155,6 @@
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Serialization\SimpleZipReplacement.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Serialization\TinyJson.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\astarclasses.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example12_Procedural\ProceduralGridMover.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example12_Procedural\ProceduralWorld.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\AIFollow.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\AstarSmoothFollow2.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\DoorController.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\DynamicGridObstacle.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\MineBotAI.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\ObjectPlacer.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\TargetMover.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Base.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\GridGenerator.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\NavMeshGenerator.cs" />
@@ -206,10 +199,6 @@
   <ItemGroup>
     <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh.shader" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\NavmeshOutline.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\DiffuseAlwaysVisible.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\Projector Light.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\Projector Multiply.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\DotNetZip\DotNetZipLicense.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\dependencies.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Readme.txt" />

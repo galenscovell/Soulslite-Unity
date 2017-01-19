@@ -58,7 +58,7 @@ public class PlayerRanged : StateMachineBehaviour
 
     private void UpdateLasersight()
     {
-        Vector2 gunBarrel = gunLimb.transform.position;
+        Vector2 gunBarrel = gunLimb.GetBarrelPosition();
         Vector2 targetLocation = gunBarrel + (player.facingDirection.normalized * laserRange);
 
         hit = Physics2D.Linecast(gunBarrel, targetLocation, laserMask);

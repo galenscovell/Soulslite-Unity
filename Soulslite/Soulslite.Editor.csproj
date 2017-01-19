@@ -160,10 +160,6 @@
   <ItemGroup>
     <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh.shader" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\NavmeshOutline.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\DiffuseAlwaysVisible.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\Projector Light.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\Projector Multiply.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\DotNetZip\DotNetZipLicense.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\dependencies.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Readme.txt" />

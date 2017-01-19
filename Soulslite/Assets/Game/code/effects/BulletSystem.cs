@@ -25,10 +25,9 @@ public class BulletSystem : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton
+        // Singleton, kept between scenes
         if (bulletSystem != null) Destroy(bulletSystem);
         else bulletSystem = this;
-
         DontDestroyOnLoad(this);
     }
 

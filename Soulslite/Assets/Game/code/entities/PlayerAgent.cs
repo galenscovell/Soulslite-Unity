@@ -225,7 +225,7 @@ public class PlayerAgent : BaseEntity
     private new void Hurt(Vector2 collisionDirection)
     {
         base.Hurt(collisionDirection);
-        CameraController.cameraController.ActivateShake();
+        CameraController.cameraController.ActivateShake(2, 0.1f);
 
         animator.Play(hurt.GetHash());
     }

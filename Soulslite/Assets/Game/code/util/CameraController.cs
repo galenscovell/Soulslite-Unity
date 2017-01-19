@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour
 
     private new Camera camera;
     private GameObject targetObject;
+    private Rigidbody2D targetBody;
     private Vector3 cameraOffset = new Vector3(0, 0, -10);
     private Vector3 velocity = Vector3.zero;
     private float shakeAmt = 0;
@@ -28,26 +29,31 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.position = Vector3.SmoothDamp(transform.position, targetObject.transform.position + cameraOffset, ref velocity, dampTime);
-
-        // transform.position = Vector3.SmoothDamp(transform.position, targetObject.transform.position + cameraOffset, ref velocity, dampTime);
+        Vector3 targetCenter = targetObject.transform.position;
+        if (targetBody != null)
+        {
+            Vector2 bodyVelocity = targetBody.velocity.normalized * 20;
+            targetCenter.x += bodyVelocity.x;
+            targetCenter.y += bodyVelocity.y;
+        }
+        transform.position = Vector3.SmoothDamp(transform.position, targetCenter + cameraOffset, ref velocity, dampTime);
     }
 
     public void ChangeTarget(GameObject target)
     {
         targetObject = target;
-        // cameraOffset = transform.position = targetObject.transform.position;
+        targetBody = targetObject.GetComponent<Rigidbody2D>();
     }
 
 
     /**************************
      *         Shake          *
      **************************/
-    public void ActivateShake()
+    public void ActivateShake(int magnitude, float length)
     {
-        shakeAmt = 100 * .02f;
-        InvokeRepeating("CameraShake", 0, .01f);
-        Invoke("DeactivateShake", 0.2f);
+        shakeAmt = 100 * (magnitude / 100f);
+        InvokeRepeating("CameraShake", 0, 0.01f);
+        Invoke("DeactivateShake", length);
     }
 
     private void CameraShake()

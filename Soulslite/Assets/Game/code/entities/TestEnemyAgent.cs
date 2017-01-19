@@ -77,8 +77,6 @@ public class TestEnemyAgent : Enemy
             if (HasFlippedX()) DisableFlippedX();
             animator.SetBool("Passive", false);
             animator.SetBool("Idling", false);
-
-            LevelLogic.levelLogic.TargetFocalPoint(1);
         }
     }
 
@@ -187,7 +185,7 @@ public class TestEnemyAgent : Enemy
     {
         // Flash, particle fx and damage
         base.Hurt(collisionDirection);
-        CameraController.cameraController.ActivateShake();
+        CameraController.cameraController.ActivateShake(2, 0.1f);
     }
 
 

@@ -4,7 +4,7 @@
 public class BulletObject : MonoBehaviour
 {
     private Rigidbody2D body;
-    private int speed = 800;
+    private int speed = 1200;
 
 
     private void Awake()

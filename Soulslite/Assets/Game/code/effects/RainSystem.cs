@@ -24,10 +24,9 @@ public class RainSystem : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton
+        // Singleton, kept between scenes
         if (rainSystem != null) Destroy(rainSystem);
         else rainSystem = this;
-
         DontDestroyOnLoad(this);
     }
 
