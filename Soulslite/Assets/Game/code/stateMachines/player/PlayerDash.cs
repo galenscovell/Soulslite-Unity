@@ -53,6 +53,7 @@ public class PlayerDash : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         dashTrail.SetEnabled(true);
+        CameraController.cameraController.SetDampTime(0.2f);
 
         float newSpeed;
         if (chainCounter < 5)
@@ -103,5 +104,6 @@ public class PlayerDash : StateMachineBehaviour
     {
         chainableState = false;
         player.EnableMotion();
+        CameraController.cameraController.RestoreDefaultDampTime();
     }
 }
