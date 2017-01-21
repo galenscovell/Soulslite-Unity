@@ -8,11 +8,6 @@ public class PlayerRanged : StateMachineBehaviour
     private PlayerGunLimb gunLimb;
     private int sfxIndex;
 
-    private RaycastHit2D hit;
-    private float laserRange = 200f;
-    private LineRenderer laser;
-    private int laserMask = ~(1 << 10);
-
     public int GetHash()
     {
         return hash;
@@ -27,8 +22,6 @@ public class PlayerRanged : StateMachineBehaviour
     {
         player = playerEntity;
         gunLimb = gun;
-        laser = line;
-        laser.sortingLayerName = "Foreground";
         sfxIndex = assignedSfxIndex;
     }
 
@@ -38,39 +31,16 @@ public class PlayerRanged : StateMachineBehaviour
         gunLimb.Activate();
 
         gunLimb.UpdateTransform(player.facingDirection);
-        UpdateLasersight();
-
-        laser.enabled = true;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         gunLimb.UpdateTransform(player.facingDirection);
-        UpdateLasersight();
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        laser.enabled = false;
         gunLimb.Deactivate();
         player.EnableMotion();
-    }
-
-    private void UpdateLasersight()
-    {
-        Vector2 gunBarrel = gunLimb.GetBarrelPosition();
-        Vector2 targetLocation = gunBarrel + (player.facingDirection.normalized * laserRange);
-
-        hit = Physics2D.Linecast(gunBarrel, targetLocation, laserMask);
-        if (hit)
-        {
-            laser.SetPosition(0, gunBarrel);
-            laser.SetPosition(1, hit.point);
-        }
-        else
-        {
-            laser.SetPosition(0, gunBarrel);
-            laser.SetPosition(1, targetLocation);
-        }
     }
 }
