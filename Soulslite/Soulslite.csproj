@@ -112,8 +112,8 @@
     <Compile Include="Assets\Game\code\stateMachines\testenemy\TestenemyIdling.cs" />
     <Compile Include="Assets\Game\code\util\CameraController.cs" />
     <Compile Include="Assets\Game\code\util\PhaseSetting.cs" />
-    <Compile Include="Assets\Game\code\util\SceneLayout.cs" />
     <Compile Include="Assets\Game\code\util\SceneLoader.cs" />
+    <Compile Include="Assets\Game\code\util\SceneMain.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\AILerp.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\AIPath.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\NavmeshController.cs" />
@@ -186,6 +186,11 @@
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\ProfileHelper.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\UnityReferenceHelper.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\changelog.cs" />
+    <Compile Include="Assets\Game\lib\LeanTween\LTDescr.cs" />
+    <Compile Include="Assets\Game\lib\LeanTween\LTDescrOptional.cs" />
+    <Compile Include="Assets\Game\lib\LeanTween\LeanAudio.cs" />
+    <Compile Include="Assets\Game\lib\LeanTween\LeanTest.cs" />
+    <Compile Include="Assets\Game\lib\LeanTween\LeanTween.cs" />
     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Runtime\ImportBehaviour.cs" />
     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Runtime\SpriteDepthInMap.cs" />

@@ -8,7 +8,7 @@ public class PlayerDash : StateMachineBehaviour
     private DashTrail dashTrail;
     
     private int chainCounter = 0;
-    private float dashSpeed = 1000f;
+    private float dashSpeed = 800f;
 
     private float animationSpeed = 1f;
     private float maxAnimationSpeed = 1.5f;
@@ -53,7 +53,7 @@ public class PlayerDash : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         dashTrail.SetEnabled(true);
-        CameraController.cameraController.SetDampTime(0.2f);
+        CameraController.cameraController.SetDampTime(0.3f);
 
         float newSpeed;
         if (chainCounter < 5)
@@ -66,7 +66,7 @@ public class PlayerDash : StateMachineBehaviour
         {
             animationSpeed = maxAnimationSpeed;
             currentPitch = 1.3f;
-            newSpeed = 1500f;
+            newSpeed = 1200f;
         }
 
         animator.speed = animationSpeed;

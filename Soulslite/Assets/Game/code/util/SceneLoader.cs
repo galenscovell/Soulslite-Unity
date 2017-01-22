@@ -6,10 +6,8 @@ using UnityEngine.UI;
 
 public class SceneLoader : MonoBehaviour
 {
-    [SerializeField]
-    private string sceneName;
-    [SerializeField]
-    private Text loadingText;
+    public string sceneName;
+    public Text loadingText;
 
     private bool loadingScene = false;
 
@@ -29,7 +27,7 @@ public class SceneLoader : MonoBehaviour
         }
     }
     
-    IEnumerator LoadNewScene()
+    public IEnumerator LoadNewScene()
     {
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
 

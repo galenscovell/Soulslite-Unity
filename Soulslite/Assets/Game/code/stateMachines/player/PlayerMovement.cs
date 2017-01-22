@@ -27,7 +27,7 @@ public class PlayerMovement : StateMachineBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.225f);
-            player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.2f, 1f);
+            player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.2f, 0.75f);
             yield return new WaitForSeconds(0.225f);
         }
     }
