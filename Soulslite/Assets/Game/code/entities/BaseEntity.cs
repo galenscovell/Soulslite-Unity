@@ -131,19 +131,23 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *         Death          *
      **************************/
-    protected void EnableDeath()
+    protected void BeginDeath()
     {
         dead = true;
         gameObject.layer = 10;
-        spriteRenderer.material.color = new Color(0.65f, 0.65f, 0.65f);
+        spriteRenderer.material.color = new Color(0.7f, 0.7f, 0.7f);
+    }
+
+    protected void EnableDeath()
+    {
         animator.SetBool("Dead", true);
     }
 
     protected void DisableDeath()
     {
-        DisableFlippedX();
         dead = false;
         gameObject.layer = 0;
+        spriteRenderer.material.color = new Color(1, 1, 1);
         animator.SetBool("Dead", false);
     }
 
@@ -201,11 +205,6 @@ public class BaseEntity : MonoBehaviour
         return speed;
     }
 
-    public float GetDefaultSpeed()
-    {
-        return defaultSpeed;
-    }
-
     public bool AbleToMove()
     {
         return canMove;
@@ -233,6 +232,11 @@ public class BaseEntity : MonoBehaviour
     public void SetSpeed(float s)
     {
         speed = s;
+    }
+
+    public void RestoreDefaultSpeed()
+    {
+        speed = defaultSpeed;
     }
 
     public void SetNextVelocity(Vector2 velocity)

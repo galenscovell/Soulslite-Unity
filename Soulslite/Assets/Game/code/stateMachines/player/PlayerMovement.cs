@@ -7,7 +7,7 @@ public class PlayerMovement : StateMachineBehaviour
     private int hash = Animator.StringToHash("Base Layer.PlayerMovement");
     private PlayerAgent player;
     private int sfxIndex;
-    private IEnumerator coroutine;
+    private IEnumerator footstep;
 
 
     public int GetHash()
@@ -19,7 +19,7 @@ public class PlayerMovement : StateMachineBehaviour
     {
         player = playerEntity;
         sfxIndex = assignedSfxIndex;
-        coroutine = Footsteps();
+        footstep = Footsteps();
     }
 
     private IEnumerator Footsteps()
@@ -27,14 +27,14 @@ public class PlayerMovement : StateMachineBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.225f);
-            player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.2f, 0.75f);
+            player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.2f, 0.4f);
             yield return new WaitForSeconds(0.225f);
         }
     }
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.StartCoroutine(coroutine);
+        player.StartCoroutine(footstep);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -44,6 +44,6 @@ public class PlayerMovement : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.StopCoroutine(coroutine);
+        player.StopCoroutine(footstep);
     }
 }

@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 
 
-public class PlayerIdle : StateMachineBehaviour
+public class PlayerFullIdle : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.PlayerIdle");
+    private int hash = Animator.StringToHash("Base Layer.PlayerFullIdle.PlayerFullIdleState");
     private PlayerAgent player;
-    private float idleTime = 0f;
 
 
     public int GetHash()
@@ -20,21 +19,16 @@ public class PlayerIdle : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        idleTime = 0f;
+        
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        idleTime += Time.deltaTime;
-
-        if (idleTime > 8)
-        {
-            animator.SetBool("FullIdle", true);
-        }
+        
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        idleTime = 0f;
+        
     }
 }

@@ -18,7 +18,7 @@ public class PlayerRanged : StateMachineBehaviour
         player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
     }
 
-    public void Setup(PlayerAgent playerEntity, PlayerGunLimb gun, LineRenderer line, int assignedSfxIndex)
+    public void Setup(PlayerAgent playerEntity, PlayerGunLimb gun, int assignedSfxIndex)
     {
         player = playerEntity;
         gunLimb = gun;

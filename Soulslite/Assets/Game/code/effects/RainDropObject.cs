@@ -5,7 +5,7 @@ public class RainDropObject : MonoBehaviour
 {
     private float defaultLifetime;
     private float currentLifetime;
-    private int speed = 11;
+    private int speed = 12;
 
 
     private void Awake()

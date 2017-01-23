@@ -38,6 +38,7 @@ public class PlayerAttack3 : StateMachineBehaviour
         player.SetNextVelocity(player.facingDirection * player.GetSpeed());
         vulnerable = true;
         player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
+        player.SetSpeed(80f);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -50,7 +51,7 @@ public class PlayerAttack3 : StateMachineBehaviour
         else if (player.AbleToMove() && stateTime >= 0.25f)
         {
             player.DisableMotion();
-            player.SetSpeed(player.GetDefaultSpeed());
+            player.RestoreDefaultSpeed();
         }
         else if (stateTime >= 1)
         {

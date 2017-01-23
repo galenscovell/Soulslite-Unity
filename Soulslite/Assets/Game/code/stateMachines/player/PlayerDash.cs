@@ -6,9 +6,10 @@ public class PlayerDash : StateMachineBehaviour
     private int hash = Animator.StringToHash("Base Layer.PlayerDash");
     private PlayerAgent player;
     private DashTrail dashTrail;
-    
+    private LineRenderer dashLine;
+
     private int chainCounter = 0;
-    private float dashSpeed = 800f;
+    private float dashSpeed = 700f;
 
     private float animationSpeed = 1f;
     private float maxAnimationSpeed = 1.5f;
@@ -24,10 +25,12 @@ public class PlayerDash : StateMachineBehaviour
         return hash;
     }
 
-    public void Setup(PlayerAgent playerEntity, DashTrail trail, int assignedSfxIndex)
+    public void Setup(PlayerAgent playerEntity, DashTrail trail, LineRenderer line, int assignedSfxIndex)
     {
         player = playerEntity;
         dashTrail = trail;
+        dashLine = line;
+        dashLine.sortingLayerName = "Foreground";
         sfxIndex = assignedSfxIndex;
     }
 
@@ -53,20 +56,21 @@ public class PlayerDash : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         dashTrail.SetEnabled(true);
+        dashLine.enabled = true;
         CameraController.cameraController.SetDampTime(0.3f);
 
         float newSpeed;
         if (chainCounter < 5)
         {
             animationSpeed = 1 + (chainCounter * 0.1f);
-            currentPitch = 1 + (chainCounter * 0.06f);
-            newSpeed = dashSpeed + (dashSpeed * (chainCounter * 0.1f));
+            currentPitch = 1 + (chainCounter * 0.12f);
+            newSpeed = dashSpeed + (dashSpeed * (chainCounter * 0.05f));
         }
         else
         {
             animationSpeed = maxAnimationSpeed;
-            currentPitch = 1.3f;
-            newSpeed = 1200f;
+            currentPitch = 1.6f;
+            newSpeed = 900f;
         }
 
         animator.speed = animationSpeed;
@@ -76,15 +80,19 @@ public class PlayerDash : StateMachineBehaviour
         chainableState = false;
 
         player.PlaySfx(sfxIndex, currentPitch, 1f);
+
+        BeginDashLine();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        UpdateDashLine();
+
         float stateTime = stateInfo.normalizedTime;
-        if (player.AbleToMove() && stateTime >= 0.2f)
+        if (player.AbleToMove() && stateTime >= 0.275f)
         {
             player.DisableMotion();
-            player.SetSpeed(player.GetDefaultSpeed());
+            player.RestoreDefaultSpeed();
         }
         else if (stateTime >= 0.5f && stateTime < 0.8f)
         {
@@ -96,6 +104,7 @@ public class PlayerDash : StateMachineBehaviour
             currentPitch = 1f;
             chainCounter = 0;
             dashTrail.SetEnabled(false);
+            dashLine.enabled = false;
             animator.SetBool("Dashing", false);
         }
     }
@@ -105,5 +114,15 @@ public class PlayerDash : StateMachineBehaviour
         chainableState = false;
         player.EnableMotion();
         CameraController.cameraController.RestoreDefaultDampTime();
+    }
+
+    private void BeginDashLine()
+    {
+        dashLine.SetPosition(0, player.GetBody().position + new Vector2(0, 8));
+    }
+
+    private void UpdateDashLine()
+    {
+        dashLine.SetPosition(1, player.GetBody().position + new Vector2(0, 8));
     }
 }

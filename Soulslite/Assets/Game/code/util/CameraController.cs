@@ -33,9 +33,9 @@ public class CameraController : MonoBehaviour
     private void LateUpdate()
     {
         Vector3 targetCenter = targetObject.transform.position;
-        if (targetBody != null)
+        if (targetObject.name == "player")
         {
-            Vector2 bodyVelocity = targetBody.velocity.normalized * 20;
+            Vector2 bodyVelocity = targetBody.velocity.normalized * 60;
             targetCenter.x += bodyVelocity.x;
             targetCenter.y += bodyVelocity.y;
         }

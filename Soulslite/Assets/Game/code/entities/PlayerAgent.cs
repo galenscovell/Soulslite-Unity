@@ -5,12 +5,14 @@ public class PlayerAgent : BaseEntity
 {
     private AnimatorStateInfo currentStateInfo;
     private int attackChainWaitFrames;
+    private bool inputEnabled = false;
 
     // State machines
     private PlayerAttack1 attack1;
     private PlayerAttack2 attack2;
     private PlayerAttack3 attack3;
     private PlayerDash dash;
+    private PlayerFullIdle fullIdle;
     private PlayerHurt hurt;
     private PlayerIdle idle;
     private PlayerMovement movement;
@@ -31,6 +33,7 @@ public class PlayerAgent : BaseEntity
         attack2 = animator.GetBehaviour<PlayerAttack2>();
         attack3 = animator.GetBehaviour<PlayerAttack3>();
         dash = animator.GetBehaviour<PlayerDash>();
+        fullIdle = animator.GetBehaviour<PlayerFullIdle>();
         hurt = animator.GetBehaviour<PlayerHurt>();
         idle = animator.GetBehaviour<PlayerIdle>();
         movement = animator.GetBehaviour<PlayerMovement>();
@@ -41,11 +44,12 @@ public class PlayerAgent : BaseEntity
         attack1.Setup(this, 0);
         attack2.Setup(this, 1);
         attack3.Setup(this, 1);
-        dash.Setup(this, GetComponent<DashTrail>(), 2);
+        dash.Setup(this, GetComponent<DashTrail>(), GetComponent<LineRenderer>(), 2);
+        fullIdle.Setup(this);
         hurt.Setup(this, 3);
         idle.Setup(this);
         movement.Setup(this, 4);
-        ranged.Setup(this, playerGunLimb, GetComponent<LineRenderer>(), 5);
+        ranged.Setup(this, playerGunLimb, 5);
         rangedAttack.Setup(this, playerGunLimb, 6);
     }
 
@@ -56,21 +60,29 @@ public class PlayerAgent : BaseEntity
     private new void Update()
     {
         base.Update();
-        UpdateAttackChain();
-        currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (currentStateInfo.fullPathHash == movement.GetHash() || currentStateInfo.fullPathHash == idle.GetHash())
+        if (inputEnabled)
         {
-            DefaultUpdate();
-        }
-        else if (currentStateInfo.fullPathHash == dash.GetHash())
-        {
-            DashUpdate();
-        }
-        else if (currentStateInfo.fullPathHash == ranged.GetHash() ||
-            currentStateInfo.fullPathHash == rangedAttack.GetHash())
-        {
-            RangedUpdate();
+            UpdateAttackChain();
+            currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+            if (currentStateInfo.fullPathHash == movement.GetHash() || currentStateInfo.fullPathHash == idle.GetHash())
+            {
+                DefaultUpdate();
+            }
+            else if (currentStateInfo.fullPathHash == dash.GetHash())
+            {
+                DashUpdate();
+            }
+            else if (currentStateInfo.fullPathHash == ranged.GetHash() ||
+                currentStateInfo.fullPathHash == rangedAttack.GetHash())
+            {
+                RangedUpdate();
+            }
+            else if (currentStateInfo.fullPathHash == fullIdle.GetHash())
+            {
+                FullIdleUpdate();
+            }
         }
     }
 
@@ -86,7 +98,7 @@ public class PlayerAgent : BaseEntity
      **************************/
     private void DefaultUpdate()
     {
-        SetSpeed(GetDefaultSpeed());
+        RestoreDefaultSpeed();
         SetNextVelocity(GetAxisInput() * speed);
 
         // Start attack
@@ -151,6 +163,18 @@ public class PlayerAgent : BaseEntity
         {
             animator.SetBool("Attacking", false);
             animator.SetBool("Ranged", false);
+        }
+    }
+
+    private void FullIdleUpdate()
+    {
+        Vector2 direction = GetAxisInput();
+
+        // Exit fullIdle upon any user input + update facing direction out of fullIdle
+        if (direction.magnitude > 0.1f || Input.GetButtonDown("Button0") || Input.GetButtonDown("Button5"))
+        {
+            SetFacingDirection(direction);
+            animator.SetBool("FullIdle", false);
         }
     }
 
@@ -249,5 +273,10 @@ public class PlayerAgent : BaseEntity
     private Vector2 GetAxisInput()
     {
         return new Vector2(Input.GetAxis("LeftAxisX"), Input.GetAxis("LeftAxisY"));
+    }
+
+    public void SetInput(bool setting)
+    {
+        inputEnabled = setting;
     }
 }

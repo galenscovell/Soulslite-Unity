@@ -21,6 +21,7 @@ public class PlayerHurt : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        animator.SetBool("FullIdle", false);
         player.DisableMotion();
         player.PlaySfx(sfxIndex, 1f, 1f);
     }

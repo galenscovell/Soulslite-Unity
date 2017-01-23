@@ -171,6 +171,7 @@ public class TestEnemyAgent : Enemy
 
             if (HealthZero() && !IsDead())
             {
+                BeginDeath();
                 hurt.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
                 animator.Play(hurt.GetHash());
             }
