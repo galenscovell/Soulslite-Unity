@@ -26,9 +26,10 @@ public class PlayerMovement : StateMachineBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(0.225f);
+            DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.facingDirection);
+            yield return new WaitForSeconds(0.21f);
             player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.2f, 0.4f);
-            yield return new WaitForSeconds(0.225f);
+            yield return new WaitForSeconds(0.21f);
         }
     }
 
@@ -45,5 +46,6 @@ public class PlayerMovement : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player.StopCoroutine(footstep);
+        
     }
 }

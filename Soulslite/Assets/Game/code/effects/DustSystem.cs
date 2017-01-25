@@ -14,7 +14,7 @@ public class DustSystem : MonoBehaviour
     private int spawnedDust;
     private int dustObjectIndex;
 
-    private Vector2 nextDustDirection;
+    private float nextDustForce;
 
 
     private void Awake()
@@ -41,27 +41,40 @@ public class DustSystem : MonoBehaviour
         dustObjectIndex = 0;
     }
 
-    public Vector2 GetNextDustDirection()
+    public float GetNextDustForce()
     {
-        return nextDustDirection;
+        return nextDustForce;
     }
 
-    public void SpawnDust(Vector2 position, Vector2 direction)
+    public void SpawnDust(Vector2 rawPosition, Vector2 facingDirection)
     {
-        nextDustDirection = direction;
+        nextDustForce = facingDirection.magnitude;
 
         if (dustObjectIndex >= maxDust) dustObjectIndex = 0;
 
+        float x = rawPosition.x - (facingDirection.x * 14);
+        float y = rawPosition.y;
+        if (facingDirection.y == 0)
+        {
+            y -= 14;
+        }
+        else
+        {
+            y -= (facingDirection.y * 16);
+        }
+
+        Vector2 stepPosition = new Vector2(x, y);
+
         GameObject dustObj = dustObjects[dustObjectIndex];
-        dustObj.transform.position = position;
+        // dustObj.transform.rotation = Quaternion.LookRotation(facingDirection);
+        dustObj.transform.position = stepPosition;
         dustObj.SetActive(true);
 
         spawnedDust++;
     }
 
-    public void DespawnDust(GameObject gameObj, Vector2 collisionDirection)
+    public void DespawnDust(GameObject gameObj)
     {
-        // Disable bullet
         gameObj.SetActive(false);
         spawnedDust--;
     }
