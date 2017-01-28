@@ -15,6 +15,7 @@ public class PlayerDash : StateMachineBehaviour
     private float maxAnimationSpeed = 1.5f;
 
     private bool chainableState = false;
+    private bool preventChain = false;
 
     private float currentPitch;
     private int sfxIndex;
@@ -48,13 +49,20 @@ public class PlayerDash : StateMachineBehaviour
         if (chainableState)
         {
             chainCounter++;
-            player.facingDirection = direction;
+            player.SetFacingDirection(direction);
             animator.Play(hash, -1, 0f);
+        } else
+        {
+            preventChain = true;
         }
     }
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        player.EnableDirectVelocity(true);
+
+        DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
+
         dashTrail.SetEnabled(true);
         dashLine.enabled = true;
         CameraController.cameraController.SetDampTime(0.3f);
@@ -76,7 +84,9 @@ public class PlayerDash : StateMachineBehaviour
         animator.speed = animationSpeed;
         player.SetSpeed(newSpeed);
 
-        player.SetNextVelocity(player.facingDirection * player.GetSpeed());
+        player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
+
+        preventChain = false;
         chainableState = false;
 
         player.PlaySfx(sfxIndex, currentPitch, 1f);
@@ -94,9 +104,12 @@ public class PlayerDash : StateMachineBehaviour
             player.DisableMotion();
             player.RestoreDefaultSpeed();
         }
-        else if (stateTime >= 0.5f && stateTime < 0.8f)
+        else if (stateTime >= 0.6f && stateTime < 0.7f)
         {
-            chainableState = true;
+            if (!preventChain)
+            {
+                chainableState = true;
+            }
         }
         else if (stateTime >= 1)
         {
@@ -111,7 +124,9 @@ public class PlayerDash : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        preventChain = false;
         chainableState = false;
+        player.EnableDirectVelocity(false);
         player.EnableMotion();
         CameraController.cameraController.RestoreDefaultDampTime();
     }

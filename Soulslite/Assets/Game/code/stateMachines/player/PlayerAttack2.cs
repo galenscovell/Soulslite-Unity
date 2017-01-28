@@ -40,10 +40,14 @@ public class PlayerAttack2 : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.SetNextVelocity(player.facingDirection * player.GetSpeed());
+        player.EnableDirectVelocity(true);
+
+        player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
         vulnerable = true;
         player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
         player.SetSpeed(80f);
+
+        DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -51,7 +55,7 @@ public class PlayerAttack2 : StateMachineBehaviour
         float stateTime = stateInfo.normalizedTime;
         if (stateTime < 0.2f)
         {
-            player.SetNextVelocity(player.facingDirection * player.GetSpeed());
+            player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
         }
         else if (player.AbleToMove() && stateTime >= 0.2f)
         {
@@ -60,7 +64,7 @@ public class PlayerAttack2 : StateMachineBehaviour
         }
         else if (stateTime >= 1)
         {
-            player.ChainAttack();
+            animator.SetInteger("AttackChain", animator.GetInteger("AttackChain") + 1);
             animator.SetInteger("AttackVersion", 1);
             animator.SetBool("Attacking", false);
         }
@@ -68,6 +72,7 @@ public class PlayerAttack2 : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        player.EnableDirectVelocity(false);
         player.EnableMotion();
     }
 }

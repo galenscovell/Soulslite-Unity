@@ -26,7 +26,7 @@ public class PlayerMovement : StateMachineBehaviour
     {
         while (true)
         {
-            DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.facingDirection);
+            DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
             yield return new WaitForSeconds(0.21f);
             player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.2f, 0.4f);
             yield return new WaitForSeconds(0.21f);

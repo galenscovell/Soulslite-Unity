@@ -23,16 +23,16 @@ public class PlayerRangedAttack : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        gunLimb.UpdateTransform(player.facingDirection);
+        gunLimb.UpdateTransform(player.GetFacingDirection());
         player.DisableMotion();
         gunLimb.Activate();
         player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
-        BulletSystem.bulletSystem.SpawnBullet(gunLimb.GetBarrelPosition(), player.facingDirection.normalized, "PlayerBullet");
+        BulletSystem.bulletSystem.SpawnBullet(gunLimb.GetBarrelPosition(), player.GetFacingDirection(), "PlayerBullet");
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        gunLimb.UpdateTransform(player.facingDirection);
+        gunLimb.UpdateTransform(player.GetFacingDirection());
 
         float stateTime = stateInfo.normalizedTime;
         if (stateTime >= 1)

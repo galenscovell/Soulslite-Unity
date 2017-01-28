@@ -138,6 +138,7 @@ public class PlayerAgent : BaseEntity
             {
                 dashDirection = facingDirection;
             }
+
             dash.Chain(animator, dashDirection);
         }
     }
@@ -147,7 +148,7 @@ public class PlayerAgent : BaseEntity
         Vector2 direction = GetAxisInput();
 
         // Reduce precision of axis input
-        if (direction.magnitude > 0.4f)
+        if (direction.magnitude > 0.5f)
         {
             SetFacingDirection(direction);
         }
@@ -228,18 +229,14 @@ public class PlayerAgent : BaseEntity
     public void UpdateAttackChain()
     {
         // Keep attack chain time for a few frames after stopping attack
-        if (attackChainWaitFrames > 0) attackChainWaitFrames--;
-        else ResetAttackChain();
-    }
-
-    public void ResetAttackChain()
-    {
-        animator.SetInteger("AttackChain", 0);
-    }
-
-    public void ChainAttack()
-    {
-        animator.SetInteger("AttackChain", animator.GetInteger("AttackChain") + 1);
+        if (attackChainWaitFrames > 0)
+        {
+            attackChainWaitFrames--;
+        }
+        else
+        {
+            animator.SetInteger("AttackChain", 0);
+        }
     }
 
 

@@ -78,7 +78,6 @@ public class PlayerGunLimb : MonoBehaviour
         return barrelPosition;
     }
 
-
     private void UpdateSprite(Vector2 facingDirection)
     {
         if (facingDirection.x < 0)
@@ -91,7 +90,7 @@ public class PlayerGunLimb : MonoBehaviour
         }
 
         // Right
-        if (currentSprite != 0 && AngleWithinOctants(1, 2, true, true))
+        if (currentSprite != 0 && (gunAngle >= 30 && gunAngle <= 150))
         {
             currentSprite = 0;
             spriteRenderer.sprite = sprites[0];
@@ -100,7 +99,7 @@ public class PlayerGunLimb : MonoBehaviour
             spriteRenderer.sortingLayerName = "Foreground";
         }
         // Down
-        else if (currentSprite != 1 && AngleWithinOctants(3, 4, true, true))
+        else if (currentSprite != 1 && (gunAngle > 150 && gunAngle < 210))
         {
             currentSprite = 1;
             spriteRenderer.sprite = sprites[1];
@@ -109,7 +108,7 @@ public class PlayerGunLimb : MonoBehaviour
             spriteRenderer.sortingLayerName = "Foreground";
         }
         // Left
-        else if (currentSprite != 2 && AngleWithinOctants(5, 6, true, true))
+        else if (currentSprite != 2 && (gunAngle >= 210 && gunAngle <= 330))
         {
             currentSprite = 2;
             spriteRenderer.sprite = sprites[2];
@@ -118,7 +117,7 @@ public class PlayerGunLimb : MonoBehaviour
             spriteRenderer.sortingLayerName = "Foreground";
         }
         // Up
-        else if (currentSprite != 3 && (AngleWithinOctants(7, 8, true, true) || AngleWithinOctants(0, 1, true, false)))
+        if (currentSprite != 3 && (gunAngle > 330 || gunAngle < 30))
         {
             currentSprite = 3;
             spriteRenderer.sprite = sprites[3];
@@ -126,40 +125,5 @@ public class PlayerGunLimb : MonoBehaviour
             spriteRenderer.flipY = true;
             spriteRenderer.sortingLayerName = "Entity";
         }
-    }
-
-    private int GetAngleOctant()
-    {
-        // The octant is the space between the values below
-        // Eg Octant '0' is between 0 and 1 (or angles between 0 and 45)
-        //    0
-        //  7   1
-        //6       2
-        //  5   3
-        //    4
-        if (gunAngle >= 0 && gunAngle < 45) return 0;
-        else if (gunAngle >= 45 && gunAngle < 90) return 1;
-        else if (gunAngle >= 90 && gunAngle < 135) return 2;
-        else if (gunAngle >= 135 && gunAngle < 180) return 3;
-        else if (gunAngle >= 180 && gunAngle < 215) return 4;
-        else if (gunAngle >= 215 && gunAngle < 270) return 5;
-        else if (gunAngle >= 270 && gunAngle < 315) return 6;
-        else if (gunAngle >= 315 && gunAngle < 360) return 7;
-        return 0;
-    }
-
-    private bool AngleWithinOctants(int startOctant, int endOctant, bool startInclusive, bool endInclusive)
-    {
-        int octant = GetAngleOctant();
-        bool withinStart = false;
-        bool withinEnd = false;
-
-        if (startInclusive) withinStart = octant >= startOctant;
-        else withinStart = octant > startOctant;
-
-        if (endInclusive) withinEnd = octant <= endOctant;
-        else withinEnd = octant < endOctant;
-
-        return withinStart && withinEnd;
     }
 }

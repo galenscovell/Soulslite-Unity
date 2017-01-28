@@ -48,28 +48,39 @@ public class DustSystem : MonoBehaviour
 
     public void SpawnDust(Vector2 rawPosition, Vector2 facingDirection)
     {
-        nextDustForce = facingDirection.magnitude;
+        // TODO: Use force to change size of dust produced by movement
+        // Force is float between 1-8
 
         if (dustObjectIndex >= maxDust) dustObjectIndex = 0;
 
-        float x = rawPosition.x - (facingDirection.x * 14);
+        float x = rawPosition.x;
         float y = rawPosition.y;
         if (facingDirection.y == 0)
         {
+            x -= facingDirection.x * 12;
             y -= 14;
         }
         else
         {
-            y -= (facingDirection.y * 16);
+            if (facingDirection.y < 0)
+            {
+                x -= facingDirection.x * 20;
+                y -= facingDirection.y * 8;
+            }
+            else
+            {
+                x -= facingDirection.x * 18;
+                y -= facingDirection.y * 20;
+            }
         }
 
         Vector2 stepPosition = new Vector2(x, y);
 
         GameObject dustObj = dustObjects[dustObjectIndex];
-        // dustObj.transform.rotation = Quaternion.LookRotation(facingDirection);
         dustObj.transform.position = stepPosition;
         dustObj.SetActive(true);
 
+        dustObjectIndex++;
         spawnedDust++;
     }
 

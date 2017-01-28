@@ -30,12 +30,12 @@ public class PlayerRanged : StateMachineBehaviour
         player.DisableMotion();
         gunLimb.Activate();
 
-        gunLimb.UpdateTransform(player.facingDirection);
+        gunLimb.UpdateTransform(player.GetFacingDirection());
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        gunLimb.UpdateTransform(player.facingDirection);
+        gunLimb.UpdateTransform(player.GetFacingDirection());
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

@@ -9,22 +9,19 @@ public class BaseEntity : MonoBehaviour
     protected Rigidbody2D body;
     protected SpriteRenderer spriteRenderer;
 
-    public AudioClip[] soundEffects;
     protected bool canMove = true;
+    protected bool directlySetVelocity = false;
     protected float speed;
+    protected Vector2 nextVelocity;
+    protected Vector2 facingDirection;
+
+    public AudioClip[] soundEffects;
+    public bool flipX = false;
+    public float defaultSpeed;
 
     // Health
     public int maxHealth;
     protected int health;
-    protected bool dead;
-
-    public bool flipX = false;
-    public float defaultSpeed;
-
-    [HideInInspector]
-    public Vector2 facingDirection;
-    [HideInInspector]
-    public Vector2 nextVelocity;
     
 
     /**************************
@@ -59,7 +56,7 @@ public class BaseEntity : MonoBehaviour
     protected void FixedUpdate()
     {
         // Entity is allowed to move
-        if (canMove && !dead)
+        if (canMove && !IsDead())
         {
             // If moving, set direction moved in
             if (IsMoving())
@@ -79,15 +76,15 @@ public class BaseEntity : MonoBehaviour
             SetNextVelocity(Vector2.zero);
         }
 
-        // Set new body velocity based on updated nextVelocity
-        body.velocity = nextVelocity.normalized * speed;
+        // Update entity body velocity using updated nextVelocity
+        UpdateVelocity();
     }
 
 
     /**************************
      *          Util          *
      **************************/
-    protected void SetFacingDirection(Vector2 direction)
+    public void SetFacingDirection(Vector2 direction)
     {
         facingDirection = direction.normalized;
 
@@ -98,6 +95,20 @@ public class BaseEntity : MonoBehaviour
     protected bool IsMoving()
     {
         return Vector2.Distance(nextVelocity, Vector2.zero) > 0.2f;
+    }
+
+    protected void UpdateVelocity()
+    {
+        if (directlySetVelocity)
+        {
+            // Set new body velocity directly based on nextVelocity
+            body.velocity = nextVelocity.normalized * speed;
+        }
+        else
+        {
+            // Update body velocity with force based on nextVelocity
+            body.AddForce(nextVelocity.normalized * speed * 10);
+        }
     }
 
 
@@ -133,7 +144,6 @@ public class BaseEntity : MonoBehaviour
      **************************/
     protected void BeginDeath()
     {
-        dead = true;
         gameObject.layer = 10;
         spriteRenderer.material.color = new Color(0.7f, 0.7f, 0.7f);
     }
@@ -145,7 +155,6 @@ public class BaseEntity : MonoBehaviour
 
     protected void DisableDeath()
     {
-        dead = false;
         gameObject.layer = 0;
         spriteRenderer.material.color = new Color(1, 1, 1);
         animator.SetBool("Dead", false);
@@ -153,7 +162,7 @@ public class BaseEntity : MonoBehaviour
 
     protected bool IsDead()
     {
-        return dead == true;
+        return animator.GetBool("Dead");
     }
 
 
@@ -215,6 +224,16 @@ public class BaseEntity : MonoBehaviour
         return spriteRenderer.flipX == true;
     }
 
+    public Vector2 GetNextVelocity()
+    {
+        return nextVelocity;
+    }
+
+    public Vector2 GetFacingDirection()
+    {
+        return facingDirection;
+    }
+
 
     /**************************
      *        Setters         *
@@ -252,5 +271,10 @@ public class BaseEntity : MonoBehaviour
     public void DisableFlippedX()
     {
         spriteRenderer.flipX = false;
+    }
+
+    public void EnableDirectVelocity(bool setting)
+    {
+        directlySetVelocity = setting;
     }
 }
