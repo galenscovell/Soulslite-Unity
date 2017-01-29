@@ -12,6 +12,7 @@ public class PlayerAgent : BaseEntity
     private PlayerAttack2 attack2;
     private PlayerAttack3 attack3;
     private PlayerDash dash;
+    private PlayerDeath death;
     private PlayerFullIdle fullIdle;
     private PlayerHurt hurt;
     private PlayerIdle idle;
@@ -33,6 +34,7 @@ public class PlayerAgent : BaseEntity
         attack2 = animator.GetBehaviour<PlayerAttack2>();
         attack3 = animator.GetBehaviour<PlayerAttack3>();
         dash = animator.GetBehaviour<PlayerDash>();
+        death = animator.GetBehaviour<PlayerDeath>();
         fullIdle = animator.GetBehaviour<PlayerFullIdle>();
         hurt = animator.GetBehaviour<PlayerHurt>();
         idle = animator.GetBehaviour<PlayerIdle>();
@@ -45,12 +47,13 @@ public class PlayerAgent : BaseEntity
         attack2.Setup(this, 1);
         attack3.Setup(this, 1);
         dash.Setup(this, GetComponent<DashTrail>(), GetComponent<LineRenderer>(), 2);
+        death.Setup(this, 3);
         fullIdle.Setup(this);
-        hurt.Setup(this, 3);
+        hurt.Setup(this, 4);
         idle.Setup(this);
-        movement.Setup(this, 4);
-        ranged.Setup(this, playerGunLimb, 5);
-        rangedAttack.Setup(this, playerGunLimb, 6);
+        movement.Setup(this, 5);
+        ranged.Setup(this, playerGunLimb, 6);
+        rangedAttack.Setup(this, playerGunLimb, 7);
     }
 
 
@@ -190,7 +193,7 @@ public class PlayerAgent : BaseEntity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag != "Enemy" && collision.tag != "EnvironmentObstacle")
+        if (!IsDead() && collision.tag != "Enemy" && collision.tag != "EnvironmentObstacle")
         {
             if (currentStateInfo.fullPathHash == hurt.GetHash())
             {
@@ -218,7 +221,17 @@ public class PlayerAgent : BaseEntity
             }
 
             Vector2 collisionDirection = transform.position - collision.transform.position;
+
             Hurt(collisionDirection);
+            if (HealthZero())
+            {
+                Die();
+                animator.Play(death.GetHash());
+            }
+            else
+            {
+                animator.Play(hurt.GetHash());
+            }
         }
     }
 
@@ -247,8 +260,7 @@ public class PlayerAgent : BaseEntity
     {
         base.Hurt(collisionDirection);
         CameraController.cameraController.ActivateShake(2, 0.1f);
-
-        animator.Play(hurt.GetHash());
+        DecreaseHealth(1);
     }
 
     /**************************
@@ -256,11 +268,10 @@ public class PlayerAgent : BaseEntity
      **************************/
     public void Die()
     {
-        animator.SetBool("Attacking", false);
-        animator.SetBool("Dashing", false);
-        animator.SetBool("Idling", false);
-        animator.SetBool("Ranged", false);
-        EnableDeath();
+        BeginDeath();
+        animator.SetBool("Dead", true);
+        spriteRenderer.sortingLayerName = "Foreground";
+        SceneMain.sceneMain.FadeOut(2);
     }
 
 
@@ -269,7 +280,7 @@ public class PlayerAgent : BaseEntity
      **************************/
     private Vector2 GetAxisInput()
     {
-        return new Vector2(Input.GetAxis("LeftAxisX"), Input.GetAxis("LeftAxisY"));
+        return new Vector2(Input.GetAxisRaw("LeftAxisX"), Input.GetAxisRaw("LeftAxisY"));
     }
 
     public void SetInput(bool setting)

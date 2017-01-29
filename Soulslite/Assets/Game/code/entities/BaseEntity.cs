@@ -10,7 +10,6 @@ public class BaseEntity : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
 
     protected bool canMove = true;
-    protected bool directlySetVelocity = false;
     protected float speed;
     protected Vector2 nextVelocity;
     protected Vector2 facingDirection;
@@ -34,14 +33,14 @@ public class BaseEntity : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+        // Determine entity facing direction on spawn
         if (flipX) EnableFlippedX();
-
-        health = maxHealth;
-
         facingDirection = new Vector2(
             animator.GetFloat("DirectionX"),
             animator.GetFloat("DirectionY")
         );
+
+        health = maxHealth;
     }
 
 
@@ -76,8 +75,8 @@ public class BaseEntity : MonoBehaviour
             SetNextVelocity(Vector2.zero);
         }
 
-        // Update entity body velocity using updated nextVelocity
-        UpdateVelocity();
+        // Set new body velocity directly based on nextVelocity
+        body.velocity = nextVelocity.normalized * speed;
     }
 
 
@@ -95,20 +94,6 @@ public class BaseEntity : MonoBehaviour
     protected bool IsMoving()
     {
         return Vector2.Distance(nextVelocity, Vector2.zero) > 0.2f;
-    }
-
-    protected void UpdateVelocity()
-    {
-        if (directlySetVelocity)
-        {
-            // Set new body velocity directly based on nextVelocity
-            body.velocity = nextVelocity.normalized * speed;
-        }
-        else
-        {
-            // Update body velocity with force based on nextVelocity
-            body.AddForce(nextVelocity.normalized * speed * 10);
-        }
     }
 
 
@@ -145,12 +130,12 @@ public class BaseEntity : MonoBehaviour
     protected void BeginDeath()
     {
         gameObject.layer = 10;
-        spriteRenderer.material.color = new Color(0.7f, 0.7f, 0.7f);
     }
 
     protected void EnableDeath()
     {
         animator.SetBool("Dead", true);
+        spriteRenderer.material.color = new Color(0.7f, 0.7f, 0.7f);
     }
 
     protected void DisableDeath()
@@ -238,6 +223,11 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *        Setters         *
      **************************/
+    public void SetSpriteAlpha(float val)
+    {
+        spriteRenderer.material.color = new Color(1, 1, 1, val);
+    }
+
     public void DisableMotion()
     {
         canMove = false;
@@ -271,10 +261,5 @@ public class BaseEntity : MonoBehaviour
     public void DisableFlippedX()
     {
         spriteRenderer.flipX = false;
-    }
-
-    public void EnableDirectVelocity(bool setting)
-    {
-        directlySetVelocity = setting;
     }
 }

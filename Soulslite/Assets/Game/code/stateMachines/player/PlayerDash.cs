@@ -59,8 +59,6 @@ public class PlayerDash : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.EnableDirectVelocity(true);
-
         DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
 
         dashTrail.SetEnabled(true);
@@ -116,17 +114,16 @@ public class PlayerDash : StateMachineBehaviour
             animator.speed = 1f;
             currentPitch = 1f;
             chainCounter = 0;
-            dashTrail.SetEnabled(false);
-            dashLine.enabled = false;
             animator.SetBool("Dashing", false);
         }
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        dashTrail.SetEnabled(false);
+        dashLine.enabled = false;
         preventChain = false;
         chainableState = false;
-        player.EnableDirectVelocity(false);
         player.EnableMotion();
         CameraController.cameraController.RestoreDefaultDampTime();
     }

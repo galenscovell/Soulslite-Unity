@@ -40,8 +40,6 @@ public class PlayerAttack1 : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.EnableDirectVelocity(true);
-
         player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
         vulnerable = true;
         player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
@@ -72,7 +70,6 @@ public class PlayerAttack1 : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.EnableDirectVelocity(false);
         player.EnableMotion();
     }
 }

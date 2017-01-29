@@ -38,8 +38,6 @@ public class TestenemyAttack : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        enemy.EnableDirectVelocity(true);
-
         enemy.DisableMotion();
         targeted = false;
         prepared = false;
@@ -60,7 +58,6 @@ public class TestenemyAttack : StateMachineBehaviour
             enemy.EnableMotion();
             enemy.SetSpeed(240f);
             enemy.SetNextVelocity(enemy.directionToTarget * enemy.GetSpeed());
-            enemy.EnableDirectVelocity(false);
             prepared = true;
         }
         else if (!reset && stateTime >= 0.65f && stateTime < 0.8f)

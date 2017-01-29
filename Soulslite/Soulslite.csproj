@@ -94,6 +94,9 @@
     <Compile Include="Assets\Game\code\effects\RainSplashObject.cs" />
     <Compile Include="Assets\Game\code\effects\RainSystem.cs" />
     <Compile Include="Assets\Game\code\effects\SpriteOutline.cs" />
+    <Compile Include="Assets\Game\code\effects\water\MeshRendererEditor.cs" />
+    <Compile Include="Assets\Game\code\effects\water\Water2DScript.cs" />
+    <Compile Include="Assets\Game\code\effects\water\WaterReflectableScript.cs" />
     <Compile Include="Assets\Game\code\entities\BaseEntity.cs" />
     <Compile Include="Assets\Game\code\entities\Enemy.cs" />
     <Compile Include="Assets\Game\code\entities\PlayerAgent.cs" />
@@ -227,6 +230,7 @@
     <None Include="Assets\Game\lib\Tiled2Unity\Tiled2Unity.export.txt" />
     <None Include="Assets\Game\shaders\DiffuseFlash.shader" />
     <None Include="Assets\Game\shaders\Outline.shader" />
+    <None Include="Assets\Game\shaders\Water2D Surface.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

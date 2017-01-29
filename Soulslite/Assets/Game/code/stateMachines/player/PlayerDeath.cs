@@ -7,6 +7,8 @@ public class PlayerDeath : StateMachineBehaviour
     private PlayerAgent player;
     private int sfxIndex;
 
+    private bool fadeOutBegan = false;
+
 
     public int GetHash()
     {
@@ -23,19 +25,28 @@ public class PlayerDeath : StateMachineBehaviour
     {
         player.DisableMotion();
         player.PlaySfx(sfxIndex, 1f, 1f);
+
+        animator.SetBool("Attacking", false);
+        animator.SetBool("Dashing", false);
+        animator.SetBool("Idling", false);
+        animator.SetBool("Ranged", false);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-        if (stateTime >= 1)
+        if (stateTime >= 2)
         {
-            
+            if (!fadeOutBegan)
+            {
+                LeanTween.value(player.gameObject, player.SetSpriteAlpha, 1, 0, 1);
+                fadeOutBegan = true;
+            }
         }
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.Die();
+        
     }
 }

@@ -185,6 +185,7 @@
     <None Include="Assets\Game\lib\Tiled2Unity\Tiled2Unity.export.txt" />
     <None Include="Assets\Game\shaders\DiffuseFlash.shader" />
     <None Include="Assets\Game\shaders\Outline.shader" />
+    <None Include="Assets\Game\shaders\Water2D Surface.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
