@@ -123,6 +123,11 @@ public class BaseEntity : MonoBehaviour
         return health <= 0;
     }
 
+    protected int GetHealth()
+    {
+        return health;
+    }
+
 
     /**************************
      *         Death          *

@@ -7,6 +7,8 @@ public class CameraController : MonoBehaviour
 
     public float initialDampTime;
     public int orthographicHeight = 120;
+    public GameObject vignette;
+    public GameObject blackFade;
 
     private new Camera camera;
     private GameObject targetObject;
@@ -15,6 +17,7 @@ public class CameraController : MonoBehaviour
     private Vector3 velocity = Vector3.zero;
     private float dampTime;
     private float shakeAmt = 0;
+    private SpriteRenderer vignetteRenderer;
 
 
     private void Awake()
@@ -28,6 +31,11 @@ public class CameraController : MonoBehaviour
         if (cameraController != null) Destroy(cameraController);
         else cameraController = this;
         DontDestroyOnLoad(this);
+
+        vignetteRenderer = vignette.GetComponent<SpriteRenderer>();
+
+        FadeOutToBlack(0);
+        FadeInFromBlack(5);
     }
 
     private void LateUpdate()
@@ -88,5 +96,34 @@ public class CameraController : MonoBehaviour
     private void DeactivateShake()
     {
         CancelInvoke("CameraShake");
+    }
+
+
+    /**************************
+     *        Vignette        *
+     **************************/
+    public void FadeOutVignette(float overTime)
+    {
+        LeanTween.alpha(vignette, 0, overTime);
+    }
+
+    public void FadeInVignette(Color c, float overTime)
+    {
+        vignetteRenderer.color = new Color(c.r, c.g, c.b, 0);
+        LeanTween.alpha(vignette, 1, overTime);
+    }
+
+
+    /**************************
+     *          Fade          *
+     **************************/
+    public void FadeOutToBlack(float overTime)
+    {
+        LeanTween.alpha(blackFade, 1, overTime);
+    }
+
+    public void FadeInFromBlack(float overTime)
+    {
+        LeanTween.alpha(blackFade, 0, overTime);
     }
 }

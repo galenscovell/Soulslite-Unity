@@ -7,7 +7,6 @@ public class SceneMain : MonoBehaviour
 {
     public static SceneMain sceneMain;
     public PlayerAgent playerAgent;
-    public GameObject blackFade;
     public List<AudioSource> musicSources;
 
     // FocalPoint[0] is always the player
@@ -20,9 +19,6 @@ public class SceneMain : MonoBehaviour
         if (sceneMain != null) Destroy(sceneMain);
         else sceneMain = this;
 
-        FadeOut(0);
-        FadeIn(5);
-
         SetPlayerAsFocalPoint();
 
         // Fade in main music
@@ -33,16 +29,8 @@ public class SceneMain : MonoBehaviour
         StartCoroutine(temporarilyDisableInput());
     }
 
-    public void FadeOut(float overTime)
-    {
-        LeanTween.alpha(blackFade, 1, overTime);
-    }
 
-    public void FadeIn(float overTime)
-    {
-        LeanTween.alpha(blackFade, 0, overTime);
-    }
-
+    // Focal point control
     public void SetPlayerAsFocalPoint()
     {
         CameraController.cameraController.ChangeTarget(focalPoints[0]);
@@ -53,6 +41,8 @@ public class SceneMain : MonoBehaviour
         CameraController.cameraController.ChangeTarget(focalPoints[index]);
     }
 
+
+    // Fade in/out audio
     public IEnumerator fadeInAudio(AudioSource audioSource, float targetVolume, float speed)
     {
         while (audioSource.volume < targetVolume)
@@ -71,6 +61,8 @@ public class SceneMain : MonoBehaviour
         }
     }
 
+
+    // Input control
     public IEnumerator temporarilyDisableInput()
     {
         yield return new WaitForSeconds(2f);

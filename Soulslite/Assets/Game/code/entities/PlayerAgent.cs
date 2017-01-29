@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 
 public class PlayerAgent : BaseEntity
@@ -20,6 +22,8 @@ public class PlayerAgent : BaseEntity
     private PlayerMovement movement;
     private PlayerRanged ranged;
     private PlayerRangedAttack rangedAttack;
+
+    private IEnumerator heartbeat;
 
 
     /**************************
@@ -57,6 +61,8 @@ public class PlayerAgent : BaseEntity
         movement.Setup(this, 6);
         ranged.Setup(this, playerGunLimb, 7);
         rangedAttack.Setup(this, playerGunLimb, 8);
+
+        heartbeat = NearDeathHeartbeat();
     }
 
 
@@ -202,6 +208,12 @@ public class PlayerAgent : BaseEntity
             return;
         }
 
+        // Ignore collisions with level boundaries
+        if (collision.tag == "LevelBoundary")
+        {
+            return;
+        }
+
         // Interrupt attack if collided with obstacle
         if (collision.tag == "EnvironmentObstacle")
         {
@@ -240,8 +252,19 @@ public class PlayerAgent : BaseEntity
 
             Vector2 collisionDirection = transform.position - collision.transform.position;
             Hurt(collisionDirection);
+
+            // Show damage vignette when player health low
+            if (GetHealth() == 1)
+            {
+                CameraController.cameraController.FadeInVignette(Color.black, 2);
+                StartCoroutine(heartbeat);
+            }
+
+            // Die if player health is zero
             if (HealthZero())
             {
+                CameraController.cameraController.FadeOutVignette(0);
+                StopCoroutine(heartbeat);
                 Die();
                 animator.Play(death.GetHash());
             }
@@ -280,6 +303,16 @@ public class PlayerAgent : BaseEntity
         DecreaseHealth(1);
     }
 
+    private IEnumerator NearDeathHeartbeat()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1.5f);
+            PlaySfx(9, 1, 1);
+        }
+    }
+
+
     /**************************
      *         Death          *
      **************************/
@@ -288,7 +321,7 @@ public class PlayerAgent : BaseEntity
         BeginDeath();
         animator.SetBool("Dead", true);
         spriteRenderer.sortingLayerName = "Foreground";
-        SceneMain.sceneMain.FadeOut(2);
+        CameraController.cameraController.FadeOutToBlack(2);
     }
 
 

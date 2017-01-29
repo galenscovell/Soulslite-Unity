@@ -97,8 +97,9 @@ public class PlayerDash : StateMachineBehaviour
         UpdateDashLine();
 
         float stateTime = stateInfo.normalizedTime;
-        if (player.AbleToMove() && stateTime >= 0.275f)
+        if (player.AbleToMove() && stateTime >= 0.3f)
         {
+            dashTrail.SetEnabled(false);
             player.DisableMotion();
             player.RestoreDefaultSpeed();
         }

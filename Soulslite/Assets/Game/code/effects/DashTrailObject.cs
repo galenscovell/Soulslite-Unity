@@ -11,9 +11,10 @@ public class DashTrailObject : MonoBehaviour
     private bool inUse;
 
     public SpriteRenderer spriteRenderer;
-    public Color startColor, endColor;
-    // Pick random color from preset color list
-    // Every color should be half alpha
+    public Color[] colorPool;
+
+    private Color startColor;
+    private Color endColor;
 
 
     private void Start()
@@ -38,6 +39,12 @@ public class DashTrailObject : MonoBehaviour
         }
     }
 
+    private Color GetRandomColor()
+    {
+        int randomIndex = Random.Range(0, colorPool.Length - 1);
+        return colorPool[randomIndex];
+    }
+
     public void Initiate(float time, Sprite sprite, Vector2 pos, DashTrail trail)
     {
         displayTime = time;
@@ -46,6 +53,8 @@ public class DashTrailObject : MonoBehaviour
         position = pos;
         timeDisplayed = 0;
         spawner = trail;
+        startColor = GetRandomColor();
+        endColor = new Color(startColor.r, startColor.g, startColor.b, 0);
         inUse = true;
     }
 }
