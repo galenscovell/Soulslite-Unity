@@ -187,6 +187,15 @@ public class BaseEntity : MonoBehaviour
 
 
     /**************************
+     *       Gfx Effects      *
+     **************************/
+    public void FadeOutSprite()
+    {
+        LeanTween.value(gameObject, SetSpriteAlpha, 1, 0, 1);
+    }
+
+
+    /**************************
      *        Getters         *
      **************************/
     public Rigidbody2D GetBody()

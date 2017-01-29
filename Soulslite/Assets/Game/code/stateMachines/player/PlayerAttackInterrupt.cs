@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 
-public class PlayerHurt : StateMachineBehaviour
+public class PlayerAttackInterrupt : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.PlayerHurt");
+    private int hash = Animator.StringToHash("Base Layer.PlayerAttackInterrupt");
     private PlayerAgent player;
     private int sfxIndex;
 
@@ -21,18 +21,30 @@ public class PlayerHurt : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool("FullIdle", false);
+        animator.SetBool("Attacking", false);
+        animator.SetInteger("AttackChain", 0);
+
+        int currentAttackVersion = animator.GetInteger("AttackVersion");
+        if (currentAttackVersion == 1)
+        {
+            animator.SetInteger("AttackVersion", 2);
+        }
+        else if (currentAttackVersion == 2)
+        {
+            animator.SetInteger("AttackVersion", 1);
+        }
+        else if (currentAttackVersion == 3)
+        {
+            animator.SetInteger("AttackVersion", 1);
+        }
+
         player.DisableMotion();
         player.PlaySfx(sfxIndex, 1f, 1f);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        float stateTime = stateInfo.normalizedTime;
-        if (stateTime >= 1)
-        {
-            
-        }
+        
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

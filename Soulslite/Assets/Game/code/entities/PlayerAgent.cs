@@ -11,6 +11,7 @@ public class PlayerAgent : BaseEntity
     private PlayerAttack1 attack1;
     private PlayerAttack2 attack2;
     private PlayerAttack3 attack3;
+    private PlayerAttackInterrupt attackInterrupt;
     private PlayerDash dash;
     private PlayerDeath death;
     private PlayerFullIdle fullIdle;
@@ -33,6 +34,7 @@ public class PlayerAgent : BaseEntity
         attack1 = animator.GetBehaviour<PlayerAttack1>();
         attack2 = animator.GetBehaviour<PlayerAttack2>();
         attack3 = animator.GetBehaviour<PlayerAttack3>();
+        attackInterrupt = animator.GetBehaviour<PlayerAttackInterrupt>();
         dash = animator.GetBehaviour<PlayerDash>();
         death = animator.GetBehaviour<PlayerDeath>();
         fullIdle = animator.GetBehaviour<PlayerFullIdle>();
@@ -46,14 +48,15 @@ public class PlayerAgent : BaseEntity
         attack1.Setup(this, 0);
         attack2.Setup(this, 1);
         attack3.Setup(this, 1);
-        dash.Setup(this, GetComponent<DashTrail>(), GetComponent<LineRenderer>(), 2);
-        death.Setup(this, 3);
+        attackInterrupt.Setup(this, 2);
+        dash.Setup(this, GetComponent<DashTrail>(), GetComponent<LineRenderer>(), 3);
+        death.Setup(this, 4);
         fullIdle.Setup(this);
-        hurt.Setup(this, 4);
+        hurt.Setup(this, 5);
         idle.Setup(this);
-        movement.Setup(this, 5);
-        ranged.Setup(this, playerGunLimb, 6);
-        rangedAttack.Setup(this, playerGunLimb, 7);
+        movement.Setup(this, 6);
+        ranged.Setup(this, playerGunLimb, 7);
+        rangedAttack.Setup(this, playerGunLimb, 8);
     }
 
 
@@ -193,35 +196,49 @@ public class PlayerAgent : BaseEntity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!IsDead() && collision.tag != "Enemy" && collision.tag != "EnvironmentObstacle")
+        // All triggers stop listening once player is dead
+        if (IsDead())
         {
+            return;
+        }
+
+        // Interrupt attack if collided with obstacle
+        if (collision.tag == "EnvironmentObstacle")
+        {
+            animator.Play(attackInterrupt.GetHash());
+            return;
+        }
+
+        if (collision.tag != "Enemy")
+        {
+            // Ignore if already hurting
             if (currentStateInfo.fullPathHash == hurt.GetHash())
             {
                 return;
             }
-
+            // Ignore if attacking and not interruptible
             if (currentStateInfo.fullPathHash == attack1.GetHash() && !attack1.Interrupt(animator))
             {
                 return;
             }
-
+            // Ignore if attacking and not interruptible
             if (currentStateInfo.fullPathHash == attack2.GetHash() && !attack2.Interrupt(animator))
             {
                 return;
             }
-
+            // Ignore if attacking and not interruptible
             if (currentStateInfo.fullPathHash == attack3.GetHash() && !attack3.Interrupt(animator))
             {
                 return;
             }
 
+            // Interrupt dash if currently dashing
             if (currentStateInfo.fullPathHash == dash.GetHash())
             {
                 dash.Interrupt(animator);
             }
 
             Vector2 collisionDirection = transform.position - collision.transform.position;
-
             Hurt(collisionDirection);
             if (HealthZero())
             {

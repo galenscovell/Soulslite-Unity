@@ -39,7 +39,7 @@ public class PlayerDeath : StateMachineBehaviour
         {
             if (!fadeOutBegan)
             {
-                LeanTween.value(player.gameObject, player.SetSpriteAlpha, 1, 0, 1);
+                player.FadeOutSprite();
                 fadeOutBegan = true;
             }
         }
