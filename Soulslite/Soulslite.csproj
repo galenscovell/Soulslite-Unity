@@ -117,9 +117,9 @@
     <Compile Include="Assets\Game\code\stateMachines\testenemy\TestenemyHurt.cs" />
     <Compile Include="Assets\Game\code\stateMachines\testenemy\TestenemyIdling.cs" />
     <Compile Include="Assets\Game\code\util\CameraController.cs" />
+    <Compile Include="Assets\Game\code\util\LevelManager.cs" />
     <Compile Include="Assets\Game\code\util\PhaseSetting.cs" />
     <Compile Include="Assets\Game\code\util\SceneLoader.cs" />
-    <Compile Include="Assets\Game\code\util\SceneMain.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\AILerp.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\AIPath.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\NavmeshController.cs" />
@@ -215,6 +215,7 @@
     <None Include="Assets\Game\lib\AstarPathfindingProject\link.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\_ReadMe.txt" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\demolevel_0.tiled2unity.xml" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Imported\demolevel_1.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\test.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\License.txt" />
     <None Include="Assets\Game\lib\Tiled2Unity\Materials\_ReadMe.txt" />

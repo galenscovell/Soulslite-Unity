@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class SceneMain : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
-    public static SceneMain sceneMain;
+    public static LevelManager levelManager;
     public PlayerAgent playerAgent;
     public List<AudioSource> musicSources;
 
@@ -16,8 +16,8 @@ public class SceneMain : MonoBehaviour
     private void Start()
     {
         // Singleton, destroyed between scenes
-        if (sceneMain != null) Destroy(sceneMain);
-        else sceneMain = this;
+        if (levelManager != null) Destroy(levelManager);
+        else levelManager = this;
 
         SetPlayerAsFocalPoint();
 
@@ -30,7 +30,9 @@ public class SceneMain : MonoBehaviour
     }
 
 
-    // Focal point control
+    /**************************
+     *       Focal Point      *
+     **************************/
     public void SetPlayerAsFocalPoint()
     {
         CameraController.cameraController.ChangeTarget(focalPoints[0]);
@@ -42,7 +44,9 @@ public class SceneMain : MonoBehaviour
     }
 
 
-    // Fade in/out audio
+    /**************************
+     *          Audio         *
+     **************************/
     public IEnumerator fadeInAudio(AudioSource audioSource, float targetVolume, float speed)
     {
         while (audioSource.volume < targetVolume)
@@ -62,7 +66,9 @@ public class SceneMain : MonoBehaviour
     }
 
 
-    // Input control
+    /**************************
+     *          Input         *
+     **************************/
     public IEnumerator temporarilyDisableInput()
     {
         yield return new WaitForSeconds(2f);
