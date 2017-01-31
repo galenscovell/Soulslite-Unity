@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     public int orthographicHeight = 120;
     public GameObject vignette;
     public GameObject blackFade;
+    public EdgeCollider2D levelBounds;
 
     private new Camera camera;
     private GameObject targetObject;
@@ -18,6 +19,8 @@ public class CameraController : MonoBehaviour
     private float dampTime;
     private float shakeAmt = 0;
     private SpriteRenderer vignetteRenderer;
+    private Vector2 minPosition;
+    private Vector2 maxPosition;
 
 
     private void Awake()
@@ -36,6 +39,9 @@ public class CameraController : MonoBehaviour
 
         FadeOutToBlack(0);
         FadeInFromBlack(5);
+
+        minPosition = levelBounds.bounds.min;
+        maxPosition = levelBounds.bounds.max;
     }
 
     private void LateUpdate()
@@ -47,7 +53,12 @@ public class CameraController : MonoBehaviour
             targetCenter.x += bodyVelocity.x;
             targetCenter.y += bodyVelocity.y;
         }
-        transform.position = Vector3.SmoothDamp(transform.position, targetCenter + cameraOffset, ref velocity, dampTime);
+
+        Vector3 focusPosition = Vector3.SmoothDamp(transform.position, targetCenter + cameraOffset, ref velocity, dampTime);
+        focusPosition = Vector3.Min(focusPosition, maxPosition);
+        focusPosition = Vector3.Max(focusPosition, minPosition);
+
+        transform.position = focusPosition + Vector3.forward * -10;
     }
 
 
