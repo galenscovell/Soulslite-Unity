@@ -39,7 +39,7 @@ public class PlayerAttackInterrupt : StateMachineBehaviour
         }
 
         player.DisableMotion();
-        player.PlaySfx(sfxIndex, 1f, 1f);
+        player.PlaySfx(sfxIndex, 1f, 0.25f);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

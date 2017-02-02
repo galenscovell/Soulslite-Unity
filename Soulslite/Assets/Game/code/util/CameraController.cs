@@ -9,16 +9,20 @@ public class CameraController : MonoBehaviour
     public int orthographicHeight = 120;
     public GameObject vignette;
     public GameObject blackFade;
-    public EdgeCollider2D levelBounds;
 
     private new Camera camera;
+
     private GameObject targetObject;
     private Rigidbody2D targetBody;
     private Vector3 cameraOffset = new Vector3(0, 0, -10);
+
     private Vector3 velocity = Vector3.zero;
     private float dampTime;
     private float shakeAmt = 0;
+
+    private SpriteRenderer blackRenderer;
     private SpriteRenderer vignetteRenderer;
+
     private Vector2 minPosition;
     private Vector2 maxPosition;
 
@@ -30,23 +34,18 @@ public class CameraController : MonoBehaviour
 
         dampTime = initialDampTime;
 
-        // Singleton
+        // Singleton, destroyed between scenes
         if (cameraController != null) Destroy(cameraController);
         else cameraController = this;
-        DontDestroyOnLoad(this);
 
+        blackRenderer = blackFade.GetComponent<SpriteRenderer>();
         vignetteRenderer = vignette.GetComponent<SpriteRenderer>();
-
-        FadeOutToBlack(0);
-        FadeInFromBlack(5);
-
-        minPosition = levelBounds.bounds.min;
-        maxPosition = levelBounds.bounds.max;
     }
 
     private void LateUpdate()
     {
         Vector3 targetCenter = targetObject.transform.position;
+
         if (targetObject.name == "player")
         {
             Vector2 bodyVelocity = targetBody.velocity.normalized * 60;
@@ -59,6 +58,16 @@ public class CameraController : MonoBehaviour
         focusPosition = Vector3.Max(focusPosition, minPosition);
 
         transform.position = focusPosition + Vector3.forward * -10;
+    }
+
+
+    /**************************
+     *         Bounds         *
+     **************************/
+    public void SetCameraBounds(EdgeCollider2D newBounds)
+    {
+        minPosition = newBounds.bounds.min;
+        maxPosition = newBounds.bounds.max;
     }
 
 
@@ -130,6 +139,7 @@ public class CameraController : MonoBehaviour
      **************************/
     public void FadeOutToBlack(float overTime)
     {
+        blackRenderer.color = Color.black;
         LeanTween.alpha(blackFade, 1, overTime);
     }
 

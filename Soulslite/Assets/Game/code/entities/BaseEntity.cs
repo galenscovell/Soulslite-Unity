@@ -21,18 +21,21 @@ public class BaseEntity : MonoBehaviour
     // Health
     public int maxHealth;
     protected int health;
-    
+
 
     /**************************
      *          Init          *
      **************************/
-    protected void Start()
+    protected void Awake()
     {
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         body = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
+    protected void Start()
+    {
         // Determine entity facing direction on spawn
         if (flipX) EnableFlippedX();
         facingDirection = new Vector2(
@@ -245,6 +248,7 @@ public class BaseEntity : MonoBehaviour
     public void DisableMotion()
     {
         canMove = false;
+        animator.SetBool("Moving", false);
     }
 
     public void EnableMotion()

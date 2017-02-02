@@ -11,9 +11,6 @@ public class PlayerDash : StateMachineBehaviour
     private int chainCounter = 0;
     private float dashSpeed = 700f;
 
-    private float animationSpeed = 1f;
-    private float maxAnimationSpeed = 1.5f;
-
     private bool chainableState = false;
     private bool preventChain = false;
 
@@ -65,23 +62,16 @@ public class PlayerDash : StateMachineBehaviour
         dashLine.enabled = true;
         CameraController.cameraController.SetDampTime(0.3f);
 
-        float newSpeed;
-        if (chainCounter < 5)
+        if (chainCounter < 6)
         {
-            animationSpeed = 1 + (chainCounter * 0.1f);
-            currentPitch = 1 + (chainCounter * 0.12f);
-            newSpeed = dashSpeed + (dashSpeed * (chainCounter * 0.05f));
+            currentPitch = 1 + (chainCounter * 0.1f);
         }
         else
         {
-            animationSpeed = maxAnimationSpeed;
             currentPitch = 1.6f;
-            newSpeed = 900f;
         }
 
-        animator.speed = animationSpeed;
-        player.SetSpeed(newSpeed);
-
+        player.SetSpeed(dashSpeed);
         player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
 
         preventChain = false;
@@ -97,7 +87,7 @@ public class PlayerDash : StateMachineBehaviour
         UpdateDashLine();
 
         float stateTime = stateInfo.normalizedTime;
-        if (player.AbleToMove() && stateTime >= 0.3f)
+        if (player.AbleToMove() && stateTime >= 0.25f)
         {
             dashTrail.SetEnabled(false);
             player.DisableMotion();
@@ -132,10 +122,23 @@ public class PlayerDash : StateMachineBehaviour
     private void BeginDashLine()
     {
         dashLine.SetPosition(0, player.GetBody().position + new Vector2(0, 8));
+        Color c = dashLine.material.color;
+        dashLine.material.color = new Color(c.r, c.g, c.b, 1);
     }
 
     private void UpdateDashLine()
     {
         dashLine.SetPosition(1, player.GetBody().position + new Vector2(0, 8));
+
+        Color c = dashLine.material.color;
+        c.a -= 0.035f;
+        if (c.a <= 0)
+        {
+            dashLine.enabled = false;
+        }
+        else
+        {
+            dashLine.material.color = c;
+        }
     }
 }

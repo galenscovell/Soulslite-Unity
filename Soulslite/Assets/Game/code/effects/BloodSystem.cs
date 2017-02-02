@@ -16,10 +16,9 @@ public class BloodSystem : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton, kept between scenes
+        // Singleton, destroyed between scenes
         if (bloodSystem != null) Destroy(bloodSystem);
         else bloodSystem = this;
-        DontDestroyOnLoad(this);
     }
 
     private void Start () {

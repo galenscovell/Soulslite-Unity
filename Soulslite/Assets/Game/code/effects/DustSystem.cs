@@ -19,10 +19,9 @@ public class DustSystem : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton, kept between scenes
+        // Singleton, destroyed between scenes
         if (dustSystem != null) Destroy(dustSystem);
         else dustSystem = this;
-        DontDestroyOnLoad(this);
     }
 
     private void Start()

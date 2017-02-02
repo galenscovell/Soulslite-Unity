@@ -6,7 +6,7 @@ public class PlayerAgent : BaseEntity
 {
     private AnimatorStateInfo currentStateInfo;
     private int attackChainWaitFrames;
-    private bool inputEnabled = false;
+    private bool inputEnabled;
 
     // State machines
     private PlayerAttack1 attack1;
@@ -207,8 +207,8 @@ public class PlayerAgent : BaseEntity
             return;
         }
 
-        // Ignore collisions with level boundaries
-        if (collision.tag == "LevelBoundary")
+        // Ignore collisions with level boundaries and transition zones
+        if (collision.tag == "LevelBoundary" || collision.tag == "Transition")
         {
             return;
         }
@@ -325,6 +325,22 @@ public class PlayerAgent : BaseEntity
 
 
     /**************************
+     *         Spawn          *
+     **************************/
+    public void Transition(Vector2 newPosition)
+    {
+         // Interrupt dash if currently dashing
+        if (currentStateInfo.fullPathHash == dash.GetHash())
+        {
+            dash.Interrupt(animator);
+            SetNextVelocity(Vector2.zero);
+        }
+
+        body.position = newPosition;
+    }
+
+
+    /**************************
      *         Input          *
      **************************/
     private Vector2 GetAxisInput()
@@ -335,5 +351,10 @@ public class PlayerAgent : BaseEntity
     public void SetInput(bool setting)
     {
         inputEnabled = setting;
+
+        if (!inputEnabled)
+        {
+            SetNextVelocity(Vector2.zero);
+        }
     }
 }
