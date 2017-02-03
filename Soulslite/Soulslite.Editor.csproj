@@ -168,10 +168,9 @@
     <None Include="Assets\Game\lib\AstarPathfindingProject\Readme.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Readme_upgrading.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\link.xml" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Imported\DemoLevel_0_Map.tiled2unity.xml" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Imported\DemoLevel_1_Map.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\_ReadMe.txt" />
-    <None Include="Assets\Game\lib\Tiled2Unity\Imported\demolevel_0.tiled2unity.xml" />
-    <None Include="Assets\Game\lib\Tiled2Unity\Imported\demolevel_1.tiled2unity.xml" />
-    <None Include="Assets\Game\lib\Tiled2Unity\Imported\test.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\License.txt" />
     <None Include="Assets\Game\lib\Tiled2Unity\Materials\_ReadMe.txt" />
     <None Include="Assets\Game\lib\Tiled2Unity\Meshes\_ReadMe.txt" />

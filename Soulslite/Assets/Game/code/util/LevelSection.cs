@@ -1,4 +1,6 @@
-﻿using Tiled2Unity;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Tiled2Unity;
 using UnityEngine;
 
 
@@ -6,9 +8,7 @@ public class LevelSection : MonoBehaviour
 {
     private TiledMap tileMap;
     private EdgeCollider2D cameraBounds;
-
-    private Vector2 entrancePoint;
-    private BoxCollider2D exitZone;
+    private Dictionary<string, GameObject> transitions;
 
 
     public TiledMap GetTileMap()
@@ -21,24 +21,32 @@ public class LevelSection : MonoBehaviour
         return cameraBounds;
     }
 
-    public Vector2 GetEntrancePosition()
+    public Vector2 GetEntrancePosition(string position)
     {
-        return entrancePoint;
-    }
-
-    public Vector2 GetExitPosition()
-    {
-        return exitZone.offset;
+        GameObject entrance;
+        transitions.TryGetValue(position, out entrance);
+        return entrance.GetComponent<TransitionZone>().GetZoneCenter();
     }
 
     public void Enable()
     {
         gameObject.SetActive(true);
 
-        tileMap = GetComponent<TiledMap>();
-        cameraBounds = GameObject.Find("CameraBounds").GetComponent<EdgeCollider2D>();
-        entrancePoint = GameObject.Find("EntrancePoint").transform.position;
-        exitZone = GameObject.Find("ExitZone").GetComponent<BoxCollider2D>();
+        // Find tile map object
+        string mapPrefabName = gameObject.name + "_Map";
+        tileMap = transform.Find(mapPrefabName).GetComponent<TiledMap>();
+
+        // Find all transition points
+        transitions = new Dictionary<string, GameObject>();
+        Transform transitionsParent = tileMap.transform.Find("Transitions");
+        foreach (Transform transitionChild in transitionsParent)
+        {
+            string transitionName = transitionChild.name;
+            transitions.Add(transitionName, transitionChild.gameObject);
+        }
+
+        // Find camera bounds
+        cameraBounds = tileMap.transform.Find("CameraBoundaries").transform.Find("CameraBounds").GetComponent<EdgeCollider2D>();
     }
 
     public void Disable()

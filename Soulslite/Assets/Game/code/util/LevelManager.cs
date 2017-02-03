@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour
 
     private AudioSource[] musicSources;
     private LevelSection currentSection;
+    private AstarPath pathfindGraph;
 
 
     private void Start()
@@ -22,6 +23,7 @@ public class LevelManager : MonoBehaviour
         else levelManager = this;
 
         musicSources = GetComponents<AudioSource>();
+        pathfindGraph = transform.Find("PathfindGraph").GetComponent<AstarPath>();
 
         // Fade in main music
         StartCoroutine(fadeInAudio(musicSources[0], 0.8f, 0.0025f));
@@ -90,22 +92,35 @@ public class LevelManager : MonoBehaviour
     /**************************
      *       Transition       *
      **************************/
-    public void transitionToSection(int sectionIndex, Vector2 transitionDirection)
+    public void transitionToSection(int sectionIndex, string connectingTransition)
     {
+        // Once transition hit, player loses input
+        // Keep moving them in direction of transition through fade out
+        // Continue moving them in that direction through fade in
         player.SetInput(false);
         StartCoroutine(temporarilyDisableInput(2.5f));
 
-        CameraController.cameraController.FadeOutToBlack(0.5f);
+        CameraController.cameraController.FadeOutToBlack(2f);
 
         currentSection.Disable();
         currentSection = levels[sectionIndex];
         currentSection.Enable();
 
-        player.SetFacingDirection(transitionDirection);
-        player.Transition(currentSection.GetEntrancePosition());
+        player.Transition(currentSection.GetEntrancePosition(connectingTransition));
         CameraController.cameraController.SetCameraBounds(currentSection.GetCameraBounds());
         SetPlayerAsFocalPoint();
 
-        CameraController.cameraController.FadeInFromBlack(2f);
+        CameraController.cameraController.FadeInFromBlack(0.5f);
+    }
+
+
+    /**************************
+     *      PathfindGraph     *
+     **************************/
+    private void CreateSectionPathfindGraph()
+    {
+        // Move PathfindGraph center and transform to next section location
+        // Set its node width and height based on next section dimensions
+        // Rescan graph
     }
 }
