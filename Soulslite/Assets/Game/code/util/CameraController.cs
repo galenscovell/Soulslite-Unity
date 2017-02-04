@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 
 public class CameraController : MonoBehaviour 
@@ -29,14 +30,14 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
+        if (cameraController != null) Destroy(cameraController);
+        else cameraController = this;
+        DontDestroyOnLoad(this);
+
         camera = gameObject.GetComponent<Camera>();
         camera.orthographicSize = orthographicHeight;
 
         dampTime = initialDampTime;
-
-        // Singleton, destroyed between scenes
-        if (cameraController != null) Destroy(cameraController);
-        else cameraController = this;
 
         blackRenderer = blackFade.GetComponent<SpriteRenderer>();
         vignetteRenderer = vignette.GetComponent<SpriteRenderer>();
@@ -137,14 +138,14 @@ public class CameraController : MonoBehaviour
     /**************************
      *          Fade          *
      **************************/
-    public void FadeOutToBlack(float overTime)
+    public LTDescr FadeOutToBlack(float overTime)
     {
-        blackRenderer.color = Color.black;
-        LeanTween.alpha(blackFade, 1, overTime);
+        blackRenderer.color = new Color(0, 0, 0, 0);
+        return LeanTween.alpha(blackFade, 1, overTime);
     }
 
-    public void FadeInFromBlack(float overTime)
+    public LTDescr FadeInFromBlack(float overTime)
     {
-        LeanTween.alpha(blackFade, 0, overTime);
+        return LeanTween.alpha(blackFade, 0, overTime);
     }
 }

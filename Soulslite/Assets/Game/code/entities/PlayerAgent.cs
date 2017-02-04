@@ -62,6 +62,8 @@ public class PlayerAgent : BaseEntity
         rangedAttack.Setup(this, playerGunLimb, 8);
 
         heartbeat = NearDeathHeartbeat();
+
+        DontDestroyOnLoad(this);
     }
 
 
@@ -325,7 +327,7 @@ public class PlayerAgent : BaseEntity
 
 
     /**************************
-     *         Spawn          *
+     *       Transition       *
      **************************/
     public void Transition(Vector2 newPosition)
     {
@@ -336,7 +338,16 @@ public class PlayerAgent : BaseEntity
             SetNextVelocity(Vector2.zero);
         }
 
+        // Disable all collisions
+        gameObject.layer = 10;
+        // Set new position
         body.position = newPosition;
+    }
+
+    public void EndTransition()
+    {
+        // Enable collisions
+        gameObject.layer = 12;
     }
 
 

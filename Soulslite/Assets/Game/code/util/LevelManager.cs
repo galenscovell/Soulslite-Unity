@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class LevelManager : MonoBehaviour
@@ -8,22 +9,22 @@ public class LevelManager : MonoBehaviour
     public static LevelManager levelManager;
 
     public PlayerAgent player;
-    public List<LevelSection> levels;
     public List<GameObject> focalPoints;
 
     private AudioSource[] musicSources;
-    private LevelSection currentSection;
-    private AstarPath pathfindGraph;
+    private string sceneName;
+    private string connectingTransition;
+
+    private Dictionary<string, GameObject> sceneTransitions;
 
 
     private void Start()
     {
-        // Singleton, destroyed between scenes
         if (levelManager != null) Destroy(levelManager);
         else levelManager = this;
+        DontDestroyOnLoad(this);
 
         musicSources = GetComponents<AudioSource>();
-        pathfindGraph = transform.Find("PathfindGraph").GetComponent<AstarPath>();
 
         // Fade in main music
         StartCoroutine(fadeInAudio(musicSources[0], 0.8f, 0.0025f));
@@ -31,15 +32,13 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(fadeInAudio(musicSources[1], 0.4f, 0.001f));
         // Disable player input while initial scene fades in
         player.SetInput(false);
-        StartCoroutine(temporarilyDisableInput(2));
+        StartCoroutine(temporarilyDisableInput(1));
 
         // Begin first level section
-        currentSection = levels[0];
-        currentSection.Enable();
-        CameraController.cameraController.SetCameraBounds(currentSection.GetCameraBounds());
+        SetupScene();
         CameraController.cameraController.FadeOutToBlack(0);
-        CameraController.cameraController.FadeInFromBlack(3);
         SetPlayerAsFocalPoint();
+        CameraController.cameraController.FadeInFromBlack(2);
     }
 
 
@@ -92,35 +91,74 @@ public class LevelManager : MonoBehaviour
     /**************************
      *       Transition       *
      **************************/
-    public void transitionToSection(int sectionIndex, string connectingTransition)
+    public void BeginTransition(string nextSceneName, string connecting)
     {
-        // Once transition hit, player loses input
-        // Keep moving them in direction of transition through fade out
-        // Continue moving them in that direction through fade in
         player.SetInput(false);
-        StartCoroutine(temporarilyDisableInput(2.5f));
+        StartCoroutine(temporarilyDisableInput(2f));
+        sceneName = nextSceneName;
+        connectingTransition = connecting;
 
-        CameraController.cameraController.FadeOutToBlack(2f);
+        CameraController.cameraController.SetDampTime(0);
+        CameraController.cameraController.FadeOutToBlack(0.75f).setOnComplete(AsyncLoadScene);
+    }
 
-        currentSection.Disable();
-        currentSection = levels[sectionIndex];
-        currentSection.Enable();
+    private void AsyncLoadScene()
+    {
+        StartCoroutine(LoadNewScene(sceneName));
+    }
 
-        player.Transition(currentSection.GetEntrancePosition(connectingTransition));
-        CameraController.cameraController.SetCameraBounds(currentSection.GetCameraBounds());
+    private void EndTransition()
+    {
         SetPlayerAsFocalPoint();
+        player.Transition(GetSceneEntrance(connectingTransition));
 
-        CameraController.cameraController.FadeInFromBlack(0.5f);
+        CameraController.cameraController.FadeInFromBlack(0.5f).setOnComplete(ResetTransitionSettings);
+    }
+
+    private void ResetTransitionSettings()
+    {
+        player.SetInput(true);
+        CameraController.cameraController.RestoreDefaultDampTime();
+    }
+
+
+    public IEnumerator LoadNewScene(string sceneName)
+    {
+        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+        while (!async.isDone)
+        {
+            yield return null;
+        }
+        EndTransition();
     }
 
 
     /**************************
-     *      PathfindGraph     *
+     *       SceneSetup       *
      **************************/
-    private void CreateSectionPathfindGraph()
+    private void SetupScene()
     {
-        // Move PathfindGraph center and transform to next section location
-        // Set its node width and height based on next section dimensions
-        // Rescan graph
+        Transform tileMap = GameObject.Find("Map").transform;
+
+        // Find all transition points
+        sceneTransitions = new Dictionary<string, GameObject>();
+        Transform transitionsParent = tileMap.transform.Find("Transitions");
+        foreach (Transform transitionChild in transitionsParent)
+        {
+            string transitionName = transitionChild.name;
+            sceneTransitions.Add(transitionName, transitionChild.gameObject);
+        }
+
+        // Find camera bounds
+        EdgeCollider2D cameraBounds = tileMap.transform.Find("CameraBoundaries").transform.Find("CameraBounds").GetComponent<EdgeCollider2D>();
+
+        CameraController.cameraController.SetCameraBounds(cameraBounds);
+    }
+
+    public Vector2 GetSceneEntrance(string position)
+    {
+        GameObject entrance;
+        sceneTransitions.TryGetValue(position, out entrance);
+        return entrance.GetComponent<TransitionZone>().GetZoneCenter();
     }
 }

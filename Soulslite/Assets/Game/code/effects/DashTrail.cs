@@ -19,6 +19,8 @@ public class DashTrail : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(this);
+
         spawnInterval = time / segments / 2;
         trailObjectsInUse = new List<DashTrailObject>();
         trailObjectsNotInUse = new Queue<DashTrailObject>();
