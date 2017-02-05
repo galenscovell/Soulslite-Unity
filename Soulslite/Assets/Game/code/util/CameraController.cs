@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public class CameraController : MonoBehaviour 
@@ -45,13 +44,18 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 targetCenter = targetObject.transform.position;
+        Vector3 targetCenter = transform.position;
 
-        if (targetObject.name == "player")
+        if (targetObject != null)
         {
-            Vector2 bodyVelocity = targetBody.velocity.normalized * 60;
-            targetCenter.x += bodyVelocity.x;
-            targetCenter.y += bodyVelocity.y;
+            targetCenter = targetObject.transform.position;
+
+            if (targetObject.tag == "Player")
+            {
+                Vector2 bodyVelocity = targetBody.velocity.normalized * 80;
+                targetCenter.x += bodyVelocity.x;
+                targetCenter.y += bodyVelocity.y;
+            }
         }
 
         Vector3 focusPosition = Vector3.SmoothDamp(transform.position, targetCenter + cameraOffset, ref velocity, dampTime);

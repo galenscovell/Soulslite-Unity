@@ -6,7 +6,7 @@ public class PlayerAgent : BaseEntity
 {
     private AnimatorStateInfo currentStateInfo;
     private int attackChainWaitFrames;
-    private bool inputEnabled;
+    private bool inputEnabled = false;
 
     // State machines
     private PlayerAttack1 attack1;
@@ -331,13 +331,6 @@ public class PlayerAgent : BaseEntity
      **************************/
     public void Transition(Vector2 newPosition)
     {
-         // Interrupt dash if currently dashing
-        if (currentStateInfo.fullPathHash == dash.GetHash())
-        {
-            dash.Interrupt(animator);
-            SetNextVelocity(Vector2.zero);
-        }
-
         // Disable all collisions
         gameObject.layer = 10;
         // Set new position
@@ -362,10 +355,5 @@ public class PlayerAgent : BaseEntity
     public void SetInput(bool setting)
     {
         inputEnabled = setting;
-
-        if (!inputEnabled)
-        {
-            SetNextVelocity(Vector2.zero);
-        }
     }
 }

@@ -13,7 +13,7 @@ public class LevelManager : MonoBehaviour
 
     private AudioSource[] musicSources;
     private string sceneName;
-    private string connectingTransition;
+    private string connectingTransition = "Begin_Entrance";
 
     private Dictionary<string, GameObject> sceneTransitions;
 
@@ -26,19 +26,22 @@ public class LevelManager : MonoBehaviour
 
         musicSources = GetComponents<AudioSource>();
 
+        RainSystem.rainSystem.gameObject.SetActive(false);
+        CameraController.cameraController.FadeOutToBlack(0);
+    }
+
+    public void BeginGame(string startingSceneName)
+    {
+        RainSystem.rainSystem.gameObject.SetActive(true);
+
         // Fade in main music
         StartCoroutine(fadeInAudio(musicSources[0], 0.8f, 0.0025f));
         // Fade in ambient music
         StartCoroutine(fadeInAudio(musicSources[1], 0.4f, 0.001f));
+
         // Disable player input while initial scene fades in
         player.SetInput(false);
         StartCoroutine(temporarilyDisableInput(1));
-
-        // Begin first level section
-        SetupScene();
-        CameraController.cameraController.FadeOutToBlack(0);
-        SetPlayerAsFocalPoint();
-        CameraController.cameraController.FadeInFromBlack(2);
     }
 
 
@@ -94,22 +97,48 @@ public class LevelManager : MonoBehaviour
     public void BeginTransition(string nextSceneName, string connecting)
     {
         player.SetInput(false);
-        StartCoroutine(temporarilyDisableInput(2f));
         sceneName = nextSceneName;
         connectingTransition = connecting;
 
+        player.SetNextVelocity(GetTransitionVelocity());
+
+        CameraController.cameraController.FadeOutToBlack(0.75f).setOnComplete(LoadNextScene);
+    }
+
+    private Vector2 GetTransitionVelocity()
+    {
+        Vector2 transitionVelocity = new Vector2(0, 0);
+        if (connectingTransition == "N_Entrance")
+        {
+            transitionVelocity.y = -1;
+        }
+        else if (connectingTransition == "E_Entrance")
+        {
+            transitionVelocity.x = 1;
+        }
+        else if (connectingTransition == "S_Entrance")
+        {
+            transitionVelocity.y = 1;
+        }
+        else if (connectingTransition == "W_Entrance")
+        {
+            transitionVelocity.x = -1;
+        }
+        return transitionVelocity * player.GetDefaultSpeed();
+    }
+
+    private void LoadNextScene()
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        SetupScene();
         CameraController.cameraController.SetDampTime(0);
-        CameraController.cameraController.FadeOutToBlack(0.75f).setOnComplete(AsyncLoadScene);
-    }
-
-    private void AsyncLoadScene()
-    {
-        StartCoroutine(LoadNewScene(sceneName));
-    }
-
-    private void EndTransition()
-    {
         SetPlayerAsFocalPoint();
+
+        player.SetNextVelocity(GetTransitionVelocity());
         player.Transition(GetSceneEntrance(connectingTransition));
 
         CameraController.cameraController.FadeInFromBlack(0.5f).setOnComplete(ResetTransitionSettings);
@@ -117,19 +146,15 @@ public class LevelManager : MonoBehaviour
 
     private void ResetTransitionSettings()
     {
-        player.SetInput(true);
         CameraController.cameraController.RestoreDefaultDampTime();
+        StartCoroutine(RestorePlayerControl(0.2f));
     }
 
-
-    public IEnumerator LoadNewScene(string sceneName)
+    private IEnumerator RestorePlayerControl(float time)
     {
-        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
-        while (!async.isDone)
-        {
-            yield return null;
-        }
-        EndTransition();
+        yield return new WaitForSeconds(time);
+        player.SetInput(true);
+        player.EndTransition();
     }
 
 
@@ -138,9 +163,13 @@ public class LevelManager : MonoBehaviour
      **************************/
     private void SetupScene()
     {
-        Transform tileMap = GameObject.Find("Map").transform;
+        sceneName = SceneManager.GetActiveScene().name;
 
-        // Find all transition points
+        // Find tilemap parent
+        string tileMapObjectName = sceneName + "_Map";
+        Transform tileMap = GameObject.Find(tileMapObjectName).transform;
+
+        // Find all scene transition points (entrances)
         sceneTransitions = new Dictionary<string, GameObject>();
         Transform transitionsParent = tileMap.transform.Find("Transitions");
         foreach (Transform transitionChild in transitionsParent)
@@ -149,7 +178,7 @@ public class LevelManager : MonoBehaviour
             sceneTransitions.Add(transitionName, transitionChild.gameObject);
         }
 
-        // Find camera bounds
+        // Find and set scene camera bounds
         EdgeCollider2D cameraBounds = tileMap.transform.Find("CameraBoundaries").transform.Find("CameraBounds").GetComponent<EdgeCollider2D>();
 
         CameraController.cameraController.SetCameraBounds(cameraBounds);

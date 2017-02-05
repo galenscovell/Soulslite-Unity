@@ -37,7 +37,6 @@ public class PlayerDash : StateMachineBehaviour
         animator.speed = 1f;
         currentPitch = 1f;
         chainCounter = 0;
-        dashTrail.SetEnabled(false);
         animator.SetBool("Dashing", false);
     }
 

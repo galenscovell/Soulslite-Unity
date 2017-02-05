@@ -96,7 +96,7 @@ public class BaseEntity : MonoBehaviour
 
     protected bool IsMoving()
     {
-        return Vector2.Distance(nextVelocity, Vector2.zero) > 0.2f;
+        return Vector2.Distance(nextVelocity, Vector2.zero) > 0.1f;
     }
 
 
@@ -234,6 +234,11 @@ public class BaseEntity : MonoBehaviour
     public Vector2 GetFacingDirection()
     {
         return facingDirection;
+    }
+
+    public float GetDefaultSpeed()
+    {
+        return defaultSpeed;
     }
 
 

@@ -18,7 +18,9 @@ public class SceneLoader : MonoBehaviour
         {
             loadingScene = true;
             loadingText.text = "Loading";
-            StartCoroutine(LoadNewScene());
+            SceneManager.LoadScene(sceneName);
+            // StartCoroutine(LoadNewScene());
+            LevelManager.levelManager.BeginGame(sceneName);
         }
 
         if (loadingScene == true)
@@ -30,7 +32,6 @@ public class SceneLoader : MonoBehaviour
     public IEnumerator LoadNewScene()
     {
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
-
         while (!async.isDone)
         {
             yield return null;
