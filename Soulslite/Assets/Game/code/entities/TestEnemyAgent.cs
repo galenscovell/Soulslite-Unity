@@ -186,7 +186,7 @@ public class TestEnemyAgent : Enemy
     {
         // Flash, particle fx and damage
         base.Hurt(collisionDirection);
-        CameraController.cameraController.ActivateShake(2, 0.1f);
+        CameraSystem.cameraSystem.ActivateShake(2, 0.1f);
     }
 
 

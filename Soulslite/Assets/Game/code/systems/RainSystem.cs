@@ -6,7 +6,6 @@ public class RainSystem : MonoBehaviour
 {
     public static RainSystem rainSystem;
 
-    public new Camera camera;
     public GameObject rainSplashObject;
     public GameObject rainDropObject;
     public int maxRaindrops;
@@ -117,8 +116,8 @@ public class RainSystem : MonoBehaviour
     {
         // Find cameras bottom left and top right corners as Vector2s
         // These have give so drops can spawn slightly outside of camera
-        Vector2 cameraBottomLeft = camera.ViewportToWorldPoint(new Vector2(-0.25f, -0.25f));
-        Vector2 cameraTopRight = camera.ViewportToWorldPoint(new Vector2(1.25f, 1.25f));
+        Vector2 cameraBottomLeft = CameraSystem.cameraSystem.GetCamera().ViewportToWorldPoint(new Vector2(-0.25f, -0.25f));
+        Vector2 cameraTopRight = CameraSystem.cameraSystem.GetCamera().ViewportToWorldPoint(new Vector2(1.25f, 1.25f));
 
         // Establish x bounds
         minX = cameraBottomLeft.x;

@@ -59,7 +59,7 @@ public class PlayerDash : StateMachineBehaviour
 
         dashTrail.SetEnabled(true);
         dashLine.enabled = true;
-        CameraController.cameraController.SetDampTime(0.3f);
+        CameraSystem.cameraSystem.SetDampTime(0.3f);
 
         if (chainCounter < 6)
         {
@@ -115,7 +115,7 @@ public class PlayerDash : StateMachineBehaviour
         preventChain = false;
         chainableState = false;
         player.EnableMotion();
-        CameraController.cameraController.RestoreDefaultDampTime();
+        CameraSystem.cameraSystem.RestoreDefaultDampTime();
     }
 
     private void BeginDashLine()

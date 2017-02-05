@@ -20,7 +20,7 @@ public class SceneLoader : MonoBehaviour
             loadingText.text = "Loading";
             SceneManager.LoadScene(sceneName);
             // StartCoroutine(LoadNewScene());
-            LevelManager.levelManager.BeginGame(sceneName);
+            LevelSystem.levelSystem.BeginGame(sceneName);
         }
 
         if (loadingScene == true)

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 
-public class CameraController : MonoBehaviour 
+public class CameraSystem : MonoBehaviour 
 {
-    public static CameraController cameraController;
+    public static CameraSystem cameraSystem;
 
     public float initialDampTime;
     public int orthographicHeight = 120;
@@ -29,8 +29,8 @@ public class CameraController : MonoBehaviour
 
     private void Awake()
     {
-        if (cameraController != null) Destroy(cameraController);
-        else cameraController = this;
+        if (cameraSystem != null) Destroy(cameraSystem);
+        else cameraSystem = this;
         DontDestroyOnLoad(this);
 
         camera = gameObject.GetComponent<Camera>();
@@ -63,6 +63,11 @@ public class CameraController : MonoBehaviour
         focusPosition = Vector3.Max(focusPosition, minPosition);
 
         transform.position = focusPosition + Vector3.forward * -10;
+    }
+
+    public Camera GetCamera()
+    {
+        return camera;
     }
 
 

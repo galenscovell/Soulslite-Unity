@@ -257,14 +257,14 @@ public class PlayerAgent : BaseEntity
             // Show damage vignette when player health low
             if (GetHealth() == 1)
             {
-                CameraController.cameraController.FadeInVignette(Color.black, 2);
+                CameraSystem.cameraSystem.FadeInVignette(Color.black, 2);
                 StartCoroutine(heartbeat);
             }
 
             // Die if player health is zero
             if (HealthZero())
             {
-                CameraController.cameraController.FadeOutVignette(0);
+                CameraSystem.cameraSystem.FadeOutVignette(0);
                 StopCoroutine(heartbeat);
                 Die();
                 animator.Play(death.GetHash());
@@ -300,7 +300,7 @@ public class PlayerAgent : BaseEntity
     private new void Hurt(Vector2 collisionDirection)
     {
         base.Hurt(collisionDirection);
-        CameraController.cameraController.ActivateShake(2, 0.1f);
+        CameraSystem.cameraSystem.ActivateShake(2, 0.1f);
         DecreaseHealth(1);
     }
 
@@ -322,7 +322,7 @@ public class PlayerAgent : BaseEntity
         BeginDeath();
         animator.SetBool("Dead", true);
         spriteRenderer.sortingLayerName = "Foreground";
-        CameraController.cameraController.FadeOutToBlack(2);
+        CameraSystem.cameraSystem.FadeOutToBlack(2);
     }
 
 

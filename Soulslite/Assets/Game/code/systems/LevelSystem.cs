@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class LevelManager : MonoBehaviour
+public class LevelSystem : MonoBehaviour
 {
-    public static LevelManager levelManager;
+    public static LevelSystem levelSystem;
 
     public PlayerAgent player;
     public List<GameObject> focalPoints;
@@ -20,14 +20,14 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        if (levelManager != null) Destroy(levelManager);
-        else levelManager = this;
+        if (levelSystem != null) Destroy(levelSystem);
+        else levelSystem = this;
         DontDestroyOnLoad(this);
 
         musicSources = GetComponents<AudioSource>();
 
         RainSystem.rainSystem.gameObject.SetActive(false);
-        CameraController.cameraController.FadeOutToBlack(0);
+        CameraSystem.cameraSystem.FadeOutToBlack(0);
     }
 
     public void BeginGame(string startingSceneName)
@@ -50,12 +50,12 @@ public class LevelManager : MonoBehaviour
      **************************/
     public void SetPlayerAsFocalPoint()
     {
-        CameraController.cameraController.ChangeTarget(player.gameObject);
+        CameraSystem.cameraSystem.ChangeTarget(player.gameObject);
     }
 
     public void SetTargetAsFocalPoint(int index)
     {
-        CameraController.cameraController.ChangeTarget(focalPoints[index]);
+        CameraSystem.cameraSystem.ChangeTarget(focalPoints[index]);
     }
 
 
@@ -102,7 +102,7 @@ public class LevelManager : MonoBehaviour
 
         player.SetNextVelocity(GetTransitionVelocity());
 
-        CameraController.cameraController.FadeOutToBlack(0.75f).setOnComplete(LoadNextScene);
+        CameraSystem.cameraSystem.FadeOutToBlack(0.75f).setOnComplete(LoadNextScene);
     }
 
     private Vector2 GetTransitionVelocity()
@@ -135,18 +135,18 @@ public class LevelManager : MonoBehaviour
     private void OnLevelWasLoaded(int level)
     {
         SetupScene();
-        CameraController.cameraController.SetDampTime(0);
+        CameraSystem.cameraSystem.SetDampTime(0);
         SetPlayerAsFocalPoint();
 
         player.SetNextVelocity(GetTransitionVelocity());
         player.Transition(GetSceneEntrance(connectingTransition));
 
-        CameraController.cameraController.FadeInFromBlack(0.5f).setOnComplete(ResetTransitionSettings);
+        CameraSystem.cameraSystem.FadeInFromBlack(0.5f).setOnComplete(ResetTransitionSettings);
     }
 
     private void ResetTransitionSettings()
     {
-        CameraController.cameraController.RestoreDefaultDampTime();
+        CameraSystem.cameraSystem.RestoreDefaultDampTime();
         StartCoroutine(RestorePlayerControl(0.2f));
     }
 
@@ -181,7 +181,7 @@ public class LevelManager : MonoBehaviour
         // Find and set scene camera bounds
         EdgeCollider2D cameraBounds = tileMap.transform.Find("CameraBoundaries").transform.Find("CameraBounds").GetComponent<EdgeCollider2D>();
 
-        CameraController.cameraController.SetCameraBounds(cameraBounds);
+        CameraSystem.cameraSystem.SetCameraBounds(cameraBounds);
     }
 
     public Vector2 GetSceneEntrance(string position)

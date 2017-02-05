@@ -13,7 +13,7 @@ public class TransitionZone : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            LevelManager.levelManager.BeginTransition(nextSceneName, connectingTransition);
+            LevelSystem.levelSystem.BeginTransition(nextSceneName, connectingTransition);
         }
     }
 
