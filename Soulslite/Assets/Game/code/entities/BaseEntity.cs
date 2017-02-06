@@ -52,7 +52,8 @@ public class BaseEntity : MonoBehaviour
      **************************/
     protected void Update()
     {
-        spriteRenderer.sortingOrder = -Mathf.RoundToInt((transform.position.y + -0.1f) / 0.05f);
+        int normalSortingOrder = -Mathf.RoundToInt((transform.position.y + -0.1f) / 0.05f);
+        SetSortingOrder(normalSortingOrder);
     }
 
     protected void FixedUpdate()
@@ -284,5 +285,15 @@ public class BaseEntity : MonoBehaviour
     public void DisableFlippedX()
     {
         spriteRenderer.flipX = false;
+    }
+
+    public void SetSortingLayer(string value)
+    {
+        spriteRenderer.sortingLayerName = value;
+    }
+
+    public void SetSortingOrder(int value)
+    {
+        spriteRenderer.sortingOrder = value;
     }
 }

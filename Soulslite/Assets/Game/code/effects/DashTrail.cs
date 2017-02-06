@@ -43,7 +43,11 @@ public class DashTrail : MonoBehaviour
 
             if (spawnTimer >= spawnInterval)
             {
-                DashTrailObject trail = trailObjectsNotInUse.Dequeue();
+                DashTrailObject trail = null;
+                if (trailObjectsNotInUse.Count > 0)
+                {
+                    trail = trailObjectsNotInUse.Dequeue();
+                }
 
                 if (trail != null)
                 {

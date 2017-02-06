@@ -7,6 +7,7 @@ public class PlayerAgent : BaseEntity
     private AnimatorStateInfo currentStateInfo;
     private int attackChainWaitFrames;
     private bool inputEnabled = false;
+    private bool falling = false;
 
     // State machines
     private PlayerAttack1 attack1;
@@ -15,6 +16,7 @@ public class PlayerAgent : BaseEntity
     private PlayerAttackInterrupt attackInterrupt;
     private PlayerDash dash;
     private PlayerDeath death;
+    private PlayerFall fall;
     private PlayerFullIdle fullIdle;
     private PlayerHurt hurt;
     private PlayerIdle idle;
@@ -40,6 +42,7 @@ public class PlayerAgent : BaseEntity
         attackInterrupt = animator.GetBehaviour<PlayerAttackInterrupt>();
         dash = animator.GetBehaviour<PlayerDash>();
         death = animator.GetBehaviour<PlayerDeath>();
+        fall = animator.GetBehaviour<PlayerFall>();
         fullIdle = animator.GetBehaviour<PlayerFullIdle>();
         hurt = animator.GetBehaviour<PlayerHurt>();
         idle = animator.GetBehaviour<PlayerIdle>();
@@ -54,6 +57,7 @@ public class PlayerAgent : BaseEntity
         attackInterrupt.Setup(this, 2);
         dash.Setup(this, GetComponent<DashTrail>(), GetComponent<LineRenderer>(), 3);
         death.Setup(this, 4);
+        fall.Setup(this, 4);
         fullIdle.Setup(this);
         hurt.Setup(this, 5);
         idle.Setup(this);
@@ -111,6 +115,12 @@ public class PlayerAgent : BaseEntity
      **************************/
     private void DefaultUpdate()
     {
+        if (falling)
+        {
+            Fall();
+            return;
+        }
+
         RestoreDefaultSpeed();
         SetNextVelocity(GetAxisInput() * speed);
 
@@ -209,19 +219,27 @@ public class PlayerAgent : BaseEntity
             return;
         }
 
-        // Ignore collisions with level boundaries and transition zones
-        if (collision.tag == "LevelBoundary" || collision.tag == "Transition")
+        // Ignore collisions with transition zones
+        if (collision.tag == "TransitionTag")
         {
             return;
         }
 
         // Interrupt attack if collided with obstacle
-        if (collision.tag == "EnvironmentObstacle")
+        if (collision.tag == "ObstacleTag")
         {
             animator.Play(attackInterrupt.GetHash());
             return;
         }
 
+        // Set player as ready to fall if if colliding with falloff boundary
+        if (collision.tag == "FalloffTag")
+        {
+            falling = !falling;
+            return;
+        }
+
+        // Enemy collision
         if (collision.tag != "Enemy")
         {
             // Ignore if already hurting
@@ -321,8 +339,31 @@ public class PlayerAgent : BaseEntity
     {
         BeginDeath();
         animator.SetBool("Dead", true);
-        spriteRenderer.sortingLayerName = "Foreground";
+        SetSortingLayer("Foreground");
         CameraSystem.cameraSystem.FadeOutToBlack(2);
+    }
+
+    public void Fall()
+    {
+        animator.SetBool("Attacking", false);
+        animator.SetBool("Dashing", false);
+        animator.SetBool("Idling", false);
+        animator.SetBool("Ranged", false);
+        animator.SetBool("Falling", true);
+
+        gameObject.layer = 10;
+        SetSortingLayer("Foreground");
+        CameraSystem.cameraSystem.FadeOutToBlack(0.75f);
+
+        SetInput(false);
+        SetSpeed(40);
+        SetNextVelocity(facingDirection.normalized);
+        animator.Play("PlayerFallStart");
+    }
+
+    public bool PlayerIsFalling()
+    {
+        return falling;
     }
 
 

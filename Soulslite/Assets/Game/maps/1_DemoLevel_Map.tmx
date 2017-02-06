@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="12" height="30" tilewidth="32" tileheight="32" nextobjectid="110">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="12" height="30" tilewidth="32" tileheight="32" nextobjectid="144">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="29" columns="0">
   <tile id="0">
    <image width="32" height="32" source="DemoLevelTiles/ground/cliff-diag-left1_1.png"/>
@@ -297,10 +297,10 @@
    <image width="32" height="32" source="DemoLevelTiles/obstacle/split/s_debris0_1.png"/>
   </tile>
  </tileset>
- <layer name="Background" width="12" height="30">
+ <layer name="Ground" width="12" height="30">
   <properties>
-   <property name="unity:layer" value="Ground"/>
-   <property name="unity:sortingLayerName" value="Default"/>
+   <property name="unity:layer" value="GroundLayer"/>
+   <property name="unity:sortingLayerName" value="Ground"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,18,11,11,20,0,0,0,0,
@@ -337,8 +337,8 @@
  </layer>
  <layer name="Decoration" width="12" height="30">
   <properties>
-   <property name="unity:layer" value="Ground"/>
-   <property name="unity:sortingLayerName" value="Default"/>
+   <property name="unity:layer" value="GroundLayer"/>
+   <property name="unity:sortingLayerName" value="Ground"/>
   </properties>
   <data encoding="csv">
 0,0,0,49,0,0,0,43,0,0,0,0,
@@ -375,23 +375,23 @@
  </layer>
  <layer name="ObstacleBase" width="12" height="30">
   <properties>
-   <property name="unity:layer" value="Ground"/>
-   <property name="unity:sortingLayerName" value="Default"/>
+   <property name="unity:layer" value="GroundLayer"/>
+   <property name="unity:sortingLayerName" value="Ground"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
+64,0,0,0,0,0,0,0,0,0,0,64,
+65,0,0,0,0,0,0,0,0,0,0,65,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,100,0,0,100,0,0,0,0,
 0,0,0,100,0,0,0,0,100,0,0,0,
 0,0,0,0,100,0,0,100,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
+64,0,0,0,0,0,0,0,0,0,0,64,
+65,0,0,0,0,0,0,0,0,0,0,65,
 0,0,0,0,0,0,72,73,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,100,0,0,0,0,100,0,0,0,
@@ -401,35 +401,35 @@
 0,0,0,0,102,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,100,78,79,0,0,84,85,100,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
+64,0,0,0,0,0,0,0,0,0,0,64,
+65,0,0,0,0,0,0,0,0,0,0,65,
 0,0,100,0,0,0,0,66,67,100,0,0,
 0,0,0,90,91,0,0,68,69,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0
+0,0,0,64,0,0,0,0,64,0,0,0,
+0,0,0,65,0,0,0,0,65,0,0,0
 </data>
  </layer>
  <layer name="Foreground" width="12" height="30">
   <properties>
-   <property name="unity:layer" value="Ground"/>
+   <property name="unity:layer" value="GroundLayer"/>
    <property name="unity:sortingLayerName" value="Foreground"/>
   </properties>
   <data encoding="csv">
 61,0,0,0,0,0,0,0,0,0,0,61,
 62,0,0,0,0,0,0,0,0,0,0,62,
 63,0,0,0,0,0,0,0,0,0,0,63,
-64,0,0,0,0,0,0,0,0,0,0,64,
-65,0,0,0,98,0,0,98,0,0,0,65,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,98,0,0,98,0,0,0,0,
 0,0,0,98,99,0,0,99,98,0,0,0,
 0,0,0,99,98,0,0,98,99,0,0,0,
 0,0,0,0,99,0,0,99,0,0,0,0,
 61,0,0,0,0,0,0,0,0,0,0,61,
 62,0,0,0,0,0,0,0,0,0,0,62,
 63,0,53,54,0,0,0,0,53,54,0,63,
-64,0,55,56,0,0,0,0,55,56,0,64,
-65,0,0,0,0,0,70,71,0,0,0,65,
+0,0,55,56,0,0,0,0,55,56,0,0,
+0,0,0,0,0,0,70,71,0,0,0,0,
 0,0,0,98,0,0,0,0,98,0,0,0,
 0,0,0,99,0,0,0,0,99,0,0,0,
 0,0,0,86,87,0,0,92,93,0,0,0,
@@ -439,75 +439,387 @@
 61,0,98,74,75,0,0,80,81,98,0,61,
 62,0,99,76,77,0,0,82,83,99,0,62,
 63,0,0,0,0,0,0,0,0,0,0,63,
-64,0,98,0,0,0,0,0,0,98,0,64,
-65,0,99,86,87,0,0,0,0,99,0,65,
+0,0,98,0,0,0,0,0,0,98,0,0,
+0,0,99,86,87,0,0,0,0,99,0,0,
 0,0,0,88,89,0,0,0,0,0,0,0,
 0,0,0,61,0,0,0,0,61,0,0,0,
 0,0,0,62,0,0,0,0,62,0,0,0,
 0,0,0,63,0,0,0,0,63,0,0,0,
-0,0,0,64,0,0,0,0,64,0,0,0,
-0,0,0,65,0,0,0,0,65,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="ObstacleCollisions">
+ <objectgroup name="Obstacles">
   <properties>
-   <property name="unity:layer" value="Obstacles"/>
-   <property name="unity:tag" value="EnvironmentObstacle"/>
+   <property name="unity:layer" value="ObstacleLayer"/>
+   <property name="unity:tag" value="ObstacleTag"/>
   </properties>
-  <object id="1" name="ObstacleCollision" x="112" y="670" width="34" height="19"/>
-  <object id="4" name="ObstacleCollision" x="72" y="766" width="16" height="7"/>
-  <object id="5" name="ObstacleCollision" x="130" y="605" width="28" height="12"/>
-  <object id="8" name="ObstacleCollision" x="112" y="798" width="34" height="19"/>
-  <object id="9" name="ObstacleCollision" x="72" y="670" width="16" height="7"/>
-  <object id="10" name="ObstacleCollision" x="296" y="766" width="16" height="7"/>
-  <object id="11" name="ObstacleCollision" x="296" y="670" width="16" height="7"/>
-  <object id="12" name="ObstacleCollision" x="240" y="670" width="34" height="19"/>
-  <object id="13" name="ObstacleCollision" x="240" y="542" width="34" height="19"/>
-  <object id="14" name="ObstacleCollision" x="112" y="542" width="34" height="19"/>
-  <object id="15" name="ObstacleCollision" x="104" y="478" width="16" height="7"/>
-  <object id="16" name="ObstacleCollision" x="264" y="478" width="16" height="7"/>
-  <object id="17" name="ObstacleCollision" x="232" y="254" width="16" height="7"/>
-  <object id="18" name="ObstacleCollision" x="136" y="254" width="16" height="7"/>
-  <object id="88" name="ObstacleCollision" x="104" y="222" width="16" height="7"/>
-  <object id="89" name="ObstacleCollision" x="264" y="222" width="16" height="7"/>
-  <object id="93" name="ObstacleCollision" x="231" y="768" width="15" height="16"/>
-  <object id="94" name="ObstacleCollision" x="225" y="784" width="61" height="16"/>
-  <object id="95" name="ObstacleCollision" x="234" y="800" width="18" height="18"/>
-  <object id="96" name="ObstacleCollision" x="256" y="770" width="22" height="14"/>
-  <object id="97" name="ObstacleCollision" x="136" y="190" width="16" height="7"/>
-  <object id="98" name="ObstacleCollision" x="232" y="190" width="16" height="7"/>
-  <object id="99" name="ObstacleCollision" x="205" y="405" width="43" height="16"/>
-  <object id="100" name="ObstacleCollision" x="200" y="421" width="32" height="13"/>
+  <object id="1" name="Obstacle" x="112" y="670" width="34" height="19">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="4" name="Obstacle" x="72" y="766" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="5" name="Obstacle" x="130" y="605" width="28" height="12">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="8" name="Obstacle" x="112" y="798" width="34" height="19">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="9" name="Obstacle" x="72" y="670" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="10" name="Obstacle" x="296" y="766" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="11" name="Obstacle" x="296" y="670" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="12" name="Obstacle" x="240" y="670" width="34" height="19">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="13" name="Obstacle" x="240" y="542" width="34" height="19">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="14" name="Obstacle" x="112" y="542" width="34" height="19">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="15" name="Obstacle" x="104" y="478" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="16" name="Obstacle" x="264" y="478" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="17" name="Obstacle" x="232" y="254" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="18" name="Obstacle" x="136" y="254" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="88" name="Obstacle" x="104" y="222" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="89" name="Obstacle" x="264" y="222" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="93" name="Obstacle" x="231" y="768" width="15" height="16">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="94" name="Obstacle" x="225" y="784" width="61" height="16">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="95" name="Obstacle" x="234" y="800" width="18" height="18">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="96" name="Obstacle" x="256" y="770" width="22" height="14">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="97" name="Obstacle" x="136" y="190" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="98" name="Obstacle" x="232" y="190" width="16" height="7">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="99" name="Obstacle" x="205" y="405" width="43" height="16">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="100" name="Obstacle" x="200" y="421" width="32" height="13">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup name="LevelBoundaries">
+ <objectgroup name="FalloffBoundaries">
   <properties>
-   <property name="unity:layer" value="Obstacles"/>
-   <property name="unity:tag" value="LevelBoundary"/>
+   <property name="unity:isTrigger" type="bool" value="true"/>
+   <property name="unity:layer" value="FalloffLayer"/>
+   <property name="unity:tag" value="FalloffTag"/>
   </properties>
+  <object id="111" name="Falloff" x="264" y="0" width="8" height="80">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="112" name="Falloff" x="112" y="0" width="8" height="80">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="113" name="Falloff" x="296" y="112" width="8" height="64">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="114" name="Falloff" x="80" y="112" width="8" height="64">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="115" name="Falloff" x="328" y="208" width="8" height="48">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="116" name="Falloff" x="48" y="208" width="8" height="48">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="117" name="Falloff" x="264" y="317" width="8" height="99">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="118" name="Falloff" x="112" y="317" width="8" height="99">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="119" name="Falloff" x="328" y="416" width="8" height="160">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="120" name="Falloff" x="48" y="416" width="8" height="160">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="121" name="Falloff" x="296" y="605" width="8" height="43">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="122" name="Falloff" x="80" y="605" width="8" height="43">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="123" name="Falloff" x="328" y="640" width="8" height="160">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="124" name="Falloff" x="48" y="640" width="8" height="160">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="126" name="Falloff" x="120" y="864" width="144" height="8">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="127" name="Falloff" x="312" y="416" width="16" height="8">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="128" name="Falloff" x="56" y="416" width="16" height="8">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="129" name="Falloff" x="304" y="640" width="24" height="8">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="130" name="Falloff" x="56" y="640" width="24" height="8">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+  </object>
+  <object id="134" name="Falloff" x="264" y="869">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+   <polygon points="0,0 64,-64 64,-72 0,-8"/>
+  </object>
+  <object id="135" name="Falloff" x="120" y="869">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+   <polygon points="0,0 -64,-64 -64,-72 0,-8"/>
+  </object>
+  <object id="136" name="Falloff" x="304" y="605">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+   <polygon points="0,0 24,-24 24,-32 -8,0"/>
+  </object>
+  <object id="137" name="Falloff" x="80" y="605">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+   <polygon points="0,0 -24,-24 -24,-32 8,0"/>
+  </object>
+  <object id="138" name="Falloff" x="272" y="317">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+   <polygon points="0,0 56,-56 56,-64 -8,0"/>
+  </object>
+  <object id="139" name="Falloff" x="112" y="317">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+   <polygon points="0,0 -56,-56 -56,-64 8,0"/>
+  </object>
+  <object id="140" name="Falloff" x="80" y="112">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+   <polygon points="0,0 32,-32 40,-32 8,0"/>
+  </object>
+  <object id="141" name="Falloff" x="264" y="80">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+   <polygon points="0,0 32,32 40,32 8,0"/>
+  </object>
+  <object id="142" name="Falloff" x="296" y="176">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+   <polygon points="0,0 32,32 40,32 8,0"/>
+  </object>
+  <object id="143" name="Falloff" x="48" y="208">
+   <properties>
+    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:tag" value="FalloffTag"/>
+   </properties>
+   <polygon points="0,0 32,-32 40,-32 8,0"/>
+  </object>
  </objectgroup>
  <objectgroup name="Transitions">
   <properties>
-   <property name="unity:tag" value="Transition"/>
+   <property name="unity:isTrigger" type="bool" value="true"/>
+   <property name="unity:tag" value="TransitionTag"/>
   </properties>
   <object id="107" name="N_Entrance" x="128" y="4" width="128" height="8">
    <properties>
-    <property name="unity:layer" value="Default"/>
-    <property name="unity:tag" value="Transition"/>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="TransitionLayer"/>
+    <property name="unity:tag" value="TransitionTag"/>
    </properties>
   </object>
   <object id="109" name="Begin_Entrance" x="182" y="728" width="20" height="12">
    <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
     <property name="unity:layer" value="IgnoreAll"/>
-    <property name="unity:tag" value="Transition"/>
+    <property name="unity:tag" value="TransitionTag"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup name="CameraBoundaries">
   <properties>
-   <property name="unity:layer" value="IgnoreAll"/>
-   <property name="unity:tag" value="CameraBoundary"/>
+   <property name="unity:layer" value="IgnoredLayer"/>
+   <property name="unity:tag" value="CameraTag"/>
   </properties>
   <object id="102" name="CameraBounds" x="176" y="128">
+   <properties>
+    <property name="unity:layer" value="IgnoreAll"/>
+    <property name="unity:tag" value="CameraTag"/>
+   </properties>
    <polyline points="0,0 32,0 32,704 0,704 0,0"/>
   </object>
  </objectgroup>

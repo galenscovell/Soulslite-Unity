@@ -42,12 +42,15 @@ public class PlayerDash : StateMachineBehaviour
 
     public void Chain(Animator animator, Vector2 direction)
     {
-        if (chainableState)
+        // If dash input is received within the "chainable state" time a dash chain occurs
+        if (chainableState && !player.PlayerIsFalling())
         {
             chainCounter++;
             player.SetFacingDirection(direction);
             animator.Play(hash, -1, 0f);
-        } else
+        }
+        // If input is received any other time, the chain becomes locked
+        else
         {
             preventChain = true;
         }
@@ -92,8 +95,14 @@ public class PlayerDash : StateMachineBehaviour
             player.DisableMotion();
             player.RestoreDefaultSpeed();
         }
-        else if (stateTime >= 0.6f && stateTime < 0.7f)
+        else if (stateTime > 0.25f && player.PlayerIsFalling())
         {
+            player.Fall();
+            return;
+        }
+        else if (stateTime >= 0.45f && stateTime < 0.4625f)
+        {
+            // This is the brief window for dash chaining input
             if (!preventChain)
             {
                 chainableState = true;
