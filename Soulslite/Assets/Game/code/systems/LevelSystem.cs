@@ -13,7 +13,7 @@ public class LevelSystem : MonoBehaviour
 
     private AudioSource[] musicSources;
     private string sceneName;
-    private string connectingTransition = "Begin_Entrance";
+    private string lastUsedEntrance = "PlayerSpawn";
 
     private Dictionary<string, GameObject> sceneTransitions;
 
@@ -98,31 +98,44 @@ public class LevelSystem : MonoBehaviour
     {
         player.SetInput(false);
         sceneName = nextSceneName;
-        connectingTransition = connecting;
+        lastUsedEntrance = connecting;
 
         player.SetNextVelocity(GetTransitionVelocity());
-
         CameraSystem.cameraSystem.FadeOutToBlack(0.75f).setOnComplete(LoadNextScene);
+    }
+
+    public void ReviveTransition()
+    {
+        player.SetInput(false);
+        player.SetNextVelocity(Vector2.zero);
+
+        lastUsedEntrance = "PlayerSpawn";
+        LoadNextScene();
     }
 
     private Vector2 GetTransitionVelocity()
     {
         Vector2 transitionVelocity = new Vector2(0, 0);
-        if (connectingTransition == "N_Entrance")
+        if (lastUsedEntrance == "N_Entrance")
         {
             transitionVelocity.y = -1;
         }
-        else if (connectingTransition == "E_Entrance")
+        else if (lastUsedEntrance == "E_Entrance")
         {
             transitionVelocity.x = 1;
         }
-        else if (connectingTransition == "S_Entrance")
+        else if (lastUsedEntrance == "S_Entrance")
         {
             transitionVelocity.y = 1;
         }
-        else if (connectingTransition == "W_Entrance")
+        else if (lastUsedEntrance == "W_Entrance")
         {
             transitionVelocity.x = -1;
+        }
+        else
+        {
+            transitionVelocity.x = 0;
+            transitionVelocity.y = 0;
         }
         return transitionVelocity * player.GetDefaultSpeed();
     }
@@ -139,9 +152,9 @@ public class LevelSystem : MonoBehaviour
         SetPlayerAsFocalPoint();
 
         player.SetNextVelocity(GetTransitionVelocity());
-        player.Transition(GetSceneEntrance(connectingTransition));
+        player.Transition(GetSceneEntrance(lastUsedEntrance));
 
-        CameraSystem.cameraSystem.FadeInFromBlack(0.5f).setOnComplete(ResetTransitionSettings);
+        CameraSystem.cameraSystem.FadeInFromBlack(1).setOnComplete(ResetTransitionSettings);
     }
 
     private void ResetTransitionSettings()

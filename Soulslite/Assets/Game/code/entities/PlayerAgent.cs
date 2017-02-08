@@ -282,10 +282,7 @@ public class PlayerAgent : BaseEntity
             // Die if player health is zero
             if (HealthZero())
             {
-                CameraSystem.cameraSystem.FadeOutVignette(0);
-                StopCoroutine(heartbeat);
                 Die();
-                animator.Play(death.GetHash());
             }
             else
             {
@@ -337,19 +334,31 @@ public class PlayerAgent : BaseEntity
      **************************/
     public void Die()
     {
-        BeginDeath();
-        animator.SetBool("Dead", true);
-        SetSortingLayer("Foreground");
-        CameraSystem.cameraSystem.FadeOutToBlack(2);
-    }
+        CameraSystem.cameraSystem.FadeOutVignette(0);
+        StopCoroutine(heartbeat);
 
-    public void Fall()
-    {
         animator.SetBool("Attacking", false);
         animator.SetBool("Dashing", false);
         animator.SetBool("Idling", false);
         animator.SetBool("Ranged", false);
-        animator.SetBool("Falling", true);
+        animator.SetBool("Dead", true);
+
+        SetIgnorePhysics();
+        SetSortingLayer("Foreground");
+        CameraSystem.cameraSystem.FadeOutToBlack(2);
+
+        animator.Play("PlayerDie");
+    }
+
+    public void Fall()
+    {
+        CameraSystem.cameraSystem.FadeOutVignette(0);
+        StopCoroutine(heartbeat);
+
+        animator.SetBool("Attacking", false);
+        animator.SetBool("Dashing", false);
+        animator.SetBool("Idling", false);
+        animator.SetBool("Ranged", false);
 
         gameObject.layer = 10;
         SetSortingLayer("Foreground");
@@ -358,7 +367,20 @@ public class PlayerAgent : BaseEntity
         SetInput(false);
         SetSpeed(40);
         SetNextVelocity(facingDirection.normalized);
+
         animator.Play("PlayerFallStart");
+    }
+
+    public void Revive()
+    {
+        // Restore defaults on everything
+        animator.SetBool("Dead", false);
+        RestoreFullHealth();
+        FadeInSprite(0);
+        SetSortingLayer("Entity");
+        falling = false;
+        RestoreDefaultSpeed();
+        LevelSystem.levelSystem.ReviveTransition();
     }
 
     public bool PlayerIsFalling()

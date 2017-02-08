@@ -23,30 +23,29 @@ public class PlayerDeath : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.DisableMotion();
         player.PlaySfx(sfxIndex, 1f, 1f);
-
-        animator.SetBool("Attacking", false);
-        animator.SetBool("Dashing", false);
-        animator.SetBool("Idling", false);
-        animator.SetBool("Ranged", false);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-        if (stateTime >= 2)
+        if (stateTime > 2 && stateTime < 3)
         {
+            animator.SetBool("Dead", true);
             if (!fadeOutBegan)
             {
-                player.FadeOutSprite();
+                player.FadeOutSprite(0.5f);
                 fadeOutBegan = true;
             }
+        }
+        else if (stateTime > 3)
+        {
+            animator.SetTrigger("Revive");
         }
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        
+        player.Revive();
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="19" tilewidth="32" tileheight="32" nextobjectid="4">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="19" tilewidth="32" tileheight="32" nextobjectid="5">
  <tileset firstgid="1" name="background" tilewidth="32" tileheight="32" tilecount="29" columns="0">
   <tile id="0">
    <image width="32" height="32" source="DemoLevelTiles/ground/cliff-diag-left1_1.png"/>
@@ -297,10 +297,10 @@
    <image width="32" height="32" source="DemoLevelTiles/obstacle/split/s_debris0_1.png"/>
   </tile>
  </tileset>
- <layer name="Background" width="20" height="19">
+ <layer name="Ground" width="20" height="19">
   <properties>
-   <property name="unity:layer" value="Ground"/>
-   <property name="unity:sortingLayerName" value="Default"/>
+   <property name="unity:layer" value="GroundLayer"/>
+   <property name="unity:sortingLayerName" value="Ground"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -326,8 +326,8 @@
  </layer>
  <layer name="Decoration" width="20" height="19">
   <properties>
-   <property name="unity:layer" value="Ground"/>
-   <property name="unity:sortingLayerName" value="Default"/>
+   <property name="unity:layer" value="GroundLayer"/>
+   <property name="unity:sortingLayerName" value="Ground"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -353,8 +353,8 @@
  </layer>
  <layer name="ObstacleBase" width="20" height="19">
   <properties>
-   <property name="unity:layer" value="Ground"/>
-   <property name="unity:sortingLayerName" value="Default"/>
+   <property name="unity:layer" value="GroundLayer"/>
+   <property name="unity:sortingLayerName" value="Ground"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -380,7 +380,7 @@
  </layer>
  <layer name="Foreground" width="20" height="19">
   <properties>
-   <property name="unity:layer" value="Ground"/>
+   <property name="unity:layer" value="GroundLayer"/>
    <property name="unity:sortingLayerName" value="Foreground"/>
   </properties>
   <data encoding="csv">
@@ -405,36 +405,51 @@
 0,0,0,0,0,60,0,0,0,0,0,0,0,0,60,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="ObstacleCollisions">
+ <objectgroup name="Obstacles">
   <properties>
-   <property name="unity:layer" value="Obstacles"/>
-   <property name="unity:tag" value="EnvironmentObstacle"/>
+   <property name="unity:layer" value="ObstacleLayer"/>
+   <property name="unity:tag" value="ObstacleTag"/>
   </properties>
  </objectgroup>
- <objectgroup name="LevelBoundaries">
+ <objectgroup name="FalloffBoundaries">
   <properties>
-   <property name="unity:layer" value="Obstacles"/>
-   <property name="unity:tag" value="LevelBoundary"/>
+   <property name="unity:isTrigger" type="bool" value="true"/>
+   <property name="unity:layer" value="FalloffLayer"/>
+   <property name="unity:tag" value="FalloffTag"/>
   </properties>
  </objectgroup>
  <objectgroup name="Transitions">
   <properties>
-   <property name="unity:layer" value="Default"/>
-   <property name="unity:tag" value="Transition"/>
+   <property name="unity:isTrigger" type="bool" value="true"/>
+   <property name="unity:tag" value="TransitionTag"/>
   </properties>
   <object id="3" name="S_Entrance" x="256" y="596" width="128" height="8">
    <properties>
-    <property name="unity:layer" value="Default"/>
-    <property name="unity:tag" value="Transition"/>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="TransitionLayer"/>
+    <property name="unity:tag" value="TransitionTag"/>
+   </properties>
+  </object>
+  <object id="4" name="PlayerSpawn" x="304" y="568" width="32" height="16">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="IgnoreAll"/>
+    <property name="unity:tag" value="TransitionTag"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup name="CameraBoundaries">
   <properties>
-   <property name="unity:layer" value="IgnoreAll"/>
-   <property name="unity:tag" value="CameraBoundary"/>
+   <property name="unity:isTrigger" type="bool" value="true"/>
+   <property name="unity:layer" value="IgnoredLayer"/>
+   <property name="unity:tag" value="CameraTag"/>
   </properties>
   <object id="2" name="CameraBounds" x="288" y="480">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="IgnoredLayer"/>
+    <property name="unity:tag" value="CameraTag"/>
+   </properties>
    <polyline points="0,0 64,0 160,-105.6 160,-246.4 64,-352 0,-352 -96,-246.4 -96,-105.6 0,0"/>
   </object>
  </objectgroup>

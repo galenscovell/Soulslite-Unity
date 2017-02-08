@@ -40,11 +40,11 @@ public class PlayerFall : StateMachineBehaviour
         {
             if (!fadeOutBegan)
             {
-                player.FadeOutSprite();
+                player.FadeOutSprite(0.5f);
                 fadeOutBegan = true;
             }
         }
-        else if (stateTime > 2 && stateTime < 4)
+        else if (stateTime > 2 && stateTime < 7)
         {
             if (!sfxPlayed)
             {
@@ -52,15 +52,15 @@ public class PlayerFall : StateMachineBehaviour
                 sfxPlayed = true;
             }
         }
-        else if (stateTime > 4)
+        else if (stateTime > 7)
         {
-            animator.SetBool("Falling", false);
+            animator.SetTrigger("Revive");
         }
 
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.RestoreDefaultSpeed();
+        player.Revive();
     }
 }

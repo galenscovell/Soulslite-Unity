@@ -10,7 +10,6 @@ public class Enemy : BaseEntity
     protected int idleCounter;
     protected int repathCounter;
 
-    public Rigidbody2D target;
     public int repathRate;
     public float pathTracking;
     public int visionDistance;
@@ -18,6 +17,8 @@ public class Enemy : BaseEntity
 
     [HideInInspector]
     public Vector2 directionToTarget;
+
+    private Rigidbody2D target;
 
 
     /**************************
@@ -30,6 +31,8 @@ public class Enemy : BaseEntity
         attackCounter = Random.Range(60, 90);
         idleCounter = Random.Range(120, 360);
         repathCounter = repathRate;
+
+        target = LevelSystem.levelSystem.player.GetBody();
     }
 
 
@@ -123,5 +126,27 @@ public class Enemy : BaseEntity
             return true;
         }
         return false;
+    }
+
+    /**************************
+     *         Death          *
+     **************************/
+    protected void EnableDeath()
+    {
+        animator.SetBool("Dead", true);
+        spriteRenderer.material.color = new Color(0.7f, 0.7f, 0.7f);
+    }
+
+    protected void DisableDeath()
+    {
+        gameObject.layer = 0;
+        spriteRenderer.material.color = new Color(1, 1, 1);
+        animator.SetBool("Dead", false);
+    }
+
+    protected void SetEnablePhysics()
+    {
+        // Enable physics by assigning enemy back to EnemyLayer
+        gameObject.layer = 16;
     }
 }

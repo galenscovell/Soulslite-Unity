@@ -127,6 +127,11 @@ public class BaseEntity : MonoBehaviour
         return health <= 0;
     }
 
+    protected void RestoreFullHealth()
+    {
+        health = maxHealth;
+    }
+
     protected int GetHealth()
     {
         return health;
@@ -136,22 +141,9 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *         Death          *
      **************************/
-    protected void BeginDeath()
+    protected void SetIgnorePhysics()
     {
         gameObject.layer = 10;
-    }
-
-    protected void EnableDeath()
-    {
-        animator.SetBool("Dead", true);
-        spriteRenderer.material.color = new Color(0.7f, 0.7f, 0.7f);
-    }
-
-    protected void DisableDeath()
-    {
-        gameObject.layer = 0;
-        spriteRenderer.material.color = new Color(1, 1, 1);
-        animator.SetBool("Dead", false);
     }
 
     protected bool IsDead()
@@ -198,10 +190,17 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *       Gfx Effects      *
      **************************/
-    public void FadeOutSprite()
+    public void FadeOutSprite(float overTime)
     {
-        LeanTween.value(gameObject, SetSpriteAlpha, 1, 0, 1);
+        LeanTween.value(gameObject, SetSpriteAlpha, 1, 0, overTime);
     }
+
+    public void FadeInSprite(float overTime)
+    {
+        LeanTween.value(gameObject, SetSpriteAlpha, 0, 1, overTime);
+    }
+
+
 
 
     /**************************
