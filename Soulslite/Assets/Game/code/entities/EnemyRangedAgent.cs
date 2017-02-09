@@ -1,35 +1,35 @@
 ﻿using UnityEngine;
 
 
-public class TestEnemyAgent : Enemy
+public class EnemyRangedAgent : Enemy
 {
     private SeekBehavior behavior;
     private Seeker seeker;
 
     // State machines
-    private TestenemyAttack attack;
-    private TestenemyHurt hurt;
-    private TestenemyIdling idling;
+    private EnemyRangedAttack attack;
+    private EnemyRangedHurt hurt;
+    private EnemyRangedFullIdle fullIdle;
 
 
     /**************************
      *          Init          *
      **************************/
-    private new void Start() 
+    private new void Start()
     {
         base.Start();
 
         behavior = new SeekBehavior();
         seeker = GetComponent<Seeker>();
 
-        attack = animator.GetBehaviour<TestenemyAttack>();
-        hurt = animator.GetBehaviour<TestenemyHurt>();
-        idling = animator.GetBehaviour<TestenemyIdling>();
+        attack = animator.GetBehaviour<EnemyRangedAttack>();
+        hurt = animator.GetBehaviour<EnemyRangedHurt>();
+        fullIdle = animator.GetBehaviour<EnemyRangedFullIdle>();
 
         // Ints in state Setups are the sfx index
         attack.Setup(this, 0);
         hurt.Setup(this);
-        idling.Setup(this);
+        fullIdle.Setup(this);
     }
 
 
@@ -171,9 +171,9 @@ public class TestEnemyAgent : Enemy
 
             if (HealthZero() && !IsDead())
             {
-                SetIgnorePhysics();
-                hurt.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
-                animator.Play(hurt.GetHash());
+                //SetIgnorePhysics();
+                //hurt.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
+                //animator.Play(hurt.GetHash());
             }
         }
     }
@@ -187,15 +187,5 @@ public class TestEnemyAgent : Enemy
         // Flash, particle fx and damage
         base.Hurt(collisionDirection);
         CameraSystem.cameraSystem.ActivateShake(2, 0.1f);
-    }
-
-
-    /**************************
-     *         Death          *
-     **************************/
-    public void Die()
-    {
-        animator.SetBool("Attacking", false);
-        EnableDeath();
     }
 }

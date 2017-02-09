@@ -414,7 +414,7 @@
  <objectgroup name="FalloffBoundaries">
   <properties>
    <property name="unity:isTrigger" type="bool" value="true"/>
-   <property name="unity:layer" value="FalloffLayer"/>
+   <property name="unity:layer" value="ObstacleLayer"/>
    <property name="unity:tag" value="FalloffTag"/>
   </properties>
  </objectgroup>

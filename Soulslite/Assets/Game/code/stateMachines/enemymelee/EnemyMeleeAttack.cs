@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 
-public class TestenemyAttack : StateMachineBehaviour
+public class EnemyMeleeAttack : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.TestenemyAttack");
+    private int hash = Animator.StringToHash("Base Layer.EnemyMeleeAttack");
     private Enemy enemy;
     private int sfxIndex;
 

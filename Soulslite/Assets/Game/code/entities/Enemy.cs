@@ -131,20 +131,21 @@ public class Enemy : BaseEntity
     /**************************
      *         Death          *
      **************************/
-    protected void EnableDeath()
+    public void EnableDeath()
     {
+        animator.SetBool("Attacking", false);
         animator.SetBool("Dead", true);
         spriteRenderer.material.color = new Color(0.7f, 0.7f, 0.7f);
     }
 
-    protected void DisableDeath()
+    public void DisableDeath()
     {
         gameObject.layer = 0;
         spriteRenderer.material.color = new Color(1, 1, 1);
         animator.SetBool("Dead", false);
     }
 
-    protected void SetEnablePhysics()
+    public void SetEnablePhysics()
     {
         // Enable physics by assigning enemy back to EnemyLayer
         gameObject.layer = 16;

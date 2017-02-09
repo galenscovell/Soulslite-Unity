@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 
-public class TestenemyIdling : StateMachineBehaviour
+public class EnemyRangedFullIdle : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.TestenemyIdling");
+    private int hash = Animator.StringToHash("Base Layer.EnemyRangedFullIdle");
     private Enemy enemy;
 
 

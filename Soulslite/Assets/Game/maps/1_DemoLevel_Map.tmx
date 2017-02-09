@@ -662,146 +662,146 @@
  <objectgroup name="FalloffBoundaries">
   <properties>
    <property name="unity:isTrigger" type="bool" value="true"/>
-   <property name="unity:layer" value="FalloffLayer"/>
+   <property name="unity:layer" value="ObstacleLayer"/>
    <property name="unity:tag" value="FalloffTag"/>
   </properties>
   <object id="111" name="Falloff" x="264" y="0" width="8" height="80">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="112" name="Falloff" x="112" y="0" width="8" height="80">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="113" name="Falloff" x="296" y="112" width="8" height="64">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="114" name="Falloff" x="80" y="112" width="8" height="64">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="115" name="Falloff" x="328" y="208" width="8" height="48">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="116" name="Falloff" x="48" y="208" width="8" height="48">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="117" name="Falloff" x="264" y="320" width="8" height="96">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="118" name="Falloff" x="112" y="320" width="8" height="96">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="119" name="Falloff" x="328" y="416" width="8" height="160">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="120" name="Falloff" x="48" y="416" width="8" height="160">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="121" name="Falloff" x="296" y="608" width="8" height="40">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="122" name="Falloff" x="80" y="608" width="8" height="40">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="123" name="Falloff" x="328" y="640" width="8" height="160">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="124" name="Falloff" x="48" y="640" width="8" height="160">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="126" name="Falloff" x="120" y="864" width="144" height="8">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="127" name="Falloff" x="312" y="416" width="16" height="8">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="128" name="Falloff" x="56" y="416" width="16" height="8">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="129" name="Falloff" x="304" y="640" width="24" height="8">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="130" name="Falloff" x="56" y="640" width="24" height="8">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
   <object id="145" name="Falloff" x="88" y="112">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
    <polyline points="0,0 -8,0 24,-32 32,-32 0,0"/>
@@ -809,7 +809,7 @@
   <object id="146" name="Falloff" x="264" y="80">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
    <polyline points="0,0 32,32 40,32 8,0 0,0"/>
@@ -817,7 +817,7 @@
   <object id="147" name="Falloff" x="48" y="208">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
    <polyline points="0,0 32,-32 40,-32 8,0 0,0"/>
@@ -825,7 +825,7 @@
   <object id="148" name="Falloff" x="296" y="176">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
    <polyline points="0,0 32,32 40,32 8,0 0,0"/>
@@ -833,7 +833,7 @@
   <object id="154" name="Falloff" x="56" y="256">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
    <polyline points="0,0 64,64 56,64 -8,0 0,0"/>
@@ -841,7 +841,7 @@
   <object id="155" name="Falloff" x="264" y="320">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
    <polyline points="0,0 64,-64 72,-64 8,0 0,0"/>
@@ -849,7 +849,7 @@
   <object id="156" name="Falloff" x="56" y="576">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
    <polyline points="0,0 32,32 24,32 -8,0 0,0"/>
@@ -857,7 +857,7 @@
   <object id="157" name="Falloff" x="296" y="608">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
    <polyline points="0,0 32,-32 40,-32 8,0 0,0"/>
@@ -865,7 +865,7 @@
   <object id="158" name="Falloff" x="56" y="800">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
    <polyline points="0,0 64,64 64,72 -8,0 0,0"/>
@@ -873,7 +873,7 @@
   <object id="159" name="Falloff" x="264" y="864">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
-    <property name="unity:layer" value="FalloffLayer"/>
+    <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
    <polyline points="0,0 64,-64 72,-64 0,8 0,0"/>
