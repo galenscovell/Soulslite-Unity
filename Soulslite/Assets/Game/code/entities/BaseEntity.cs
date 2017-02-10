@@ -200,6 +200,18 @@ public class BaseEntity : MonoBehaviour
         LeanTween.value(gameObject, SetSpriteAlpha, 0, 1, overTime);
     }
 
+    public IEnumerator LerpSpriteColor(Color color, float overTime)
+    {
+        float runtime = 0f;
+        
+        while (runtime < overTime)
+        {
+            runtime += Time.deltaTime;
+            spriteRenderer.material.color = Color.Lerp(spriteRenderer.material.color, color, runtime / overTime);
+            yield return null;
+        }
+    }
+
 
 
 

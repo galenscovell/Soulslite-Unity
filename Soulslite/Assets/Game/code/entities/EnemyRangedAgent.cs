@@ -26,8 +26,10 @@ public class EnemyRangedAgent : Enemy
         hurt = animator.GetBehaviour<EnemyRangedHurt>();
         fullIdle = animator.GetBehaviour<EnemyRangedFullIdle>();
 
+        EnemyRangedGunLimb gunLimb = transform.Find("GunLimb").GetComponent<EnemyRangedGunLimb>();
+
         // Ints in state Setups are the sfx index
-        attack.Setup(this, 0);
+        attack.Setup(this, gunLimb, 0);
         hurt.Setup(this);
         fullIdle.Setup(this);
     }

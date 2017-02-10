@@ -11,6 +11,7 @@ public class Enemy : BaseEntity
     protected int repathCounter;
 
     public int repathRate;
+    public int attackRate;
     public float pathTracking;
     public int visionDistance;
     public int attackDistance;
@@ -28,7 +29,7 @@ public class Enemy : BaseEntity
     {
         base.Start();
 
-        attackCounter = Random.Range(60, 90);
+        attackCounter = Random.Range(attackRate - 8, attackRate + 8);
         idleCounter = Random.Range(120, 360);
         repathCounter = repathRate;
 
@@ -90,6 +91,7 @@ public class Enemy : BaseEntity
     {
         Vector2 rayDirection = target.position - body.position;
         RaycastHit2D hit = Physics2D.Raycast(body.position, rayDirection, visionDistance);
+        Debug.DrawRay(body.position, rayDirection.normalized * visionDistance, Color.red);
         return hit && hit.collider.tag == target.tag;
     }
 
@@ -107,7 +109,7 @@ public class Enemy : BaseEntity
         attackCounter--;
         if (attackCounter <= 0)
         {
-            attackCounter = Random.Range(60, 90);
+            attackCounter = Random.Range(attackRate - 8, attackRate + 8);
             return true;
         }
         return false;
@@ -135,13 +137,13 @@ public class Enemy : BaseEntity
     {
         animator.SetBool("Attacking", false);
         animator.SetBool("Dead", true);
-        spriteRenderer.material.color = new Color(0.7f, 0.7f, 0.7f);
+        StartCoroutine(LerpSpriteColor(new Color(0.6f, 0.6f, 0.6f), 2));
     }
 
     public void DisableDeath()
     {
         gameObject.layer = 0;
-        spriteRenderer.material.color = new Color(1, 1, 1);
+        StartCoroutine(LerpSpriteColor(Color.white, 2));
         animator.SetBool("Dead", false);
     }
 
@@ -149,5 +151,11 @@ public class Enemy : BaseEntity
     {
         // Enable physics by assigning enemy back to EnemyLayer
         gameObject.layer = 16;
+    }
+
+
+    public Rigidbody2D GetTarget()
+    {
+        return target;
     }
 }

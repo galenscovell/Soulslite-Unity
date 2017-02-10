@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -95,13 +93,14 @@
     <Compile Include="Assets\Game\code\entities\EnemyMeleeAgent.cs" />
     <Compile Include="Assets\Game\code\entities\EnemyRangedAgent.cs" />
     <Compile Include="Assets\Game\code\entities\PlayerAgent.cs" />
-    <Compile Include="Assets\Game\code\entities\PlayerGunLimb.cs" />
+    <Compile Include="Assets\Game\code\entities\limbs\EnemyRangedGunLimb.cs" />
+    <Compile Include="Assets\Game\code\entities\limbs\PlayerGunLimb.cs" />
     <Compile Include="Assets\Game\code\stateMachines\enemymelee\EnemyMeleeAttack.cs" />
     <Compile Include="Assets\Game\code\stateMachines\enemymelee\EnemyMeleeFullIdle.cs" />
     <Compile Include="Assets\Game\code\stateMachines\enemymelee\EnemyMeleeHurt.cs" />
+    <Compile Include="Assets\Game\code\stateMachines\enemyranged\EnemyRangedAttack.cs" />
     <Compile Include="Assets\Game\code\stateMachines\enemyranged\EnemyRangedFullIdle.cs" />
     <Compile Include="Assets\Game\code\stateMachines\enemyranged\EnemyRangedHurt.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\enemyranged\EnemyRangedAttack.cs" />
     <Compile Include="Assets\Game\code\stateMachines\player\PlayerAttack1.cs" />
     <Compile Include="Assets\Game\code\stateMachines\player\PlayerAttack2.cs" />
     <Compile Include="Assets\Game\code\stateMachines\player\PlayerAttack3.cs" />

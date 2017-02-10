@@ -34,7 +34,7 @@ public class PlayerAgent : BaseEntity
     {
         base.Start();
 
-        PlayerGunLimb playerGunLimb = transform.Find("playerGun").GetComponent<PlayerGunLimb>();
+        PlayerGunLimb gunLimb = transform.Find("GunLimb").GetComponent<PlayerGunLimb>();
 
         attack1 = animator.GetBehaviour<PlayerAttack1>();
         attack2 = animator.GetBehaviour<PlayerAttack2>();
@@ -62,8 +62,8 @@ public class PlayerAgent : BaseEntity
         hurt.Setup(this, 5);
         idle.Setup(this);
         movement.Setup(this, 6);
-        ranged.Setup(this, playerGunLimb, 7);
-        rangedAttack.Setup(this, playerGunLimb, 8);
+        ranged.Setup(this, gunLimb, 7);
+        rangedAttack.Setup(this, gunLimb, 8);
 
         heartbeat = NearDeathHeartbeat();
 
@@ -168,6 +168,12 @@ public class PlayerAgent : BaseEntity
 
     private void RangedUpdate()
     {
+        if (falling)
+        {
+            Fall();
+            return;
+        }
+
         Vector2 direction = GetAxisInput();
 
         // Reduce precision of axis input
@@ -192,6 +198,12 @@ public class PlayerAgent : BaseEntity
 
     private void FullIdleUpdate()
     {
+        if (falling)
+        {
+            Fall();
+            return;
+        }
+
         Vector2 direction = GetAxisInput();
 
         // Exit fullIdle upon any user input + update facing direction out of fullIdle
