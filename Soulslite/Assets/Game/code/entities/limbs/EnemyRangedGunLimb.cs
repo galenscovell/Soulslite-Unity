@@ -30,7 +30,7 @@ public class EnemyRangedGunLimb : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public bool UpdateGunLimb(Vector2 vectorDiff)
+    public void UpdateGunLimb(Vector2 vectorDiff)
     {
         float angle = Mathf.Atan2(vectorDiff.y, vectorDiff.x) * Mathf.Rad2Deg;
         gameObject.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -44,13 +44,7 @@ public class EnemyRangedGunLimb : MonoBehaviour
             gunAngle = Mathf.Atan2(vectorDiff.x, vectorDiff.y) * Mathf.Rad2Deg;
         }
 
-        if ((gunAngle >= 25 && gunAngle <= 155) || (gunAngle >= 205 && gunAngle <= 335))
-        {
-            UpdateSprite();
-            return true;
-        }
-
-        return false;
+        UpdateSprite();
     }
 
     public Vector3 GetBarrelPosition()
@@ -82,18 +76,18 @@ public class EnemyRangedGunLimb : MonoBehaviour
     private void UpdateSprite()
     {
         // Right
-        if (currentSprite != 0 && (gunAngle >= 25 && gunAngle <= 155))
+        if (currentSprite != 0 && (gunAngle >= 0 && gunAngle <= 180))
         {
             currentSprite = 0;
-            spriteRenderer.sprite = sprites[0];
             spriteRenderer.flipY = false;
+            spriteRenderer.sprite = sprites[currentSprite];
         }
         // Left
-        else if (currentSprite != 1 && (gunAngle >= 205 && gunAngle <= 335))
+        else if (currentSprite != 1 && (gunAngle >= 180 && gunAngle <= 360))
         {
             currentSprite = 1;
-            spriteRenderer.sprite = sprites[1];
             spriteRenderer.flipY = true;
+            spriteRenderer.sprite = sprites[currentSprite];
         }
     }
 }

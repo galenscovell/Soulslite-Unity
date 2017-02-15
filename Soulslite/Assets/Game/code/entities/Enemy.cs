@@ -15,11 +15,13 @@ public class Enemy : BaseEntity
     public float pathTracking;
     public int visionDistance;
     public int attackDistance;
+    public int fleeDistance;
 
     [HideInInspector]
     public Vector2 directionToTarget;
 
     private Rigidbody2D target;
+    private LayerMask visionLayer;
 
 
     /**************************
@@ -34,6 +36,8 @@ public class Enemy : BaseEntity
         repathCounter = repathRate;
 
         target = LevelSystem.levelSystem.player.GetBody();
+
+        visionLayer = (1 << LayerMask.NameToLayer("EnemyLayer") | 1 << LayerMask.NameToLayer("ObstacleLayer") | 1 << LayerMask.NameToLayer("PlayerLayer"));
     }
 
 
@@ -90,7 +94,7 @@ public class Enemy : BaseEntity
     protected bool TargetInView()
     {
         Vector2 rayDirection = target.position - body.position;
-        RaycastHit2D hit = Physics2D.Raycast(body.position, rayDirection, visionDistance);
+        RaycastHit2D hit = Physics2D.Raycast(body.position, rayDirection, visionDistance, visionLayer.value);
         Debug.DrawRay(body.position, rayDirection.normalized * visionDistance, Color.red);
         return hit && hit.collider.tag == target.tag;
     }
@@ -98,6 +102,11 @@ public class Enemy : BaseEntity
     protected bool InAttackRange()
     {
         return Vector2.Distance(body.position, target.position) < attackDistance;
+    }
+
+    protected bool InFleeRange()
+    {
+        return Vector2.Distance(body.position, target.position) < fleeDistance;
     }
 
 
@@ -117,6 +126,15 @@ public class Enemy : BaseEntity
 
 
     /**************************
+     *         Flee           *
+     **************************/
+    protected void FleeFromTarget()
+    {
+
+    }
+
+
+    /**************************
      *          Idle          *
      **************************/
     protected bool IdleAnimCheck()
@@ -129,6 +147,7 @@ public class Enemy : BaseEntity
         }
         return false;
     }
+
 
     /**************************
      *         Death          *

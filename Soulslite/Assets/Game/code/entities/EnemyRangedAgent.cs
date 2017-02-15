@@ -3,7 +3,7 @@
 
 public class EnemyRangedAgent : Enemy
 {
-    private SeekBehavior behavior;
+    private SeekTargetBehavior behavior;
     private Seeker seeker;
 
     // State machines
@@ -19,7 +19,7 @@ public class EnemyRangedAgent : Enemy
     {
         base.Start();
 
-        behavior = new SeekBehavior();
+        behavior = new SeekTargetBehavior();
         seeker = GetComponent<Seeker>();
 
         attack = animator.GetBehaviour<EnemyRangedAttack>();
@@ -103,32 +103,29 @@ public class EnemyRangedAgent : Enemy
             /****************
              * FOLLOWING
              ****************/
-            if (behavior.HasPath())
+            if (!InAttackRange() && behavior.HasPath())
             {
-                /****************
-                 * START ATTACK
-                 ****************/
-                if (InAttackRange() && TargetInView() && attackReady)
-                {
-                    animator.SetBool("Attacking", true);
-                }
                 /****************
                  * CONTINUE
                  ****************/
-                else
+                if (behavior.WaypointReached(body.position))
                 {
-                    if (behavior.WaypointReached(body.position))
-                    {
-                        SetSpeed(defaultSpeed);
-                        Vector2 nextWaypoint = behavior.GetNextWaypoint();
+                    SetSpeed(defaultSpeed);
+                    Vector2 nextWaypoint = behavior.GetNextWaypoint();
 
-                        if (nextWaypoint != null)
-                        {
-                            Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
-                            SetNextVelocity(dirToWaypoint * speed);
-                        }
+                    if (nextWaypoint != null)
+                    {
+                        Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
+                        SetNextVelocity(dirToWaypoint * speed);
                     }
                 }
+            }
+            /****************
+             * START ATTACK
+             ****************/
+            else if (InAttackRange() && TargetInView() && attackReady)
+            {
+                animator.SetBool("Attacking", true);
             }
             /****************
              * NO PATH

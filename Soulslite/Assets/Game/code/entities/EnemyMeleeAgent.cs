@@ -3,7 +3,7 @@
 
 public class EnemyMeleeAgent : Enemy
 {
-    private SeekBehavior behavior;
+    private SeekTargetBehavior behavior;
     private Seeker seeker;
 
     // State machines
@@ -19,7 +19,7 @@ public class EnemyMeleeAgent : Enemy
     {
         base.Start();
 
-        behavior = new SeekBehavior();
+        behavior = new SeekTargetBehavior();
         seeker = GetComponent<Seeker>();
 
         attack = animator.GetBehaviour<EnemyMeleeAttack>();

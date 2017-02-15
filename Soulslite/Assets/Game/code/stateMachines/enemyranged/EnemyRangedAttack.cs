@@ -40,15 +40,10 @@ public class EnemyRangedAttack : StateMachineBehaviour
         sfxPlayed = false;
         Vector2 positionDiff = enemy.GetTarget().position - enemy.GetBody().position;
 
-        if (gunLimb.UpdateGunLimb(positionDiff))
-        {
-            enemy.DisableMotion();
-            gunLimb.Activate();
-        }
-        else
-        {
-            animator.SetBool("Attacking", false);
-        }
+        enemy.DisableMotion();
+        gunLimb.Activate();
+
+        gunLimb.UpdateGunLimb(positionDiff);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class SeekBehavior
+public class SeekTargetBehavior
 {
     private Vector2 target;
     private int currentWaypoint = -1;
