@@ -27,6 +27,7 @@ sysinfo.txt
 *.pidb.meta
 *.apk
 *.unitypackage
+lib
  
 # ============ #
 # OS generated #

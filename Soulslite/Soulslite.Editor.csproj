@@ -55,6 +55,9 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Advertisements">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>Library\UnityAssemblies\UnityEditor.Advertisements.dll</HintPath>
     </Reference>
@@ -97,6 +100,9 @@
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Purchasing">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.VR">
       <HintPath>Library\UnityAssemblies\UnityEditor.VR.dll</HintPath>
     </Reference>
@@ -121,8 +127,17 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>Library\ScriptAssemblies\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Pathfinding.ClipperLib">
+      <HintPath>Assets\Game\lib\AstarPathfindingProject\Plugins\Clipper\Pathfinding.ClipperLib.dll</HintPath>
+    </Reference>
     <Reference Include="Pathfinding.Ionic.Zip.Reduced">
       <HintPath>Assets\Game\lib\AstarPathfindingProject\Plugins\DotNetZip\Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.JsonFx">
+      <HintPath>Assets\Game\lib\AstarPathfindingProject\Plugins\JsonFx\Pathfinding.JsonFx.dll</HintPath>
+    </Reference>
+    <Reference Include="Pathfinding.Poly2Tri">
+      <HintPath>Assets\Game\lib\AstarPathfindingProject\Plugins\Poly2Tri\Pathfinding.Poly2Tri.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -138,14 +153,22 @@
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\AstarUpdateWindow.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\CustomGraphEditorAttribute.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorGUIx.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorUtilities.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphEditors\GraphEditor.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphEditors\GridGeneratorEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphEditors\LayerGridGraphEditor.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphEditors\NavMeshGeneratorEditor.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphEditors\PointGeneratorEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphEditors\RecastGraphEditor.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\GraphUpdateSceneEditor.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\Misc\AstarEnumFlagDrawer.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\ModifierEditors\RaycastModifierEditor.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\ModifierEditors\SmoothModifierEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\OptimizationHandler.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\RVONavmeshEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\RVOSimulatorEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\RVOSquareObstacleEditor.cs" />
+    <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\RecastMeshObjEditor.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Editor\SeekerEditor.cs" />
     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\CustomTiledImporterAttribute.cs" />
     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Editor\ICustomTiledImporter.cs" />
@@ -163,7 +186,16 @@
   <ItemGroup>
     <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh.shader" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\NavmeshOutline.shader" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example8_PathTypes\SquareShader.shader" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\DiffuseAlwaysVisible.shader" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\Projector Light.shader" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\Projector Multiply.shader" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\Clipper\ClipperLicense.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\DotNetZip\DotNetZipLicense.txt" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\JsonFx\JsonFxLicense.txt" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\JsonFx\Readme.txt" />
+    <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\Poly2Tri\Poly2TriLicense.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\dependencies.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Readme.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Readme_upgrading.txt" />
