@@ -3,9 +3,6 @@
 
 public class EnemyMeleeAgent : Enemy
 {
-    private SeekTargetBehavior behavior;
-    private Seeker seeker;
-
     // State machines
     private EnemyMeleeAttack attack;
     private EnemyMeleeHurt hurt;
@@ -19,7 +16,7 @@ public class EnemyMeleeAgent : Enemy
     {
         base.Start();
 
-        behavior = new SeekTargetBehavior();
+        behavior = new Behavior();
         seeker = GetComponent<Seeker>();
 
         attack = animator.GetBehaviour<EnemyMeleeAttack>();
@@ -83,10 +80,10 @@ public class EnemyMeleeAgent : Enemy
     private void ActiveUpdate()
     {
         bool attackReady = AttackCheck();
+        bool wanderReady = WanderCheck();
+        bool inAttackRange = InAttackRange();
+        bool targetInView = TargetInView();
 
-        /****************
-         * NOT ATTACKING
-         ****************/
         if (currentStateInfo.fullPathHash != attack.GetHash())
         {
             /****************
@@ -95,7 +92,31 @@ public class EnemyMeleeAgent : Enemy
             if (repathCounter <= 0)
             {
                 repathCounter = repathRate;
-                behavior.SetPath(seeker, body.position, TrackTarget());
+
+                if (!targetInView || !inAttackRange)
+                {
+                    behavior.SetPath(seeker, body.position, TrackTarget());
+                }
+                else
+                {
+                    if (behavior.HasPath())
+                    {
+                        behavior.EndPath();
+                    }
+
+                    if (wanderReady)
+                    {
+                        behavior.Wander(seeker, body.position);
+                    }
+                }
+            }
+
+            /****************
+             * ATTACK
+             ****************/
+            if (inAttackRange && targetInView && attackReady)
+            {
+                animator.SetBool("Attacking", true);
             }
 
             /****************
@@ -103,28 +124,15 @@ public class EnemyMeleeAgent : Enemy
              ****************/
             if (behavior.HasPath())
             {
-                /****************
-                 * START ATTACK
-                 ****************/
-                if (InAttackRange() && TargetInView() && attackReady)
+                if (behavior.WaypointReached(body.position))
                 {
-                    animator.SetBool("Attacking", true);
-                }
-                /****************
-                 * CONTINUE
-                 ****************/
-                else
-                {
-                    if (behavior.WaypointReached(body.position))
-                    {
-                        SetSpeed(defaultSpeed);
-                        Vector2 nextWaypoint = behavior.GetNextWaypoint();
+                    SetSpeed(defaultSpeed);
+                    Vector2 nextWaypoint = behavior.GetNextWaypoint();
 
-                        if (nextWaypoint != null)
-                        {
-                            Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
-                            SetNextVelocity(dirToWaypoint * speed);
-                        }
+                    if (nextWaypoint != null)
+                    {
+                        Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
+                        SetNextVelocity(dirToWaypoint * speed);
                     }
                 }
             }

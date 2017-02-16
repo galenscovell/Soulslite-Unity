@@ -3,9 +3,6 @@
 
 public class EnemyRangedAgent : Enemy
 {
-    private SeekTargetBehavior behavior;
-    private Seeker seeker;
-
     // State machines
     private EnemyRangedAttack attack;
     private EnemyRangedHurt hurt;
@@ -19,7 +16,7 @@ public class EnemyRangedAgent : Enemy
     {
         base.Start();
 
-        behavior = new SeekTargetBehavior();
+        behavior = new Behavior();
         seeker = GetComponent<Seeker>();
 
         attack = animator.GetBehaviour<EnemyRangedAttack>();
@@ -85,10 +82,10 @@ public class EnemyRangedAgent : Enemy
     private void ActiveUpdate()
     {
         bool attackReady = AttackCheck();
+        bool wanderReady = WanderCheck();
+        bool inAttackRange = InAttackRange();
+        bool targetInView = TargetInView();
 
-        /****************
-         * NOT ATTACKING
-         ****************/
         if (currentStateInfo.fullPathHash != attack.GetHash())
         {
             /****************
@@ -97,17 +94,38 @@ public class EnemyRangedAgent : Enemy
             if (repathCounter <= 0)
             {
                 repathCounter = repathRate;
-                behavior.SetPath(seeker, body.position, TrackTarget());
+
+                if (!targetInView || !inAttackRange)
+                {
+                    behavior.SetPath(seeker, body.position, TrackTarget());
+                }
+                else
+                {
+                    if (behavior.HasPath())
+                    {
+                        behavior.EndPath();
+                    }
+
+                    if (wanderReady)
+                    {
+                        behavior.Wander(seeker, body.position);
+                    }
+                }
             }
 
             /****************
-             * FOLLOWING
+             * ATTACK
              ****************/
-            if (!InAttackRange() && behavior.HasPath())
+            if (inAttackRange && targetInView && attackReady)
             {
-                /****************
-                 * CONTINUE
-                 ****************/
+                // animator.SetBool("Attacking", true);
+            }
+
+            /****************
+             * FOLLOW PATH
+             ****************/
+            if (behavior.HasPath())
+            {
                 if (behavior.WaypointReached(body.position))
                 {
                     SetSpeed(defaultSpeed);
@@ -119,13 +137,6 @@ public class EnemyRangedAgent : Enemy
                         SetNextVelocity(dirToWaypoint * speed);
                     }
                 }
-            }
-            /****************
-             * START ATTACK
-             ****************/
-            else if (InAttackRange() && TargetInView() && attackReady)
-            {
-                animator.SetBool("Attacking", true);
             }
             /****************
              * NO PATH

@@ -3,19 +3,22 @@
 
 public class Enemy : BaseEntity
 {
+    protected Behavior behavior;
+    protected Seeker seeker;
+
     protected AnimatorStateInfo currentStateInfo;
     protected bool passive = true;
 
-    protected int attackCounter;
-    protected int idleCounter;
+    protected int attackCounter = 0;
+    protected int idleCounter = 0;
     protected int repathCounter;
+    protected int wanderCounter = 0;
 
     public int repathRate;
     public int attackRate;
     public float pathTracking;
-    public int visionDistance;
-    public int attackDistance;
-    public int fleeDistance;
+    public int visionRange;
+    public int attackRange;
 
     [HideInInspector]
     public Vector2 directionToTarget;
@@ -31,12 +34,8 @@ public class Enemy : BaseEntity
     {
         base.Start();
 
-        attackCounter = Random.Range(attackRate - 8, attackRate + 8);
-        idleCounter = Random.Range(120, 360);
         repathCounter = repathRate;
-
         target = LevelSystem.levelSystem.player.GetBody();
-
         visionLayer = (1 << LayerMask.NameToLayer("EnemyLayer") | 1 << LayerMask.NameToLayer("ObstacleLayer") | 1 << LayerMask.NameToLayer("PlayerLayer"));
     }
 
@@ -94,19 +93,13 @@ public class Enemy : BaseEntity
     protected bool TargetInView()
     {
         Vector2 rayDirection = target.position - body.position;
-        RaycastHit2D hit = Physics2D.Raycast(body.position, rayDirection, visionDistance, visionLayer.value);
-        Debug.DrawRay(body.position, rayDirection.normalized * visionDistance, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(body.position, rayDirection, visionRange, visionLayer.value);
         return hit && hit.collider.tag == target.tag;
     }
 
     protected bool InAttackRange()
     {
-        return Vector2.Distance(body.position, target.position) < attackDistance;
-    }
-
-    protected bool InFleeRange()
-    {
-        return Vector2.Distance(body.position, target.position) < fleeDistance;
+        return Vector2.Distance(body.position, target.position) < attackRange;
     }
 
 
@@ -126,15 +119,6 @@ public class Enemy : BaseEntity
 
 
     /**************************
-     *         Flee           *
-     **************************/
-    protected void FleeFromTarget()
-    {
-
-    }
-
-
-    /**************************
      *          Idle          *
      **************************/
     protected bool IdleAnimCheck()
@@ -143,6 +127,21 @@ public class Enemy : BaseEntity
         if (idleCounter <= 0)
         {
             idleCounter = Random.Range(120, 360);
+            return true;
+        }
+        return false;
+    }
+
+
+    /**************************
+     *         Wander         *
+     **************************/
+    protected bool WanderCheck()
+    {
+        wanderCounter--;
+        if (wanderCounter <= 0)
+        {
+            wanderCounter = Random.Range(2, 4);
             return true;
         }
         return false;
