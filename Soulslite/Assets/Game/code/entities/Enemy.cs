@@ -52,6 +52,8 @@ public class Enemy : BaseEntity
     {
         base.FixedUpdate();
 
+        FaceTarget();
+
         // Enemies all operate on x axis only, so we can mirror at all times
         // If x is negative, completely flip entity to mirror colliders and animations
         if (facingDirection.x < 0)
@@ -86,6 +88,12 @@ public class Enemy : BaseEntity
         return trackedPosition;
     }
 
+    public void FaceTarget()
+    {
+        Vector2 dirToTarget = (target.position - body.position).normalized;
+        SetFacingDirection(dirToTarget);
+    }
+
 
     /**************************
      *         Ranges         *
@@ -99,7 +107,8 @@ public class Enemy : BaseEntity
 
     protected bool InAttackRange()
     {
-        return Vector2.Distance(body.position, target.position) < attackRange;
+        float distance = Vector2.Distance(body.position, target.position);
+        return distance < attackRange;
     }
 
 
@@ -141,7 +150,7 @@ public class Enemy : BaseEntity
         wanderCounter--;
         if (wanderCounter <= 0)
         {
-            wanderCounter = Random.Range(2, 4);
+            wanderCounter = Random.Range(4, 8);
             return true;
         }
         return false;

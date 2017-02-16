@@ -101,7 +101,7 @@ public class EnemyRangedAgent : Enemy
                 }
                 else
                 {
-                    if (behavior.HasPath())
+                    if (!behavior.IsWandering() && behavior.HasPath())
                     {
                         behavior.EndPath();
                     }
@@ -118,7 +118,7 @@ public class EnemyRangedAgent : Enemy
              ****************/
             if (inAttackRange && targetInView && attackReady)
             {
-                // animator.SetBool("Attacking", true);
+                animator.SetBool("Attacking", true);
             }
 
             /****************
@@ -128,7 +128,15 @@ public class EnemyRangedAgent : Enemy
             {
                 if (behavior.WaypointReached(body.position))
                 {
-                    SetSpeed(defaultSpeed);
+                    if (behavior.IsWandering())
+                    {
+                        SetSpeed(20);
+                    } 
+                    else
+                    {
+                        SetSpeed(defaultSpeed);
+                    }
+
                     Vector2 nextWaypoint = behavior.GetNextWaypoint();
 
                     if (nextWaypoint != null)

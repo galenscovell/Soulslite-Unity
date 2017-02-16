@@ -99,7 +99,7 @@ public class EnemyMeleeAgent : Enemy
                 }
                 else
                 {
-                    if (behavior.HasPath())
+                    if (!behavior.IsWandering() && behavior.HasPath())
                     {
                         behavior.EndPath();
                     }
@@ -126,7 +126,15 @@ public class EnemyMeleeAgent : Enemy
             {
                 if (behavior.WaypointReached(body.position))
                 {
-                    SetSpeed(defaultSpeed);
+                    if(behavior.IsWandering())
+                    {
+                        SetSpeed(20);
+                    } 
+                    else
+                    {
+                        SetSpeed(defaultSpeed);
+                    }
+
                     Vector2 nextWaypoint = behavior.GetNextWaypoint();
 
                     if (nextWaypoint != null)

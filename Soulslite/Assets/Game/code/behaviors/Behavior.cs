@@ -5,6 +5,7 @@ using UnityEngine;
 public class Behavior
 {
     private int currentWaypoint = 0;
+    private bool wandering = false;
 
     public Path path;
     public float nextWaypointDistance = 1;
@@ -45,13 +46,15 @@ public class Behavior
     public void SetPath(Seeker seeker, Vector2 startPosition, Vector2 targetPosition)
     {
         seeker.StartPath(startPosition, targetPosition, OnPathComplete);
+        wandering = false;
     }
 
     public void Wander(Seeker seeker, Vector2 startPosition)
     {
-        RandomPath rpath = RandomPath.Construct(startPosition, 8);
-        rpath.spread = 16000;
+        RandomPath rpath = RandomPath.Construct(startPosition, 32);
+        rpath.spread = 32000;
         seeker.StartPath(rpath, OnPathComplete);
+        wandering = true;
     }
 
     public void EndPath()
@@ -61,6 +64,11 @@ public class Behavior
             path.Error();
             path = null;
         }
+    }
+
+    public bool IsWandering()
+    {
+        return wandering;
     }
 
     private void OnPathComplete(Path p)

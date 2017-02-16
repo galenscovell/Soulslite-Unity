@@ -346,7 +346,6 @@ public class PlayerAgent : BaseEntity
      **************************/
     public void Die()
     {
-        CameraSystem.cameraSystem.FadeOutVignette(0);
         StopCoroutine(heartbeat);
 
         animator.SetBool("Attacking", false);
@@ -364,7 +363,6 @@ public class PlayerAgent : BaseEntity
 
     public void Fall()
     {
-        CameraSystem.cameraSystem.FadeOutVignette(0);
         StopCoroutine(heartbeat);
 
         animator.SetBool("Attacking", false);
@@ -386,6 +384,7 @@ public class PlayerAgent : BaseEntity
     public void Revive()
     {
         // Restore defaults on everything
+        CameraSystem.cameraSystem.FadeOutVignette(0);
         animator.SetBool("Dead", false);
         RestoreFullHealth();
         FadeInSprite(0);
