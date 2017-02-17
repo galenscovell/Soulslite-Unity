@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="12" height="30" tilewidth="32" tileheight="32" nextobjectid="172">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="12" height="30" tilewidth="32" tileheight="32" nextobjectid="188">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="29" columns="0">
   <tile id="0">
    <image width="32" height="32" source="DemoLevelTiles/ground/cliff-diag-left1_1.png"/>
@@ -658,12 +658,29 @@
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="171" name="BulletBoundary" x="-40" y="-40">
+  <object id="172" name="BulletBoundary" x="432" y="-64" width="16" height="1064">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
-   <polyline points="0,0 464,0 464,1040 0,1040 0,0"/>
+  </object>
+  <object id="184" name="BulletBoundary" x="-64" y="-64" width="496" height="16">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="186" name="BulletBoundary" x="-64" y="-48" width="16" height="1064">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
+  </object>
+  <object id="187" name="BulletBoundary" x="-48" y="1000" width="496" height="16">
+   <properties>
+    <property name="unity:layer" value="ObstacleLayer"/>
+    <property name="unity:tag" value="ObstacleTag"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup name="FalloffBoundaries">

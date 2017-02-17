@@ -7,7 +7,9 @@ public class EnemyRangedAttack : StateMachineBehaviour
     private Enemy enemy;
     private EnemyRangedGunLimb gunLimb;
     private int sfxIndex;
-    private bool sfxPlayed;
+    private bool shotOne;
+    private bool shotTwo;
+    private bool shotThree;
 
     // Denotes when this state can be interrupted
     private bool vulnerable = true;
@@ -37,7 +39,9 @@ public class EnemyRangedAttack : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        sfxPlayed = false;
+        shotOne = false;
+        shotTwo = false;
+        shotThree = false;
         Vector2 positionDiff = enemy.GetTarget().position - enemy.GetBody().position;
 
         enemy.DisableMotion();
@@ -51,12 +55,30 @@ public class EnemyRangedAttack : StateMachineBehaviour
     {
         float stateTime = stateInfo.normalizedTime;
 
-        if (stateTime > 0.3f && stateTime < 1)
+        if (stateTime > 0.1f && stateTime < 0.15f)
         {
-            if (!sfxPlayed)
+            if (!shotOne)
             {
                 enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
-                sfxPlayed = true;
+                shotOne = true;
+                BulletSystem.bulletSystem.SpawnBullet(gunLimb.GetBarrelPosition(), enemy.GetFacingDirection(), "EnemyBulletTag", "EnemyBulletLayer");
+            }
+        }
+        else if (stateTime > 0.3f && stateTime < 0.35f)
+        {
+            if (!shotTwo)
+            {
+                enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
+                shotTwo = true;
+                BulletSystem.bulletSystem.SpawnBullet(gunLimb.GetBarrelPosition(), enemy.GetFacingDirection(), "EnemyBulletTag", "EnemyBulletLayer");
+            }
+        }
+        else if (stateTime > 0.5f && stateTime < 0.55f)
+        {
+            if (!shotThree)
+            {
+                enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
+                shotThree = true;
                 BulletSystem.bulletSystem.SpawnBullet(gunLimb.GetBarrelPosition(), enemy.GetFacingDirection(), "EnemyBulletTag", "EnemyBulletLayer");
             }
         }
