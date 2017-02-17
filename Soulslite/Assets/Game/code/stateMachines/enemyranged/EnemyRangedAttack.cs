@@ -39,15 +39,13 @@ public class EnemyRangedAttack : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        gunLimb.Activate();
+
         shotOne = false;
         shotTwo = false;
         shotThree = false;
+
         Vector2 positionDiff = enemy.GetTarget().position - enemy.GetBody().position;
-
-        enemy.DisableMotion();
-        gunLimb.Activate();
-
-        enemy.FaceTarget();
         gunLimb.UpdateGunLimb(positionDiff);
     }
 

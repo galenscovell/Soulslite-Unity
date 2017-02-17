@@ -49,25 +49,14 @@ public class EnemyRangedGunLimb : MonoBehaviour
     {
         // This is a hack -- ideally let's make the sprite in such a way to not require
         // such extra fine tuned offsetting of the gun barrel
-        float multiplier = 1;
-        float addY = 0;
-        if (currentSprite == 0)
-        {
-            multiplier = 15f;
-            addY = 1.5f;
-        }
-        else if (currentSprite == 1)
-        {
-            multiplier = 15f;
-            addY = 1.5f;
-        }
+        float multiplier = 15f;
 
         // This is the primary offsetting which we will hopefully be able to use
         // alone in the future
         Vector3 rightTransform = transform.right * multiplier;
         Vector3 barrelPosition = new Vector3(
             gameObject.transform.position.x + rightTransform.x,
-            gameObject.transform.position.y + rightTransform.y + addY,
+            gameObject.transform.position.y + rightTransform.y,
             gameObject.transform.position.z
         );
         return barrelPosition;
@@ -76,7 +65,7 @@ public class EnemyRangedGunLimb : MonoBehaviour
     private void UpdateSprite()
     {
         // Right
-        if (currentSprite != 0 && (gunAngle >= 0 && gunAngle <= 180))
+        if (currentSprite != 0 && (gunAngle >= 0 && gunAngle < 180))
         {
             currentSprite = 0;
             spriteRenderer.flipY = false;

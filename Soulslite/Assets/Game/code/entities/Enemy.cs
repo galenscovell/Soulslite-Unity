@@ -55,8 +55,8 @@ public class Enemy : BaseEntity
     {
         base.FixedUpdate();
 
-        // Always face player if not passive, attacking or fleeing
-        if (!animator.GetBool("Passive") && !animator.GetBool("Attacking"))
+        // Always face player if not dead, passive, attacking or fleeing
+        if (!animator.GetBool("Passive") && !animator.GetBool("Attacking") && !IsDead())
         {
             FaceTarget();
         }

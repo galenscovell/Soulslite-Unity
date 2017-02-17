@@ -119,6 +119,8 @@ public class EnemyRangedAgent : Enemy
              ****************/
             if (inAttackRange && targetInView && attackReady)
             {
+                DisableMotion();
+                FaceTarget();
                 animator.SetBool("Attacking", true);
             }
 
