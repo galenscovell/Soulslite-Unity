@@ -16,6 +16,7 @@ public class Enemy : BaseEntity
 
     public int repathRate;
     public int attackRate;
+    public int wanderRate;
     public float pathTracking;
     public int visionRange;
     public int attackRange;
@@ -25,6 +26,7 @@ public class Enemy : BaseEntity
 
     private Rigidbody2D target;
     private LayerMask visionLayer;
+    private LayerMask enemyLayer;
 
 
     /**************************
@@ -36,7 +38,8 @@ public class Enemy : BaseEntity
 
         repathCounter = repathRate;
         target = LevelSystem.levelSystem.player.GetBody();
-        visionLayer = (1 << LayerMask.NameToLayer("EnemyLayer") | 1 << LayerMask.NameToLayer("ObstacleLayer") | 1 << LayerMask.NameToLayer("PlayerLayer"));
+        visionLayer = (1 << LayerMask.NameToLayer("ObstacleLayer") | 1 << LayerMask.NameToLayer("PlayerLayer"));
+        enemyLayer = 1 << LayerMask.NameToLayer("EnemyLayer");
     }
 
 
@@ -52,7 +55,11 @@ public class Enemy : BaseEntity
     {
         base.FixedUpdate();
 
-        FaceTarget();
+        // Always face player if not passive, attacking or fleeing
+        if (!animator.GetBool("Passive") && !animator.GetBool("Attacking"))
+        {
+            FaceTarget();
+        }
 
         // Enemies all operate on x axis only, so we can mirror at all times
         // If x is negative, completely flip entity to mirror colliders and animations
@@ -64,8 +71,6 @@ public class Enemy : BaseEntity
         {
             transform.localScale = new Vector3(1, 1, 1);
         }
-
-        repathCounter--;
     }
 
 
@@ -94,15 +99,18 @@ public class Enemy : BaseEntity
         SetFacingDirection(dirToTarget);
     }
 
-
-    /**************************
-     *         Ranges         *
-     **************************/
     protected bool TargetInView()
     {
         Vector2 rayDirection = target.position - body.position;
         RaycastHit2D hit = Physics2D.Raycast(body.position, rayDirection, visionRange, visionLayer.value);
         return hit && hit.collider.tag == target.tag;
+    }
+
+    protected bool VisionBlockedByEnemy()
+    {
+        Vector2 rayDirection = target.position - body.position;
+        RaycastHit2D hit = Physics2D.Raycast(body.position, rayDirection, visionRange, enemyLayer.value);
+        return hit;
     }
 
     protected bool InAttackRange()
@@ -120,7 +128,7 @@ public class Enemy : BaseEntity
         attackCounter--;
         if (attackCounter <= 0)
         {
-            attackCounter = Random.Range(attackRate - 8, attackRate + 8);
+            attackCounter = Random.Range(attackRate - 5, attackRate + 5);
             return true;
         }
         return false;
@@ -150,7 +158,7 @@ public class Enemy : BaseEntity
         wanderCounter--;
         if (wanderCounter <= 0)
         {
-            wanderCounter = Random.Range(4, 8);
+            wanderCounter = Random.Range(wanderRate - 5, wanderRate + 5);
             return true;
         }
         return false;

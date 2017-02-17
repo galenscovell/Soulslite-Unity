@@ -5,12 +5,12 @@ public class RainDropObject : MonoBehaviour
 {
     private float defaultLifetime;
     private float currentLifetime;
-    private int speed = 12;
+    private int speed = 10;
 
 
     private void Awake()
     {
-        defaultLifetime = Random.Range(0.1f, 0.3f);
+        defaultLifetime = Random.Range(0.05f, 0.25f);
     }
 
     private void OnEnable()

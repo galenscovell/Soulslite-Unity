@@ -27,7 +27,7 @@ public class PlayerRangedAttack : StateMachineBehaviour
         player.DisableMotion();
         gunLimb.Activate();
         player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
-        BulletSystem.bulletSystem.SpawnBullet(gunLimb.GetBarrelPosition(), player.GetFacingDirection(), "PlayerBullet");
+        BulletSystem.bulletSystem.SpawnBullet(gunLimb.GetBarrelPosition(), player.GetFacingDirection(), "PlayerBullet", "PlayerBulletLayer");
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

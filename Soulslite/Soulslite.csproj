@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -177,26 +175,6 @@
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Serialization\SimpleJsonReplacement.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Serialization\SimpleZipReplacement.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\astarclasses.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example11_RVO\GroupController.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example11_RVO\LightweightRVO.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example11_RVO\RVOAgentPlacer.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example11_RVO\RVOExampleAgent.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example12_Procedural\ProceduralGridMover.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example12_Procedural\ProceduralWorld.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example13_Moving\BezierMover.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example13_Moving\LocalSpaceGraph.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example13_Moving\LocalSpaceRichAI.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example8_PathTypes\PathTypesDemo.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\AIFollow.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\AstarSmoothFollow2.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\DoorController.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\DynamicGridObstacle.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\MineBotAI.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\NavmeshClamp.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\ObjectPlacer.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\RecastTileUpdate.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\RecastTileUpdateHandler.cs" />
-    <Compile Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\ExampleScripts\TargetMover.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Base.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\GridGenerator.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\LayerGridGraphGenerator.cs" />
@@ -275,11 +253,6 @@
   <ItemGroup>
     <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh.shader" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\NavmeshOutline.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Example8_PathTypes\SquareShader.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\DiffuseAlwaysVisible.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\Projector Light.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\Materials\Projector Multiply.shader" />
-    <None Include="Assets\Game\lib\AstarPathfindingProject\ExampleScenes\_Example Scenes.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\Clipper\ClipperLicense.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\DotNetZip\DotNetZipLicense.txt" />
     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\JsonFx\JsonFxLicense.txt" />

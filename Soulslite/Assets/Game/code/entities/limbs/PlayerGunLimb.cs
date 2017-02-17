@@ -8,7 +8,6 @@ public class PlayerGunLimb : MonoBehaviour
 
     public List<Sprite> sprites;
 
-    private Collider2D gunCollider;
     private SpriteRenderer spriteRenderer;
     private int currentSprite = 0;
     private float gunAngle;
@@ -16,7 +15,6 @@ public class PlayerGunLimb : MonoBehaviour
 
     private void Awake()
     {
-        gunCollider = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 

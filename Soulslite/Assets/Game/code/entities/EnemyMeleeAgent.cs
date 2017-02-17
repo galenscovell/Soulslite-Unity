@@ -83,12 +83,14 @@ public class EnemyMeleeAgent : Enemy
         bool wanderReady = WanderCheck();
         bool inAttackRange = InAttackRange();
         bool targetInView = TargetInView();
+        bool visionBlockedByEnemy = VisionBlockedByEnemy();
 
         if (currentStateInfo.fullPathHash != attack.GetHash())
         {
             /****************
              * REPATH
              ****************/
+            repathCounter--;
             if (repathCounter <= 0)
             {
                 repathCounter = repathRate;
@@ -114,7 +116,7 @@ public class EnemyMeleeAgent : Enemy
             /****************
              * ATTACK
              ****************/
-            if (inAttackRange && targetInView && attackReady)
+            if (attackReady && inAttackRange && targetInView && !visionBlockedByEnemy)
             {
                 animator.SetBool("Attacking", true);
             }
@@ -128,7 +130,7 @@ public class EnemyMeleeAgent : Enemy
                 {
                     if(behavior.IsWandering())
                     {
-                        SetSpeed(20);
+                        SetSpeed(defaultSpeed / 2);
                     } 
                     else
                     {
@@ -136,12 +138,8 @@ public class EnemyMeleeAgent : Enemy
                     }
 
                     Vector2 nextWaypoint = behavior.GetNextWaypoint();
-
-                    if (nextWaypoint != null)
-                    {
-                        Vector2 dirToWaypoint = (behavior.GetNextWaypoint() - body.position).normalized;
-                        SetNextVelocity(dirToWaypoint * speed);
-                    }
+                    Vector2 dirToWaypoint = (nextWaypoint - body.position).normalized;
+                    SetNextVelocity(dirToWaypoint * speed);
                 }
             }
             /****************

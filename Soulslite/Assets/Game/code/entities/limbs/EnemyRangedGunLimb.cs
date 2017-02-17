@@ -8,7 +8,6 @@ public class EnemyRangedGunLimb : MonoBehaviour
 
     public List<Sprite> sprites;
 
-    private Collider2D gunCollider;
     private SpriteRenderer spriteRenderer;
     private int currentSprite = 0;
     private float gunAngle;
@@ -16,7 +15,6 @@ public class EnemyRangedGunLimb : MonoBehaviour
 
     private void Awake()
     {
-        gunCollider = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -55,11 +53,13 @@ public class EnemyRangedGunLimb : MonoBehaviour
         float addY = 0;
         if (currentSprite == 0)
         {
-            
+            multiplier = 15f;
+            addY = 1.5f;
         }
         else if (currentSprite == 1)
         {
-            
+            multiplier = 15f;
+            addY = 1.5f;
         }
 
         // This is the primary offsetting which we will hopefully be able to use

@@ -65,7 +65,7 @@ public class BulletSystem : MonoBehaviour
         return nextBulletDirection;
     }
 
-    public void SpawnBullet(Vector2 position, Vector2 direction, string designatedTag)
+    public void SpawnBullet(Vector2 position, Vector2 direction, string designatedTag, string designatedLayer)
     {
         nextBulletDirection = direction;
 
@@ -84,7 +84,9 @@ public class BulletSystem : MonoBehaviour
         // Also set its tag for collision layers and set it to spawn location
         GameObject bulletObj = bullets[bulletObjectIndex];
         bulletObj.tag = designatedTag;
+        bulletObj.layer = LayerMask.NameToLayer(designatedLayer);
         bulletObj.transform.position = position;
+        bulletObj.transform.right = direction;
         bulletObj.SetActive(true);
 
         spawnedBullets++;

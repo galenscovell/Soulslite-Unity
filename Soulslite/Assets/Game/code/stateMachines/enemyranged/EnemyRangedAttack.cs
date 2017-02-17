@@ -43,6 +43,7 @@ public class EnemyRangedAttack : StateMachineBehaviour
         enemy.DisableMotion();
         gunLimb.Activate();
 
+        enemy.FaceTarget();
         gunLimb.UpdateGunLimb(positionDiff);
     }
 
@@ -56,6 +57,7 @@ public class EnemyRangedAttack : StateMachineBehaviour
             {
                 enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
                 sfxPlayed = true;
+                BulletSystem.bulletSystem.SpawnBullet(gunLimb.GetBarrelPosition(), enemy.GetFacingDirection(), "EnemyBulletTag", "EnemyBulletLayer");
             }
         }
         else if (stateTime >= 1)
