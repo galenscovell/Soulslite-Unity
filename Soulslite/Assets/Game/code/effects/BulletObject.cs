@@ -26,7 +26,7 @@ public class BulletObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Vector2 collisionDirection = collision.transform.position - transform.position;
+        Vector2 collisionDirection = transform.position - collision.transform.position;
         BulletSystem.bulletSystem.DespawnBullet(gameObject, collisionDirection);
     }
 }

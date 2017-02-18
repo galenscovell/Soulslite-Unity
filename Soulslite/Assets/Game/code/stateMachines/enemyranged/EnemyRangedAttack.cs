@@ -53,7 +53,7 @@ public class EnemyRangedAttack : StateMachineBehaviour
     {
         float stateTime = stateInfo.normalizedTime;
 
-        if (stateTime > 0.1f && stateTime < 0.15f)
+        if (stateTime > 0.12f && stateTime < 0.15f)
         {
             if (!shotOne)
             {
@@ -62,7 +62,7 @@ public class EnemyRangedAttack : StateMachineBehaviour
                 BulletSystem.bulletSystem.SpawnBullet(gunLimb.GetBarrelPosition(), enemy.GetFacingDirection(), "EnemyBulletTag", "EnemyBulletLayer");
             }
         }
-        else if (stateTime > 0.3f && stateTime < 0.35f)
+        else if (stateTime > 0.32f && stateTime < 0.35f)
         {
             if (!shotTwo)
             {
@@ -71,7 +71,7 @@ public class EnemyRangedAttack : StateMachineBehaviour
                 BulletSystem.bulletSystem.SpawnBullet(gunLimb.GetBarrelPosition(), enemy.GetFacingDirection(), "EnemyBulletTag", "EnemyBulletLayer");
             }
         }
-        else if (stateTime > 0.5f && stateTime < 0.55f)
+        else if (stateTime > 0.52f && stateTime < 0.55f)
         {
             if (!shotThree)
             {

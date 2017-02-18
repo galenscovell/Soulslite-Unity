@@ -123,34 +123,36 @@ public class EnemyRangedAgent : Enemy
                 FaceTarget();
                 animator.SetBool("Attacking", true);
             }
-
-            /****************
-             * FOLLOW PATH
-             ****************/
-            if (behavior.HasPath())
-            {
-                if (behavior.WaypointReached(body.position))
-                {
-                    if (behavior.IsWandering())
-                    {
-                        SetSpeed(defaultSpeed / 2);
-                    } 
-                    else
-                    {
-                        SetSpeed(defaultSpeed);
-                    }
-
-                    Vector2 nextWaypoint = behavior.GetNextWaypoint();
-                    Vector2 dirToWaypoint = (nextWaypoint - body.position).normalized;
-                    SetNextVelocity(dirToWaypoint * speed);
-                }
-            }
-            /****************
-             * NO PATH
-             ****************/
             else
             {
-                SetNextVelocity(Vector2.zero);
+                /****************
+                 * FOLLOW PATH
+                 ****************/
+                if (behavior.HasPath())
+                {
+                    if (behavior.WaypointReached(body.position))
+                    {
+                        if (behavior.IsWandering())
+                        {
+                            SetSpeed(defaultSpeed / 2);
+                        }
+                        else
+                        {
+                            SetSpeed(defaultSpeed);
+                        }
+
+                        Vector2 nextWaypoint = behavior.GetNextWaypoint();
+                        Vector2 dirToWaypoint = (nextWaypoint - body.position).normalized;
+                        SetNextVelocity(dirToWaypoint * speed);
+                    }
+                }
+                /****************
+                 * NO PATH
+                 ****************/
+                else
+                {
+                    SetNextVelocity(Vector2.zero);
+                }
             }
         }
     }
