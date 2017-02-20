@@ -244,7 +244,7 @@ public class PlayerAgent : BaseEntity
             return;
         }
 
-        // Set player as ready to fall if if colliding with falloff boundary
+        // Set player as ready to fall if colliding with falloff boundary
         if (collision.tag == "FalloffTag")
         {
             falling = !falling;

@@ -8,6 +8,7 @@ public class Enemy : BaseEntity
 
     protected AnimatorStateInfo currentStateInfo;
     protected bool passive = true;
+    protected bool falling = false;
 
     protected int attackCounter = 0;
     protected int idleCounter = 0;
@@ -70,6 +71,38 @@ public class Enemy : BaseEntity
         else
         {
             transform.localScale = new Vector3(1, 1, 1);
+        }
+    }
+
+
+    /**************************
+     *       Collisions       *
+     **************************/
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // All triggers stop listening once dead
+        if (IsDead())
+        {
+            return;
+        }
+
+        // Interrupt attack if collided with obstacle
+        if (collision.tag == "ObstacleTag")
+        {
+            // animator.Play(attackInterrupt.GetHash());
+            return;
+        }
+
+        // Set as ready to fall if colliding with falloff boundary
+        if (collision.tag == "FalloffTag")
+        {
+            falling = !falling;
+            return;
         }
     }
 
@@ -173,6 +206,7 @@ public class Enemy : BaseEntity
         animator.SetBool("Attacking", false);
         animator.SetBool("Dead", true);
         StartCoroutine(LerpSpriteColor(new Color(0.6f, 0.6f, 0.6f), 2));
+        SetIgnorePhysics();
     }
 
     public void DisableDeath()

@@ -190,7 +190,6 @@ public class EnemyRangedAgent : Enemy
 
             if (HealthZero() && !IsDead())
             {
-                SetIgnorePhysics();
                 hurt.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
                 animator.Play(hurt.GetHash());
             }

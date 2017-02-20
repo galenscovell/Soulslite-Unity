@@ -13,6 +13,8 @@ public class BaseEntity : MonoBehaviour
     protected float speed;
     protected Vector2 nextVelocity;
     protected Vector2 facingDirection;
+    protected Vector2 hurtImpulse;
+    protected float hurtImpulseTime;
 
     public AudioClip[] soundEffects;
     public bool flipX = false;
@@ -81,6 +83,8 @@ public class BaseEntity : MonoBehaviour
 
         // Set new body velocity directly based on nextVelocity
         body.velocity = nextVelocity.normalized * speed;
+        // Update body position for hurt impulse
+        ApplyHurtImpulse();
     }
 
 
@@ -157,6 +161,9 @@ public class BaseEntity : MonoBehaviour
      **************************/
     protected void Hurt(Vector2 collisionDirection)
     {
+        hurtImpulse = collisionDirection.normalized * 2;
+        hurtImpulseTime = 0.1f;
+        
         BloodSystem.bloodSystem.SpawnBlood(body.position, collisionDirection);
         StartCoroutine(HurtFlash());
     }
@@ -166,6 +173,15 @@ public class BaseEntity : MonoBehaviour
         spriteRenderer.material.SetFloat("_FlashAmount", 0.9f);
         yield return new WaitForSeconds(0.15f);
         spriteRenderer.material.SetFloat("_FlashAmount", 0f);
+    }
+
+    protected void ApplyHurtImpulse()
+    {
+        if (hurtImpulseTime > 0)
+        {
+            hurtImpulseTime -= Time.deltaTime;
+            body.MovePosition(body.position + hurtImpulse);
+        }
     }
 
 

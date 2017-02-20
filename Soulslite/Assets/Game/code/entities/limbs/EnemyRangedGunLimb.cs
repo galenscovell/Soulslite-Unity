@@ -12,6 +12,11 @@ public class EnemyRangedGunLimb : MonoBehaviour
     private int currentSprite = 0;
     private float gunAngle;
 
+    private float lerpTime = 1f;
+    private float currentLerpTime = 0;
+    private Quaternion rotationQuaternion;
+    private bool rotating = false;
+
 
     private void Awake()
     {
@@ -28,10 +33,37 @@ public class EnemyRangedGunLimb : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void UpdateGunLimb(Vector2 vectorDiff)
+    private void Update()
     {
+        if (rotating)
+        {
+            if (currentLerpTime < lerpTime)
+            {
+                currentLerpTime += Time.deltaTime;
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotationQuaternion, currentLerpTime / lerpTime);
+            }
+            else
+            {
+                rotating = false;
+                currentLerpTime = 0;
+            }
+        }
+    }
+
+    public void UpdateGunLimb(Vector2 vectorDiff, Enemy enemy)
+    {
+        if (enemy.GetFacingDirection().x > 0)
+        {
+            transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+        }
+        else
+        {
+            transform.rotation = Quaternion.AngleAxis(180, Vector3.forward);
+        }
+
         float angle = Mathf.Atan2(vectorDiff.y, vectorDiff.x) * Mathf.Rad2Deg;
-        gameObject.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        rotationQuaternion = Quaternion.AngleAxis(angle, Vector3.forward);
+        rotating = true;
 
         if (vectorDiff.x < 0)
         {
@@ -43,6 +75,22 @@ public class EnemyRangedGunLimb : MonoBehaviour
         }
 
         UpdateSprite();
+    }
+
+    public void ResetGunLimb(Enemy enemy)
+    {
+        float angle;
+        if (enemy.GetFacingDirection().x > 0)
+        {
+            angle = 0;
+        }
+        else
+        {
+            angle = 180;
+        }
+
+        rotationQuaternion = Quaternion.AngleAxis(angle, Vector3.forward);
+        rotating = true;
     }
 
     public Vector3 GetBarrelPosition()
