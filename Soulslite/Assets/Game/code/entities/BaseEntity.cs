@@ -145,7 +145,7 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *         Death          *
      **************************/
-    protected void SetIgnorePhysics()
+    public void SetIgnorePhysics()
     {
         gameObject.layer = 10;
     }
@@ -161,9 +161,7 @@ public class BaseEntity : MonoBehaviour
      **************************/
     protected void Hurt(Vector2 collisionDirection)
     {
-        hurtImpulse = collisionDirection.normalized * 2;
-        hurtImpulseTime = 0.1f;
-        
+        SetHurtImpulse(collisionDirection.normalized, 2, 0.1f);
         BloodSystem.bloodSystem.SpawnBlood(body.position, collisionDirection);
         StartCoroutine(HurtFlash());
     }
@@ -182,6 +180,12 @@ public class BaseEntity : MonoBehaviour
             hurtImpulseTime -= Time.deltaTime;
             body.MovePosition(body.position + hurtImpulse);
         }
+    }
+
+    public void SetHurtImpulse(Vector2 direction, float force, float time)
+    {
+        hurtImpulse = direction * force;
+        hurtImpulseTime = time;
     }
 
 
@@ -227,8 +231,6 @@ public class BaseEntity : MonoBehaviour
             yield return null;
         }
     }
-
-
 
 
     /**************************

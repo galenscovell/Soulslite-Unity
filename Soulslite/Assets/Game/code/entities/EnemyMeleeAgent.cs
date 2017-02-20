@@ -5,7 +5,8 @@ public class EnemyMeleeAgent : Enemy
 {
     // State machines
     private EnemyMeleeAttack attack;
-    private EnemyMeleeHurt hurt;
+    private EnemyMeleeDying dying;
+    private EnemyMeleeFall fall;
     private EnemyMeleeFullIdle fullIdle;
 
 
@@ -20,12 +21,14 @@ public class EnemyMeleeAgent : Enemy
         seeker = GetComponent<Seeker>();
 
         attack = animator.GetBehaviour<EnemyMeleeAttack>();
-        hurt = animator.GetBehaviour<EnemyMeleeHurt>();
+        dying = animator.GetBehaviour<EnemyMeleeDying>();
+        fall = animator.GetBehaviour<EnemyMeleeFall>();
         fullIdle = animator.GetBehaviour<EnemyMeleeFullIdle>();
 
         // Ints in state Setups are the sfx index
         attack.Setup(this, 0);
-        hurt.Setup(this);
+        dying.Setup(this, 1);
+        fall.Setup(this, 2);
         fullIdle.Setup(this);
     }
 
@@ -163,9 +166,16 @@ public class EnemyMeleeAgent : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Set as ready to fall if colliding with falloff boundary
+        if (collision.tag == "FalloffTag")
+        {
+            animator.Play(fall.GetHash());
+            return;
+        }
+
         if (collision.gameObject.tag == "PlayerAttack" || collision.gameObject.tag == "PlayerBullet")
         {
-            if (currentStateInfo.fullPathHash == hurt.GetHash())
+            if (currentStateInfo.fullPathHash == dying.GetHash())
             {
                 return;
             }
@@ -185,8 +195,8 @@ public class EnemyMeleeAgent : Enemy
 
             if (HealthZero() && !IsDead())
             {
-                hurt.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
-                animator.Play(hurt.GetHash());
+                dying.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
+                animator.Play(dying.GetHash());
             }
         }
     }

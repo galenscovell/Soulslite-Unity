@@ -225,12 +225,6 @@ public class PlayerAgent : BaseEntity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // All triggers stop listening once player is dead
-        if (IsDead())
-        {
-            return;
-        }
-
         // Ignore collisions with transition zones
         if (collision.tag == "TransitionTag")
         {
@@ -247,7 +241,8 @@ public class PlayerAgent : BaseEntity
         // Set player as ready to fall if colliding with falloff boundary
         if (collision.tag == "FalloffTag")
         {
-            falling = !falling;
+            // falling = !falling;
+            falling = true;
             return;
         }
 

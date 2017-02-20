@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 
 
-public class EnemyRangedHurt : StateMachineBehaviour
+public class EnemyRangedDying : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.EnemyRangedHurt");
+    private int hash = Animator.StringToHash("Base Layer.EnemyRangedDying");
     private Enemy enemy;
     private Vector2 flungVelocity;
+    private int sfxIndex;
+
+    private bool flung;
+    private bool sfxPlayed;
 
 
     public int GetHash()
@@ -13,9 +17,10 @@ public class EnemyRangedHurt : StateMachineBehaviour
         return hash;
     }
 
-    public void Setup(Enemy e)
+    public void Setup(Enemy e, int assignedSfxIndex)
     {
         enemy = e;
+        sfxIndex = assignedSfxIndex;
     }
 
     public void SetFlungVelocity(Vector2 velocity)
@@ -26,6 +31,9 @@ public class EnemyRangedHurt : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         enemy.EnableFlippedX();
+        flung = false;
+        sfxPlayed = false;
+        enemy.DisableMotion();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -33,13 +41,19 @@ public class EnemyRangedHurt : StateMachineBehaviour
         float stateTime = stateInfo.normalizedTime;
         if (stateTime < 0.2f)
         {
-            enemy.SetSpeed(240f);
-            enemy.SetNextVelocity(flungVelocity);
+            if (!flung)
+            {
+                enemy.SetHurtImpulse(flungVelocity, 3, 0.25f);
+                flung = true;
+            }
         }
         else if (stateTime > 0.2f && stateTime < 1)
         {
-            enemy.SetSpeed(enemy.GetSpeed() - 1);
-            enemy.DisableMotion();
+            if (!sfxPlayed)
+            {
+                enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.1f, 1);
+                sfxPlayed = true;
+            }
         }
         else if (stateTime >= 1)
         {

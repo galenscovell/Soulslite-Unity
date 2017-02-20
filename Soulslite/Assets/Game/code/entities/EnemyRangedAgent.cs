@@ -5,7 +5,8 @@ public class EnemyRangedAgent : Enemy
 {
     // State machines
     private EnemyRangedAttack attack;
-    private EnemyRangedHurt hurt;
+    private EnemyRangedDying dying;
+    private EnemyRangedFall fall;
     private EnemyRangedFullIdle fullIdle;
 
 
@@ -20,14 +21,16 @@ public class EnemyRangedAgent : Enemy
         seeker = GetComponent<Seeker>();
 
         attack = animator.GetBehaviour<EnemyRangedAttack>();
-        hurt = animator.GetBehaviour<EnemyRangedHurt>();
+        dying = animator.GetBehaviour<EnemyRangedDying>();
+        fall = animator.GetBehaviour<EnemyRangedFall>();
         fullIdle = animator.GetBehaviour<EnemyRangedFullIdle>();
 
         EnemyRangedGunLimb gunLimb = transform.Find("GunLimb").GetComponent<EnemyRangedGunLimb>();
 
         // Ints in state Setups are the sfx index
         attack.Setup(this, gunLimb, 0);
-        hurt.Setup(this);
+        dying.Setup(this, 1);
+        fall.Setup(this, 2);
         fullIdle.Setup(this);
     }
 
@@ -168,9 +171,16 @@ public class EnemyRangedAgent : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Set as ready to fall if colliding with falloff boundary
+        if (collision.tag == "FalloffTag")
+        {
+            animator.Play(fall.GetHash());
+            return;
+        }
+
         if (collision.gameObject.tag == "PlayerAttack" || collision.gameObject.tag == "PlayerBullet")
         {
-            if (currentStateInfo.fullPathHash == hurt.GetHash())
+            if (currentStateInfo.fullPathHash == dying.GetHash())
             {
                 return;
             }
@@ -190,8 +200,8 @@ public class EnemyRangedAgent : Enemy
 
             if (HealthZero() && !IsDead())
             {
-                hurt.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
-                animator.Play(hurt.GetHash());
+                dying.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
+                animator.Play(dying.GetHash());
             }
         }
     }
