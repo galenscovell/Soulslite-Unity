@@ -31,14 +31,14 @@ public class EnemyRangedHurt : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-        if (stateTime < 0.325f)
+        if (stateTime < 0.2f)
         {
-            enemy.SetSpeed(180f);
+            enemy.SetSpeed(240f);
             enemy.SetNextVelocity(flungVelocity);
         }
-        else if (stateTime >= 0.325f && stateTime < 1)
+        else if (stateTime > 0.2f && stateTime < 1)
         {
-            enemy.SetSpeed(enemy.defaultSpeed);
+            enemy.SetSpeed(enemy.GetSpeed() - 1);
             enemy.DisableMotion();
         }
         else if (stateTime >= 1)

@@ -101,7 +101,7 @@ public class Enemy : BaseEntity
         // Set as ready to fall if colliding with falloff boundary
         if (collision.tag == "FalloffTag")
         {
-            falling = !falling;
+            falling = true;
             return;
         }
     }
