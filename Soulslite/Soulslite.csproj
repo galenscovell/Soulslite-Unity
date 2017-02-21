@@ -133,6 +133,8 @@
     <Compile Include="Assets\Game\code\systems\DustSystem.cs" />
     <Compile Include="Assets\Game\code\systems\LevelSystem.cs" />
     <Compile Include="Assets\Game\code\systems\RainSystem.cs" />
+    <Compile Include="Assets\Game\code\systems\UIComponents\HUDComponent.cs" />
+    <Compile Include="Assets\Game\code\systems\UISystem.cs" />
     <Compile Include="Assets\Game\code\util\SceneLoader.cs" />
     <Compile Include="Assets\Game\code\util\TransitionZone.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\AILerp.cs" />

@@ -366,7 +366,7 @@ public class PlayerAgent : BaseEntity
         animator.SetBool("Ranged", false);
 
         gameObject.layer = 10;
-        SetSortingLayer("Foreground");
+        SetSortingLayer("UI");
         CameraSystem.cameraSystem.FadeOutToBlack(0.75f);
 
         SetInput(false);
