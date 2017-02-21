@@ -23,7 +23,7 @@ public class EnemyMeleeFall : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        enemy.SetIgnorePhysics();
+        enemy.IgnoreAllPhysics();
         fadeOutBegan = false;
         enemy.FaceTarget();
         float facingX = enemy.GetFacingDirection().x;
@@ -46,7 +46,7 @@ public class EnemyMeleeFall : StateMachineBehaviour
         }
         else if (stateTime > 1)
         {
-            enemy.FallToDeath();
+            enemy.Disable();
         }
     }
 

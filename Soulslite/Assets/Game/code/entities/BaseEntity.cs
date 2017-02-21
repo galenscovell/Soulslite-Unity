@@ -145,9 +145,14 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *         Death          *
      **************************/
-    public void SetIgnorePhysics()
+    public void IgnoreAllPhysics()
     {
         gameObject.layer = 10;
+    }
+
+    public void IgnoreEntitiesPhysics()
+    {
+        gameObject.layer = 18;
     }
 
     protected bool IsDead()
@@ -161,7 +166,7 @@ public class BaseEntity : MonoBehaviour
      **************************/
     protected void Hurt(Vector2 collisionDirection)
     {
-        SetHurtImpulse(collisionDirection.normalized, 2, 0.1f);
+        SetHurtImpulse(collisionDirection.normalized, 3, 0.1f);
         BloodSystem.bloodSystem.SpawnBlood(body.position, collisionDirection);
         StartCoroutine(HurtFlash());
     }

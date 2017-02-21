@@ -349,7 +349,7 @@ public class PlayerAgent : BaseEntity
         animator.SetBool("Ranged", false);
         animator.SetBool("Dead", true);
 
-        SetIgnorePhysics();
+        IgnoreAllPhysics();
         SetSortingLayer("Foreground");
         CameraSystem.cameraSystem.FadeOutToBlack(2);
 

@@ -9,7 +9,6 @@ public class EnemyMeleeDying : StateMachineBehaviour
     private int sfxIndex;
 
     private bool flung;
-    private bool sfxPlayed;
 
 
     public int GetHash()
@@ -30,10 +29,12 @@ public class EnemyMeleeDying : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        enemy.DisableMotion();
+        enemy.IgnoreEntitiesPhysics();
         enemy.EnableFlippedX();
         flung = false;
-        sfxPlayed = false;
-        enemy.DisableMotion();
+
+        enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.1f, 1);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -45,14 +46,6 @@ public class EnemyMeleeDying : StateMachineBehaviour
             {
                 enemy.SetHurtImpulse(flungVelocity, 3, 0.25f);
                 flung = true;
-            }
-        }
-        else if (stateTime > 0.2f && stateTime < 1)
-        {
-            if (!sfxPlayed)
-            {
-                enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.1f, 1);
-                sfxPlayed = true;
             }
         }
         else if (stateTime >= 1)

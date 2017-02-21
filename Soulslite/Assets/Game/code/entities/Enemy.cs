@@ -173,7 +173,7 @@ public class Enemy : BaseEntity
         animator.SetBool("Attacking", false);
         animator.SetBool("Dead", true);
         StartCoroutine(LerpSpriteColor(new Color(0.6f, 0.6f, 0.6f), 2));
-        SetIgnorePhysics();
+        IgnoreAllPhysics();
     }
 
     public void DisableDeath()
@@ -189,7 +189,7 @@ public class Enemy : BaseEntity
         gameObject.layer = 16;
     }
 
-    public void FallToDeath()
+    public void Disable()
     {
         gameObject.SetActive(false);
     }
