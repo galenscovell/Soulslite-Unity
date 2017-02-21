@@ -9,7 +9,7 @@ class HUDComponent : MonoBehaviour
 
     private float staminaRechargeRate = 0.05f;
     private bool staminaRechargeWait = false;
-    private float staminaRechargeWaitTime = 4;
+    private float staminaRechargeWaitTime = 2;
     private float staminaRechargeCounter = 0;
 
 
@@ -45,21 +45,22 @@ class HUDComponent : MonoBehaviour
      **************************/
     public void ModifyStamina(float value)
     {
+        if (value < 0)
+        {
+            staminaRechargeWait = true;
+            staminaRechargeCounter = 0;
+        }
+
         staminaSlider.value += value;
 
         if (GetStamina() > staminaSlider.maxValue)
         {
             staminaSlider.value = staminaSlider.maxValue;
         }
-        else if(GetStamina() < staminaSlider.minValue)
+        else if (GetStamina() <= staminaSlider.minValue)
         {
             staminaSlider.value = staminaSlider.minValue;
         }
-    }
-
-    public void RechargeStamina()
-    {
-        staminaRechargeWait = true;
     }
 
     public float GetStamina()

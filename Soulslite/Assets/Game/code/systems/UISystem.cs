@@ -15,4 +15,18 @@ class UISystem : MonoBehaviour
         else uiSystem = this;
         DontDestroyOnLoad(this);
     }
+
+
+    /**************************
+     *          HUD           *
+     **************************/
+    public float GetCurrentStamina()
+    {
+        return hud.GetStamina();
+    }
+
+    public void UpdateStamina(float amount)
+    {
+        hud.ModifyStamina(amount);
+    }
 }
