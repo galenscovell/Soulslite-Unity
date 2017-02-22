@@ -88,6 +88,6 @@ class HUDComponent : MonoBehaviour
 
     public float GetAmmo()
     {
-        return staminaSlider.value;
+        return ammoSlider.value;
     }
 }

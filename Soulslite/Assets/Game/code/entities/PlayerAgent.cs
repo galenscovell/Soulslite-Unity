@@ -62,7 +62,7 @@ public class PlayerAgent : BaseEntity
         hurt.Setup(this, 5);
         idle.Setup(this);
         movement.Setup(this, 6);
-        ranged.Setup(this, gunLimb, 7);
+        ranged.Setup(this, gunLimb);
         rangedAttack.Setup(this, gunLimb, 8);
 
         heartbeat = NearDeathHeartbeat();
@@ -150,7 +150,6 @@ public class PlayerAgent : BaseEntity
         // Start ranged attack mode
         else if (Input.GetButton("Button5"))
         {
-            ranged.LoadGun();
             animator.SetBool("Ranged", true);
         }
     }
@@ -162,8 +161,6 @@ public class PlayerAgent : BaseEntity
         {
             if (UISystem.uiSystem.GetCurrentStamina() >= 1)
             {
-                UISystem.uiSystem.UpdateStamina(-1);
-
                 Vector2 dashDirection = GetAxisInput();
                 if (dashDirection.magnitude == 0)
                 {
@@ -194,7 +191,16 @@ public class PlayerAgent : BaseEntity
         // Start ranged attack shot
         if (Input.GetButtonDown("Button0"))
         {
-            animator.SetBool("Attacking", true);
+            if (UISystem.uiSystem.GetCurrentAmmo() >= 1)
+            {
+                UISystem.uiSystem.UpdateAmmo(-1);
+                animator.SetBool("Attacking", true);
+            }
+            else
+            {
+                PlaySfxRandomPitch(7, 0.8f, 1.3f, 1);
+            }
+                
         }
 
         // End ranged attack mode when button released
@@ -348,18 +354,28 @@ public class PlayerAgent : BaseEntity
     /**************************
      *         Death          *
      **************************/
-    public void Die()
+    public void BeginDeath()
     {
+        // Interrupt dash if currently dashing
+        if (currentStateInfo.fullPathHash == dash.GetHash())
+        {
+            dash.Interrupt(animator);
+        }
+
         StopCoroutine(heartbeat);
 
         animator.SetBool("Attacking", false);
-        animator.SetBool("Dashing", false);
         animator.SetBool("Idling", false);
         animator.SetBool("Ranged", false);
+    }
+
+    public void Die()
+    {
+        BeginDeath();
         animator.SetBool("Dead", true);
 
         IgnoreAllPhysics();
-        SetSortingLayer("Foreground");
+        SetSortingLayer("UI");
         CameraSystem.cameraSystem.FadeOutToBlack(2);
 
         animator.Play("PlayerDie");
@@ -367,12 +383,7 @@ public class PlayerAgent : BaseEntity
 
     public void Fall()
     {
-        StopCoroutine(heartbeat);
-
-        animator.SetBool("Attacking", false);
-        animator.SetBool("Dashing", false);
-        animator.SetBool("Idling", false);
-        animator.SetBool("Ranged", false);
+        BeginDeath();
 
         gameObject.layer = 10;
         SetSortingLayer("UI");

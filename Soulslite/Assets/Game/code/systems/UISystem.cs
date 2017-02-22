@@ -29,4 +29,14 @@ class UISystem : MonoBehaviour
     {
         hud.ModifyStamina(amount);
     }
+
+    public float GetCurrentAmmo()
+    {
+        return hud.GetAmmo();
+    }
+
+    public void UpdateAmmo(float amount)
+    {
+        hud.ModifyAmmo(amount);
+    }
 }

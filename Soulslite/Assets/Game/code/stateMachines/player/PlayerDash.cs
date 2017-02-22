@@ -16,6 +16,7 @@ public class PlayerDash : StateMachineBehaviour
 
     private float currentPitch;
     private int sfxIndex;
+    private bool sfxPlayed;
 
 
     public int GetHash()
@@ -47,6 +48,7 @@ public class PlayerDash : StateMachineBehaviour
         {
             chainCounter++;
             player.SetFacingDirection(direction);
+            UISystem.uiSystem.UpdateStamina(-0.25f);
             animator.Play(hash, -1, 0f);
         }
         // If input is received any other time, the chain becomes locked
@@ -58,6 +60,7 @@ public class PlayerDash : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        sfxPlayed = false;
         DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
 
         dashTrail.SetEnabled(true);
@@ -78,9 +81,7 @@ public class PlayerDash : StateMachineBehaviour
 
         preventChain = false;
         chainableState = false;
-
-        player.PlaySfx(sfxIndex, currentPitch, 1f);
-
+        
         BeginDashLine();
     }
 
@@ -100,9 +101,15 @@ public class PlayerDash : StateMachineBehaviour
             player.Fall();
             return;
         }
-        else if (stateTime >= 0.45f && stateTime < 0.4625f)
+        else if (stateTime > 0.3f && stateTime < 0.325f)
         {
             // This is the brief window for dash chaining input
+            if (!sfxPlayed)
+            {
+                player.PlaySfxRandomPitch(sfxIndex, currentPitch - 0.05f, currentPitch + 0.05f, 1f);
+                sfxPlayed = true;
+            }
+            
             if (!preventChain)
             {
                 chainableState = true;
@@ -126,6 +133,8 @@ public class PlayerDash : StateMachineBehaviour
         player.EnableMotion();
         CameraSystem.cameraSystem.RestoreDefaultDampTime();
     }
+
+
 
     private void BeginDashLine()
     {

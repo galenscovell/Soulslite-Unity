@@ -180,6 +180,7 @@ public class EnemyMeleeAgent : Enemy
                 return;
             }
 
+            UISystem.uiSystem.UpdateAmmo(1);
             Vector2 collisionDirection = transform.position - collision.transform.position;
 
             Hurt(collisionDirection);

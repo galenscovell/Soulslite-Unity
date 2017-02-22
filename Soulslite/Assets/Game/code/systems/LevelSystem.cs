@@ -154,7 +154,7 @@ public class LevelSystem : MonoBehaviour
         player.SetNextVelocity(GetTransitionVelocity());
         player.Transition(GetSceneEntrance(lastUsedEntrance));
 
-        CameraSystem.cameraSystem.FadeInFromBlack(1).setOnComplete(ResetTransitionSettings);
+        CameraSystem.cameraSystem.FadeInFromBlack(1.25f).setOnComplete(ResetTransitionSettings);
     }
 
     private void ResetTransitionSettings()
