@@ -454,7 +454,7 @@
    <property name="unity:layer" value="ObstacleLayer"/>
    <property name="unity:tag" value="ObstacleTag"/>
   </properties>
-  <object id="1" name="Obstacle" x="112" y="671" width="33" height="18">
+  <object id="1" name="Obstacle" x="112" y="670" width="33" height="18">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
@@ -472,7 +472,7 @@
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="8" name="Obstacle" x="112" y="799" width="33" height="18">
+  <object id="8" name="Obstacle" x="112" y="798" width="33" height="18">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
@@ -496,19 +496,19 @@
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="12" name="Obstacle" x="240" y="671" width="33" height="18">
+  <object id="12" name="Obstacle" x="240" y="670" width="33" height="18">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="13" name="Obstacle" x="240" y="543" width="33" height="18">
+  <object id="13" name="Obstacle" x="240" y="542" width="33" height="18">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="14" name="Obstacle" x="112" y="543" width="33" height="18">
+  <object id="14" name="Obstacle" x="112" y="542" width="33" height="18">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
@@ -550,7 +550,7 @@
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="93" name="Obstacle" x="199" y="768" width="15" height="16">
+  <object id="93" name="Obstacle" x="199" y="767" width="15" height="17">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
