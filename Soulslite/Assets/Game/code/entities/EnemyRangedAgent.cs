@@ -129,7 +129,7 @@ public class EnemyRangedAgent : Enemy
             else
             {
                 /****************
-                 * FOLLOW PATH
+                 * FOLLOWING
                  ****************/
                 if (behavior.HasPath())
                 {
@@ -144,9 +144,17 @@ public class EnemyRangedAgent : Enemy
                             SetSpeed(defaultSpeed);
                         }
 
-                        Vector2 nextWaypoint = behavior.GetNextWaypoint();
-                        Vector2 dirToWaypoint = (nextWaypoint - body.position).normalized;
-                        SetNextVelocity(dirToWaypoint * speed);
+                        behavior.IncrementWaypoint();
+                        if (behavior.HasPath())
+                        {
+                            Vector2 nextWaypoint = behavior.GetNextWaypoint();
+                            Vector2 dirToWaypoint = (nextWaypoint - body.position).normalized;
+                            SetNextVelocity(dirToWaypoint * speed);
+                        }
+                        else
+                        {
+                            SetNextVelocity(Vector2.zero);
+                        }
                     }
                 }
                 /****************
@@ -171,6 +179,12 @@ public class EnemyRangedAgent : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Ignore collisions with critters
+        if (collision.tag == "CritterTag")
+        {
+            return;
+        }
+
         // Set as ready to fall if colliding with falloff boundary
         if (collision.tag == "FalloffTag")
         {

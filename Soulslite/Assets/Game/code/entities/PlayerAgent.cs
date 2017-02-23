@@ -246,6 +246,12 @@ public class PlayerAgent : BaseEntity
             return;
         }
 
+        // Ignore collisions with critters
+        if (collision.tag == "CritterTag")
+        {
+            return;
+        }
+
         // Interrupt attack if collided with obstacle
         if (collision.tag == "ObstacleTag")
         {

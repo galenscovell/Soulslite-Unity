@@ -119,38 +119,49 @@ public class EnemyMeleeAgent : Enemy
             /****************
              * ATTACK
              ****************/
-            if (attackReady && inAttackRange && targetInView && !visionBlockedByEnemy)
+            if (inAttackRange && targetInView && attackReady)
             {
+                FaceTarget();
                 animator.SetBool("Attacking", true);
             }
-
-            /****************
-             * FOLLOWING
-             ****************/
-            if (behavior.HasPath())
-            {
-                if (behavior.WaypointReached(body.position))
-                {
-                    if(behavior.IsWandering())
-                    {
-                        SetSpeed(defaultSpeed / 2);
-                    } 
-                    else
-                    {
-                        SetSpeed(defaultSpeed);
-                    }
-
-                    Vector2 nextWaypoint = behavior.GetNextWaypoint();
-                    Vector2 dirToWaypoint = (nextWaypoint - body.position).normalized;
-                    SetNextVelocity(dirToWaypoint * speed);
-                }
-            }
-            /****************
-             * NO PATH
-             ****************/
             else
             {
-                SetNextVelocity(Vector2.zero);
+                /****************
+                 * FOLLOWING
+                 ****************/
+                if (behavior.HasPath())
+                {
+                    if (behavior.WaypointReached(body.position))
+                    {
+                        if (behavior.IsWandering())
+                        {
+                            SetSpeed(defaultSpeed / 2);
+                        }
+                        else
+                        {
+                            SetSpeed(defaultSpeed);
+                        }
+
+                        behavior.IncrementWaypoint();
+                        if (behavior.HasPath())
+                        {
+                            Vector2 nextWaypoint = behavior.GetNextWaypoint();
+                            Vector2 dirToWaypoint = (nextWaypoint - body.position).normalized;
+                            SetNextVelocity(dirToWaypoint * speed);
+                        }
+                        else
+                        {
+                            SetNextVelocity(Vector2.zero);
+                        }
+                    }
+                }
+                /****************
+                 * NO PATH
+                 ****************/
+                else
+                {
+                    SetNextVelocity(Vector2.zero);
+                }
             }
         }
     }
@@ -166,6 +177,12 @@ public class EnemyMeleeAgent : Enemy
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Ignore collisions with critters
+        if (collision.tag == "CritterTag")
+        {
+            return;
+        }
+
         // Set as ready to fall if colliding with falloff boundary
         if (collision.tag == "FalloffTag")
         {

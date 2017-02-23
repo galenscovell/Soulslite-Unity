@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="12" height="30" tilewidth="32" tileheight="32" nextobjectid="215">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="12" height="30" tilewidth="32" tileheight="32" nextobjectid="245">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="29" columns="0">
   <tile id="0">
    <image width="32" height="32" source="DemoLevelTiles/ground/cliff-diag-left1_1.png"/>
@@ -598,13 +598,13 @@
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="160" name="Obstacle" x="72" y="416" width="48" height="16">
+  <object id="160" name="Obstacle" x="64" y="408" width="56" height="24">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="161" name="Obstacle" x="264" y="416" width="48" height="16">
+  <object id="161" name="Obstacle" x="264" y="408" width="56" height="24">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
@@ -731,14 +731,14 @@
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
-  <object id="117" name="Falloff" x="264" y="320" width="8" height="96">
+  <object id="117" name="Falloff" x="264" y="320" width="8" height="88">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
     <property name="unity:layer" value="FalloffLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
-  <object id="118" name="Falloff" x="112" y="320" width="8" height="96">
+  <object id="118" name="Falloff" x="112" y="320" width="8" height="88">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
     <property name="unity:layer" value="FalloffLayer"/>
@@ -794,14 +794,14 @@
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
-  <object id="127" name="Falloff" x="312" y="416" width="16" height="8">
+  <object id="127" name="Falloff" x="320" y="416" width="8" height="8">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
     <property name="unity:layer" value="FalloffLayer"/>
     <property name="unity:tag" value="FalloffTag"/>
    </properties>
   </object>
-  <object id="128" name="Falloff" x="56" y="416" width="16" height="8">
+  <object id="128" name="Falloff" x="56" y="416" width="8" height="8">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
     <property name="unity:layer" value="FalloffLayer"/>
@@ -936,6 +936,196 @@
     <property name="unity:tag" value="CameraTag"/>
    </properties>
    <polyline points="0,0 32,0 32,704 0,704 0,0"/>
+  </object>
+ </objectgroup>
+ <objectgroup name="PathfindRail">
+  <properties>
+   <property name="unity:isTrigger" type="bool" value="true"/>
+   <property name="unity:layer" value="PathfindRailLayer"/>
+  </properties>
+  <object id="215" name="PathfindRail" x="248" y="0" width="8" height="96">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="216" name="PathfindRail" x="128" y="0" width="8" height="96">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="217" name="PathfindRail" x="96" y="128" width="8" height="64">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="218" name="PathfindRail" x="280" y="128" width="8" height="64">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="219" name="PathfindRail" x="312" y="224" width="8" height="32">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="220" name="PathfindRail" x="64" y="224" width="8" height="32">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="221" name="PathfindRail" x="128" y="320" width="8" height="128">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="222" name="PathfindRail" x="248" y="320" width="8" height="128">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="223" name="PathfindRail" x="312" y="448" width="8" height="128">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="224" name="PathfindRail" x="64" y="448" width="8" height="128">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="225" name="PathfindRail" x="96" y="608" width="8" height="64">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="226" name="PathfindRail" x="280" y="608" width="8" height="64">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="227" name="PathfindRail" x="312" y="672" width="8" height="128">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="228" name="PathfindRail" x="64" y="672" width="8" height="128">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="230" name="PathfindRail" x="128" y="856" width="128" height="8">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="231" name="PathfindRail" x="128" y="856">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+   <polygon points="0,0 -56,-56 -64,-56 0,8"/>
+  </object>
+  <object id="232" name="PathfindRail" x="256" y="856">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+   <polygon points="0,0 56,-56 64,-56 0,8"/>
+  </object>
+  <object id="233" name="PathfindRail" x="280" y="672" width="32" height="8">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="234" name="PathfindRail" x="72" y="672" width="32" height="8">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="235" name="PathfindRail" x="248" y="448" width="64" height="8">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="236" name="PathfindRail" x="72" y="448" width="64" height="8">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+  </object>
+  <object id="237" name="PathfindRail" x="72" y="576">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+   <polygon points="0,0 32,32 24,32 -8,0"/>
+  </object>
+  <object id="238" name="PathfindRail" x="280" y="608">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+   <polygon points="0,0 32,-32 40,-32 8,0"/>
+  </object>
+  <object id="239" name="PathfindRail" x="248" y="320">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+   <polygon points="0,0 64,-64 72,-64 8,0"/>
+  </object>
+  <object id="240" name="PathfindRail" x="320" y="224">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+   <polygon points="0,0 -32,-32 -40,-32 -8,0"/>
+  </object>
+  <object id="241" name="PathfindRail" x="136" y="320">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+   <polygon points="0,0 -64,-64 -72,-64 -8,0"/>
+  </object>
+  <object id="242" name="PathfindRail" x="64" y="224">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+   <polygon points="0,0 32,-32 40,-32 8,0"/>
+  </object>
+  <object id="243" name="PathfindRail" x="96" y="128">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+   <polygon points="0,0 32,-32 40,-32 8,0"/>
+  </object>
+  <object id="244" name="PathfindRail" x="288" y="128">
+   <properties>
+    <property name="unity:isTrigger" type="bool" value="true"/>
+    <property name="unity:layer" value="PathfindRailLayer"/>
+   </properties>
+   <polygon points="0,0 -32,-32 -40,-32 -8,0"/>
   </object>
  </objectgroup>
 </map>

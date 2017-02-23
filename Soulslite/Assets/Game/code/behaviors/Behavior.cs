@@ -8,7 +8,7 @@ public class Behavior
     private bool wandering = false;
 
     public Path path;
-    public float nextWaypointDistance = 1;
+    public float nextWaypointDistance = 2;
 
 
     public bool HasPath()
@@ -20,27 +20,19 @@ public class Behavior
         return false;
     }
 
-    public Vector2 GetNextWaypoint()
+    public void IncrementWaypoint()
     {
         currentWaypoint++;
+    }
 
-        if (HasPath())
-        {
-            return path.vectorPath[currentWaypoint];
-        }
-        else
-        {
-            return default(Vector2);
-        }
+    public Vector2 GetNextWaypoint()
+    {
+        return path.vectorPath[currentWaypoint];
     }
 
     public bool WaypointReached(Vector2 currentPosition)
     {
-        if (HasPath())
-        {
-            return Vector2.Distance(currentPosition, path.vectorPath[currentWaypoint]) < nextWaypointDistance;
-        }
-        return true;
+        return Vector2.Distance(currentPosition, path.vectorPath[currentWaypoint]) < nextWaypointDistance;
     }
 
     public void SetPath(Seeker seeker, Vector2 startPosition, Vector2 targetPosition)

@@ -102,6 +102,7 @@
     <Compile Include="Assets\Game\code\entities\EnemyMeleeAgent.cs" />
     <Compile Include="Assets\Game\code\entities\EnemyRangedAgent.cs" />
     <Compile Include="Assets\Game\code\entities\PlayerAgent.cs" />
+    <Compile Include="Assets\Game\code\entities\critters\Bird.cs" />
     <Compile Include="Assets\Game\code\entities\limbs\EnemyRangedGunLimb.cs" />
     <Compile Include="Assets\Game\code\entities\limbs\PlayerGunLimb.cs" />
     <Compile Include="Assets\Game\code\stateMachines\enemymelee\EnemyMeleeAttack.cs" />
