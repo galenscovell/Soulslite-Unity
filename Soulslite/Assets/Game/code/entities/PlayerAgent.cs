@@ -55,7 +55,7 @@ public class PlayerAgent : BaseEntity
         attack2.Setup(this, 1);
         attack3.Setup(this, 1);
         attackInterrupt.Setup(this, 2);
-        dash.Setup(this, GetComponent<DashTrail>(), GetComponent<LineRenderer>(), 3);
+        dash.Setup(this, GetComponent<DashTrail>(), GetComponent<LineRenderer>(), new int[]{3, 10});
         death.Setup(this, 4);
         fall.Setup(this, 4);
         fullIdle.Setup(this);
@@ -141,11 +141,7 @@ public class PlayerAgent : BaseEntity
         // Start dash
         else if (Input.GetButtonDown("Button1"))
         {
-            if (UISystem.uiSystem.GetCurrentStamina() >= 1)
-            {
-                UISystem.uiSystem.UpdateStamina(-1);
-                animator.SetBool("Dashing", true);
-            }
+            animator.SetBool("Dashing", true);
         }
         // Start ranged attack mode
         else if (Input.GetButton("Button5"))
@@ -159,16 +155,13 @@ public class PlayerAgent : BaseEntity
         // Chain dash
         if (Input.GetButtonDown("Button1"))
         {
-            if (UISystem.uiSystem.GetCurrentStamina() >= 1)
+            Vector2 dashDirection = GetAxisInput();
+            if (dashDirection.magnitude == 0)
             {
-                Vector2 dashDirection = GetAxisInput();
-                if (dashDirection.magnitude == 0)
-                {
-                    dashDirection = facingDirection;
-                }
-
-                dash.Chain(animator, dashDirection);
+                dashDirection = facingDirection;
             }
+
+            dash.Chain(animator, dashDirection);
         }
     }
 

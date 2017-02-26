@@ -123,7 +123,7 @@ public class Bird : MonoBehaviour
 
     private void MovementSetter()
     {
-        moveRate = Random.Range(1, 3);
+        moveRate = Random.Range(0.5f, 3.5f);
     }
 
     private Vector2 GetRandomDirection()

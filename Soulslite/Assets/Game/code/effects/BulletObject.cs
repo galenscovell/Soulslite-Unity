@@ -26,6 +26,12 @@ public class BulletObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // Ignore collisions with critters
+        if (collision.tag == "CritterTag")
+        {
+            return;
+        }
+
         Vector2 collisionDirection = transform.position - collision.transform.position;
         BulletSystem.bulletSystem.DespawnBullet(gameObject, collisionDirection);
     }
