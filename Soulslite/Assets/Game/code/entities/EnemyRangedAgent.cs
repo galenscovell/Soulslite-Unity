@@ -6,8 +6,8 @@ public class EnemyRangedAgent : Enemy
     // State machines
     private EnemyRangedAttack attack;
     private EnemyRangedDying dying;
-    private EnemyRangedFall fall;
-    private EnemyRangedFullIdle fullIdle;
+    private EnemyFall fall;
+    private EnemyFullIdle fullIdle;
 
 
     /**************************
@@ -22,8 +22,8 @@ public class EnemyRangedAgent : Enemy
 
         attack = animator.GetBehaviour<EnemyRangedAttack>();
         dying = animator.GetBehaviour<EnemyRangedDying>();
-        fall = animator.GetBehaviour<EnemyRangedFall>();
-        fullIdle = animator.GetBehaviour<EnemyRangedFullIdle>();
+        fall = animator.GetBehaviour<EnemyFall>();
+        fullIdle = animator.GetBehaviour<EnemyFullIdle>();
 
         EnemyRangedGunLimb gunLimb = transform.Find("GunLimb").GetComponent<EnemyRangedGunLimb>();
 
@@ -194,8 +194,16 @@ public class EnemyRangedAgent : Enemy
 
         if (collision.gameObject.tag == "PlayerAttack" || collision.gameObject.tag == "PlayerBullet")
         {
+            // Enemy is dying but not yet disabled
             if (currentStateInfo.fullPathHash == dying.GetHash())
             {
+                return;
+            }
+
+            // Hit during attacking state
+            if (currentStateInfo.fullPathHash == attack.GetHash() && !attack.Interrupt(animator))
+            {
+                // Invulnerable state
                 return;
             }
 

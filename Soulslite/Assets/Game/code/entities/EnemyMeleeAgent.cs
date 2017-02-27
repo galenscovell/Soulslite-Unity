@@ -6,8 +6,8 @@ public class EnemyMeleeAgent : Enemy
     // State machines
     private EnemyMeleeAttack attack;
     private EnemyMeleeDying dying;
-    private EnemyMeleeFall fall;
-    private EnemyMeleeFullIdle fullIdle;
+    private EnemyFall fall;
+    private EnemyFullIdle fullIdle;
 
 
     /**************************
@@ -22,8 +22,8 @@ public class EnemyMeleeAgent : Enemy
 
         attack = animator.GetBehaviour<EnemyMeleeAttack>();
         dying = animator.GetBehaviour<EnemyMeleeDying>();
-        fall = animator.GetBehaviour<EnemyMeleeFall>();
-        fullIdle = animator.GetBehaviour<EnemyMeleeFullIdle>();
+        fall = animator.GetBehaviour<EnemyFall>();
+        fullIdle = animator.GetBehaviour<EnemyFullIdle>();
 
         // Ints in state Setups are the sfx index
         attack.Setup(this, 0);
@@ -192,8 +192,16 @@ public class EnemyMeleeAgent : Enemy
 
         if (collision.gameObject.tag == "PlayerAttack" || collision.gameObject.tag == "PlayerBullet")
         {
+            // Enemy is dying but not yet disabled
             if (currentStateInfo.fullPathHash == dying.GetHash())
             {
+                return;
+            }
+
+            // Hit during attacking state
+            if (currentStateInfo.fullPathHash == attack.GetHash() && !attack.Interrupt(animator))
+            {
+                // Invulnerable state
                 return;
             }
 

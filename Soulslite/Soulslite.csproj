@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -105,27 +107,25 @@
     <Compile Include="Assets\Game\code\entities\critters\Bird.cs" />
     <Compile Include="Assets\Game\code\entities\limbs\EnemyRangedGunLimb.cs" />
     <Compile Include="Assets\Game\code\entities\limbs\PlayerGunLimb.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\enemymelee\EnemyMeleeAttack.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\enemymelee\EnemyMeleeDying.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\enemymelee\EnemyMeleeFall.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\enemymelee\EnemyMeleeFullIdle.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\enemyranged\EnemyRangedAttack.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\enemyranged\EnemyRangedDying.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\enemyranged\EnemyRangedFall.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\enemyranged\EnemyRangedFullIdle.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerAttack1.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerAttack2.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerAttack3.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerAttackInterrupt.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerDash.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerDeath.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerFall.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerFullIdle.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerHurt.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerIdle.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerMovement.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerRanged.cs" />
-    <Compile Include="Assets\Game\code\stateMachines\player\PlayerRangedAttack.cs" />
+    <Compile Include="Assets\Game\code\state-machines\enemy-melee\EnemyMeleeAttack.cs" />
+    <Compile Include="Assets\Game\code\state-machines\enemy-melee\EnemyMeleeDying.cs" />
+    <Compile Include="Assets\Game\code\state-machines\enemy-ranged\EnemyRangedAttack.cs" />
+    <Compile Include="Assets\Game\code\state-machines\enemy-ranged\EnemyRangedDying.cs" />
+    <Compile Include="Assets\Game\code\state-machines\enemy-shared\EnemyFall.cs" />
+    <Compile Include="Assets\Game\code\state-machines\enemy-shared\EnemyFullIdle.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerAttack1.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerAttack2.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerAttack3.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerAttackInterrupt.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerDash.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerDeath.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerFall.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerFullIdle.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerHurt.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerIdle.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerMovement.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerRanged.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerRangedAttack.cs" />
     <Compile Include="Assets\Game\code\systems\BloodSystem.cs" />
     <Compile Include="Assets\Game\code\systems\BulletSystem.cs" />
     <Compile Include="Assets\Game\code\systems\CameraSystem.cs" />

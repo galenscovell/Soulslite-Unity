@@ -7,6 +7,7 @@ public class PlayerFall : StateMachineBehaviour
     private PlayerAgent player;
     private int sfxIndex;
 
+    private bool descentBegan;
     private bool fadeOutBegan;
     private bool sfxPlayed;
 
@@ -24,19 +25,26 @@ public class PlayerFall : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        descentBegan = false;
         fadeOutBegan = false;
         sfxPlayed = false;
 
-        float facingX = player.GetFacingDirection().x;
-        player.SetNextVelocity(new Vector2(facingX * 0.001f, -8));
+        player.SetNextVelocity(new Vector2(player.GetFacingDirection().x * 0.001f, -8));
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.SetSpeed(player.GetSpeed() + 8);
-
         float stateTime = stateInfo.normalizedTime;
-        if (stateTime > 0.5f && stateTime < 1)
+
+        if (stateTime < 0.1f)
+        {
+            if (!descentBegan)
+            {
+                player.LerpSpeed(player.GetDefaultSpeed(), 300, 0.5f);
+                descentBegan = true;
+            }
+        }
+        else if (stateTime > 0.5f && stateTime < 1)
         {
             if (!fadeOutBegan)
             {

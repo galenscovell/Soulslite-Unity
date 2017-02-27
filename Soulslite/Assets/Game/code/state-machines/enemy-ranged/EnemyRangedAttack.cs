@@ -14,7 +14,7 @@ public class EnemyRangedAttack : StateMachineBehaviour
     private bool resetting;
 
     // Denotes when this state can be interrupted
-    private bool vulnerable = true;
+    private bool vulnerable;
 
 
     public int GetHash()
@@ -33,7 +33,7 @@ public class EnemyRangedAttack : StateMachineBehaviour
     {
         if (vulnerable)
         {
-            animator.SetBool("Attacking", false);
+            animator.ForceStateNormalizedTime(0.8f);
             return true;
         }
         return false;
@@ -47,6 +47,7 @@ public class EnemyRangedAttack : StateMachineBehaviour
         shotTwo = false;
         shotThree = false;
         resetting = false;
+        vulnerable = true;
 
         Vector2 positionDiff = enemy.GetTarget().position - enemy.GetBody().position;
         gunLimb.UpdateGunLimb(positionDiff, enemy);
@@ -91,7 +92,7 @@ public class EnemyRangedAttack : StateMachineBehaviour
                 resetting = true;
             }
         }
-        else if (stateTime >= 1)
+        else if (stateTime > 1)
         {
             animator.SetBool("Attacking", false);
         }

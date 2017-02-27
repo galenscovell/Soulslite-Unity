@@ -51,16 +51,16 @@ public class PlayerAttack1 : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-        if (stateTime < 0.2f)
+
+        if (stateTime > 0.2f && stateTime < 1)
         {
-            player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
+            if (player.AbleToMove())
+            {
+                player.DisableMotion();
+                player.RestoreDefaultSpeed();
+            }
         }
-        else if (player.AbleToMove() && stateTime >= 0.2f)
-        {
-            player.DisableMotion();
-            player.RestoreDefaultSpeed();
-        }
-        else if (stateTime >= 1)
+        else if (stateTime > 1)
         {
             animator.SetInteger("AttackChain", animator.GetInteger("AttackChain") + 1);
             animator.SetInteger("AttackVersion", 2);

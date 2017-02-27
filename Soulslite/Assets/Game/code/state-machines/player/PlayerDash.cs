@@ -52,7 +52,6 @@ public class PlayerDash : StateMachineBehaviour
 
     public void Chain(Animator animator, Vector2 direction)
     {
-        Debug.Log(chainableState);
         // If dash input is received within the "chainable state" time a dash chain occurs
         if (chainableState && !player.PlayerIsFalling())
         {
@@ -162,7 +161,7 @@ public class PlayerDash : StateMachineBehaviour
 
             if (sfxCounter > sfxRate)
             {
-                player.PlaySfxRandomPitch(sfx[1], 0.8f, 1.3f, 0.4f);
+                player.PlaySfxRandomPitch(sfx[1], 0.7f, 1.4f, 0.25f);
                 sfxCounter = 0;
             }
         }

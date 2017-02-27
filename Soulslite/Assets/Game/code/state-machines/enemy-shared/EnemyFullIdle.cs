@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 
 
-public class EnemyRangedFullIdle : StateMachineBehaviour
+public class EnemyFullIdle : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.EnemyRangedFullIdle");
+    public string stateName;
+
+    private int hash;
     private Enemy enemy;
 
 
@@ -14,6 +16,7 @@ public class EnemyRangedFullIdle : StateMachineBehaviour
 
     public void Setup(Enemy e)
     {
+        hash = Animator.StringToHash(stateName);
         enemy = e;
     }
 
@@ -25,7 +28,8 @@ public class EnemyRangedFullIdle : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-        if (stateTime >= 1)
+
+        if (stateTime > 1)
         {
             animator.SetBool("Idling", false);
         }

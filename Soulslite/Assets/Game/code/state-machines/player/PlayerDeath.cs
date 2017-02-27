@@ -7,7 +7,7 @@ public class PlayerDeath : StateMachineBehaviour
     private PlayerAgent player;
     private int sfxIndex;
 
-    private bool fadeOutBegan = false;
+    private bool fadeOutBegan;
 
 
     public int GetHash()
@@ -23,17 +23,19 @@ public class PlayerDeath : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        fadeOutBegan = false;
         player.PlaySfx(sfxIndex, 1f, 1f);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
+
         if (stateTime > 2 && stateTime < 3)
         {
-            animator.SetBool("Dead", true);
             if (!fadeOutBegan)
             {
+                animator.SetBool("Dead", true);
                 player.FadeOutSprite(0.5f);
                 fadeOutBegan = true;
             }

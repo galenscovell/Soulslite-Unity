@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 
-public class PlayerAttack3 : StateMachineBehaviour
+public class PlayerAttack2 : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.PlayerAttack.PlayerAttack3");
+    private int hash = Animator.StringToHash("Base Layer.PlayerAttack.PlayerAttack2");
     private PlayerAgent player;
     private int sfxIndex;
 
@@ -33,6 +33,11 @@ public class PlayerAttack3 : StateMachineBehaviour
         return false;
     }
 
+    public void Chain(Animator animator, int attackVersion)
+    {
+        animator.SetInteger("AttackVersion", attackVersion);
+    }
+
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
@@ -46,17 +51,18 @@ public class PlayerAttack3 : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-        if (stateTime < 0.25f)
+
+        if (stateTime > 0.2f && stateTime < 1)
         {
-            player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
+            if (player.AbleToMove())
+            {
+                player.DisableMotion();
+                player.RestoreDefaultSpeed();
+            }
         }
-        else if (player.AbleToMove() && stateTime >= 0.25f)
+        else if (stateTime > 1)
         {
-            player.DisableMotion();
-            player.RestoreDefaultSpeed();
-        }
-        else if (stateTime >= 1)
-        {
+            animator.SetInteger("AttackChain", animator.GetInteger("AttackChain") + 1);
             animator.SetInteger("AttackVersion", 1);
             animator.SetBool("Attacking", false);
         }

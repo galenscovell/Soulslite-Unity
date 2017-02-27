@@ -7,12 +7,12 @@ public class EnemyMeleeAttack : StateMachineBehaviour
     private Enemy enemy;
     private int sfxIndex;
 
-    private bool targeted = false;
-    private bool prepared = false;
-    private bool reset = false;
+    private bool targeted;
+    private bool prepared;
+    private bool reset;
 
     // Denotes when this state can be interrupted
-    private bool vulnerable = true;
+    private bool vulnerable;
 
 
     public int GetHash()
@@ -42,35 +42,46 @@ public class EnemyMeleeAttack : StateMachineBehaviour
         targeted = false;
         prepared = false;
         reset = false;
-        vulnerable = false;
+        vulnerable = true;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-        if (!targeted && stateTime >= 0.15f && stateTime < 0.2f)
+
+        if (stateTime > 0.15f && stateTime < 0.2f)
         {
-            enemy.directionToTarget = (enemy.TrackTarget() - enemy.GetBody().position).normalized;
-            targeted = true;
+            if (!targeted)
+            {
+                enemy.directionToTarget = (enemy.TrackTarget() - enemy.GetBody().position).normalized;
+                targeted = true;
+            }
         }
-        else if (!prepared && stateTime >= 0.5f && stateTime < 0.65f)
+        else if (stateTime > 0.5f && stateTime < 0.65f)
         {
-            enemy.EnableMotion();
-            enemy.SetSpeed(240f);
-            enemy.SetNextVelocity(enemy.directionToTarget * enemy.GetSpeed());
-            prepared = true;
+            if (!prepared)
+            {
+                enemy.EnableMotion();
+                enemy.SetSpeed(240f);
+                enemy.SetNextVelocity(enemy.directionToTarget * enemy.GetSpeed());
+                vulnerable = false;
+                prepared = true;
+            }
         }
-        else if (!reset && stateTime >= 0.65f && stateTime < 0.8f)
+        else if (stateTime > 0.65f && stateTime < 0.8f)
         {
-            enemy.RestoreDefaultSpeed();
-            enemy.DisableMotion();
-            enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1);
-            reset = true;
+            if (!reset)
+            {
+                enemy.RestoreDefaultSpeed();
+                enemy.DisableMotion();
+                enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1);
+                vulnerable = true;
+                reset = true;
+            }
         }
-        else if (stateTime >= 1)
+        else if (stateTime > 1)
         {
             animator.SetBool("Attacking", false);
-            vulnerable = true;
         }
     }
 

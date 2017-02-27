@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
 
-public class EnemyRangedDying : StateMachineBehaviour
+public class EnemyMeleeDying : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.EnemyRangedDying");
+    private int hash = Animator.StringToHash("Base Layer.EnemyMeleeDying");
     private Enemy enemy;
     private Vector2 flungVelocity;
     private int sfxIndex;
@@ -33,13 +33,14 @@ public class EnemyRangedDying : StateMachineBehaviour
         enemy.IgnoreEntitiesPhysics();
         enemy.EnableFlippedX();
         flung = false;
-        
+
         enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.1f, 1);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
+
         if (stateTime < 0.2f)
         {
             if (!flung)
@@ -48,7 +49,7 @@ public class EnemyRangedDying : StateMachineBehaviour
                 flung = true;
             }
         }
-        else if (stateTime >= 1)
+        else if (stateTime > 1)
         {
             enemy.EnableDeath();
         }
@@ -56,6 +57,6 @@ public class EnemyRangedDying : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        enemy.EnableMotion();
+        
     }
 }
