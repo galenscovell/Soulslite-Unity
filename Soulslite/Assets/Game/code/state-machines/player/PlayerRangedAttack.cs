@@ -3,7 +3,7 @@
 
 public class PlayerRangedAttack : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.PlayerRanged.PlayerRangedAttack");
+    private int hash = Animator.StringToHash("Base Layer.PlayerRanged.Shoot");
     private PlayerAgent player;
     private PlayerGunLimb gunLimb;
     private int sfxIndex;
@@ -35,7 +35,8 @@ public class PlayerRangedAttack : StateMachineBehaviour
         gunLimb.UpdateTransform(player.GetFacingDirection());
 
         float stateTime = stateInfo.normalizedTime;
-        if (stateTime >= 1)
+
+        if (stateTime > 1)
         {
             animator.SetBool("Attacking", false);
         }

@@ -3,7 +3,7 @@
 
 public class PlayerAttack3 : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.PlayerAttack.PlayerAttack3");
+    private int hash = Animator.StringToHash("Base Layer.PlayerAttack.Attack3");
     private PlayerAgent player;
     private int sfxIndex;
 

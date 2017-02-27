@@ -1,39 +1,38 @@
 ﻿using UnityEngine;
 
 
-public class PlayerRanged : StateMachineBehaviour
+public class PlayerChargedAttack : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.PlayerRanged.Ready");
+    private int hash = Animator.StringToHash("Base Layer.PlayerChargeAttack.ChargedAttack");
     private PlayerAgent player;
-    private PlayerGunLimb gunLimb;
+    private int sfxIndex;
+
 
     public int GetHash()
     {
         return hash;
     }
 
-    public void Setup(PlayerAgent playerEntity, PlayerGunLimb gun)
+    public void Setup(PlayerAgent playerEntity, int assignedSfxIndex)
     {
         player = playerEntity;
-        gunLimb = gun;
+        sfxIndex = assignedSfxIndex;
     }
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.DisableMotion();
-        gunLimb.Activate();
 
-        gunLimb.UpdateTransform(player.GetFacingDirection());
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        gunLimb.UpdateTransform(player.GetFacingDirection());
+        float stateTime = stateInfo.normalizedTime;
+
+
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        gunLimb.Deactivate();
-        player.EnableMotion();
+
     }
 }

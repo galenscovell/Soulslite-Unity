@@ -117,6 +117,8 @@
     <Compile Include="Assets\Game\code\state-machines\player\PlayerAttack2.cs" />
     <Compile Include="Assets\Game\code\state-machines\player\PlayerAttack3.cs" />
     <Compile Include="Assets\Game\code\state-machines\player\PlayerAttackInterrupt.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerChargedAttack.cs" />
+    <Compile Include="Assets\Game\code\state-machines\player\PlayerChargingAttack.cs" />
     <Compile Include="Assets\Game\code\state-machines\player\PlayerDash.cs" />
     <Compile Include="Assets\Game\code\state-machines\player\PlayerDeath.cs" />
     <Compile Include="Assets\Game\code\state-machines\player\PlayerFall.cs" />

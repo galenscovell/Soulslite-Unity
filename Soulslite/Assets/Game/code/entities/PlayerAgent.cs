@@ -14,6 +14,8 @@ public class PlayerAgent : BaseEntity
     private PlayerAttack2 attack2;
     private PlayerAttack3 attack3;
     private PlayerAttackInterrupt attackInterrupt;
+    private PlayerChargingAttack chargingAttack;
+    private PlayerChargedAttack chargedAttack;
     private PlayerDash dash;
     private PlayerDeath death;
     private PlayerFall fall;
@@ -40,6 +42,8 @@ public class PlayerAgent : BaseEntity
         attack2 = animator.GetBehaviour<PlayerAttack2>();
         attack3 = animator.GetBehaviour<PlayerAttack3>();
         attackInterrupt = animator.GetBehaviour<PlayerAttackInterrupt>();
+        chargingAttack = animator.GetBehaviour<PlayerChargingAttack>();
+        chargedAttack = animator.GetBehaviour<PlayerChargedAttack>();
         dash = animator.GetBehaviour<PlayerDash>();
         death = animator.GetBehaviour<PlayerDeath>();
         fall = animator.GetBehaviour<PlayerFall>();
@@ -55,6 +59,8 @@ public class PlayerAgent : BaseEntity
         attack2.Setup(this, 1);
         attack3.Setup(this, 1);
         attackInterrupt.Setup(this, 2);
+        chargingAttack.Setup(this, 11);
+        chargedAttack.Setup(this, 12);
         dash.Setup(this, GetComponent<DashTrail>(), GetComponent<LineRenderer>(), new int[]{3, 10});
         death.Setup(this, 4);
         fall.Setup(this, 4);
@@ -80,6 +86,21 @@ public class PlayerAgent : BaseEntity
 
         if (inputEnabled)
         {
+            // Charge attack tracking
+            if (Input.GetButton("Button0"))
+            {
+                float chargeHeldTime = animator.GetFloat("ChargeHeldTime") + Time.deltaTime;
+                animator.SetFloat("ChargeHeldTime", chargeHeldTime);
+                if (chargeHeldTime > 0.2f && currentStateInfo.fullPathHash != chargingAttack.GetHash())
+                {
+                    animator.SetBool("ChargingAttack", true);
+                }
+            }
+            else
+            {
+                animator.SetFloat("ChargeHeldTime", 0);
+            }
+
             UpdateAttackChain();
             currentStateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
