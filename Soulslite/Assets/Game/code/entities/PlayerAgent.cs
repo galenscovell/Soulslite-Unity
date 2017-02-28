@@ -91,14 +91,18 @@ public class PlayerAgent : BaseEntity
             {
                 float chargeHeldTime = animator.GetFloat("ChargeHeldTime") + Time.deltaTime;
                 animator.SetFloat("ChargeHeldTime", chargeHeldTime);
-                if (chargeHeldTime > 0.2f && currentStateInfo.fullPathHash != chargingAttack.GetHash())
+                if (chargeHeldTime > 0.5f && currentStateInfo.fullPathHash != chargingAttack.GetHash())
                 {
                     animator.SetBool("ChargingAttack", true);
                 }
             }
             else
             {
-                animator.SetFloat("ChargeHeldTime", 0);
+                if (!chargingAttack.AttackIsReady())
+                {
+                    animator.SetBool("ChargingAttack", false);
+                    animator.SetFloat("ChargeHeldTime", 0);
+                }
             }
 
             UpdateAttackChain();
