@@ -35,19 +35,18 @@ public class PlayerChargingAttack : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float stateTime = stateInfo.normalizedTime;
-        float chargeTime = animator.GetFloat("ChargeHeldTime");
 
-        if (chargeTime > 0.8f)
+        if (stateTime > 2 && stateTime < 2.5)
         {
             if (!AttackIsReady())
             {
                 player.PlaySfxRandomPitch(sfxIndex, 0.8f, 1.2f, 1f);
-                player.StartCoroutine(player.FlashSpriteColor(flashColor, 0.15f, 0.15f));
+                player.StartCoroutine(player.FlashSpriteColor(flashColor, 0.35f, 0.8f, 0.25f, 0));
                 attackReady = true;
             }
         }
 
-        if (AttackIsReady() && stateTime > 7f)
+        if (AttackIsReady() && stateTime > 5f)
         {
             animator.SetBool("ChargedAttack", true);
         }

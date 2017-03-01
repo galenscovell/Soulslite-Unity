@@ -168,14 +168,7 @@ public class BaseEntity : MonoBehaviour
     {
         SetHurtImpulse(collisionDirection.normalized, 3, 0.1f);
         BloodSystem.bloodSystem.SpawnBlood(body.position, collisionDirection);
-        StartCoroutine(HurtFlash());
-    }
-
-    protected IEnumerator HurtFlash()
-    {
-        spriteRenderer.material.SetFloat("_FlashAmount", 0.9f);
-        yield return new WaitForSeconds(0.15f);
-        spriteRenderer.material.SetFloat("_FlashAmount", 0f);
+        StartCoroutine(FlashSpriteColor(Color.white, 0.05f, 1f, 0.4f, 0));
     }
 
     protected void ApplyHurtImpulse()
@@ -225,29 +218,42 @@ public class BaseEntity : MonoBehaviour
         LeanTween.value(gameObject, SetSpriteAlpha, 0, 1, overTime);
     }
 
-    public void LerpSpeed(float start, float end, float overTime)
+    public void TweenSpeed(float start, float end, float overTime)
     {
         LeanTween.value(gameObject, SetSpeed, start, end, overTime);
     }
 
-    public IEnumerator LerpSpriteColor(Color color, float overTime)
+    public IEnumerator ChangeSpriteColorInto(Color blinkColor, float runtime, float targetAlpha)
     {
-        float runtime = 0f;
-        
-        while (runtime < overTime)
+        float time = 0;
+        float startAlpha = 0;
+
+        while (time < 1)
         {
-            runtime += Time.deltaTime;
-            spriteRenderer.material.color = Color.Lerp(spriteRenderer.material.color, color, runtime / overTime);
+            time += Time.deltaTime / runtime;
+            blinkColor.a = Mathf.Lerp(startAlpha, targetAlpha, time);
+            spriteRenderer.material.SetColor("_BlinkColor", blinkColor);
             yield return null;
         }
     }
 
-    public IEnumerator FlashSpriteColor(Color color, float inTime, float outTime)
+    public IEnumerator ChangeSpriteColorOutof(Color blinkColor, float runtime, float targetAlpha)
     {
-        Color originalColor = spriteRenderer.material.color;
+        float time = 0;
 
-        yield return LerpSpriteColor(color, inTime);
-        yield return LerpSpriteColor(originalColor, outTime);
+        while (time < 1)
+        {
+            time += Time.deltaTime / runtime;
+            spriteRenderer.material.SetColor("_BlinkColor", blinkColor);
+            blinkColor.a = Mathf.Lerp(blinkColor.a, targetAlpha, time);
+            yield return null;
+        }
+    }
+
+    public IEnumerator FlashSpriteColor(Color color, float inTime, float inAlpha, float outTime, float outAlpha)
+    {
+        yield return ChangeSpriteColorInto(color, inTime, inAlpha);
+        yield return ChangeSpriteColorOutof(color, outTime, outAlpha);
     }
 
 

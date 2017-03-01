@@ -40,7 +40,7 @@ public class PlayerFall : StateMachineBehaviour
         {
             if (!descentBegan)
             {
-                player.LerpSpeed(player.GetDefaultSpeed(), 300, 0.5f);
+                player.TweenSpeed(player.GetDefaultSpeed(), 300, 0.5f);
                 descentBegan = true;
             }
         }

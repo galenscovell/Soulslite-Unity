@@ -172,14 +172,14 @@ public class Enemy : BaseEntity
     {
         animator.SetBool("Attacking", false);
         animator.SetBool("Dead", true);
-        StartCoroutine(LerpSpriteColor(new Color(0.6f, 0.6f, 0.6f), 2));
+        StartCoroutine(ChangeSpriteColorInto(Color.black, 1f, 0.4f));
         IgnoreAllPhysics();
     }
 
     public void DisableDeath()
     {
         gameObject.layer = 0;
-        StartCoroutine(LerpSpriteColor(Color.white, 2));
+        StartCoroutine(ChangeSpriteColorOutof(Color.black, 1f, 0));
         animator.SetBool("Dead", false);
     }
 

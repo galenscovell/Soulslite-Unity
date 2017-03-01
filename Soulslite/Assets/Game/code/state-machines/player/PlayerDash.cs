@@ -143,7 +143,7 @@ public class PlayerDash : StateMachineBehaviour
                 {
                     slowTime += (0.4f * skidTime);
                 }
-                player.LerpSpeed(player.GetDefaultSpeed(), 40, slowTime);
+                player.TweenSpeed(player.GetDefaultSpeed(), 40, slowTime);
                 fxCounter = fxRate;
                 sfxCounter = sfxRate;
                 slowed = true;
