@@ -36,12 +36,12 @@ public class PlayerChargingAttack : StateMachineBehaviour
     {
         float stateTime = stateInfo.normalizedTime;
 
-        if (stateTime > 2 && stateTime < 2.5)
+        if (stateTime > 1 && stateTime < 1.5)
         {
             if (!AttackIsReady())
             {
                 player.PlaySfxRandomPitch(sfxIndex, 0.8f, 1.2f, 1f);
-                player.StartCoroutine(player.FlashSpriteColor(flashColor, 0.35f, 0.8f, 0.25f, 0));
+                player.StartCoroutine(player.FlashSpriteColor(flashColor, 0.45f, 0.8f, 0.15f, 0));
                 attackReady = true;
             }
         }

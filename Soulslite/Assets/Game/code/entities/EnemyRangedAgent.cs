@@ -6,8 +6,6 @@ public class EnemyRangedAgent : Enemy
     // State machines
     private EnemyRangedAttack attack;
     private EnemyRangedDying dying;
-    private EnemyFall fall;
-    private EnemyFullIdle fullIdle;
 
 
     /**************************
@@ -172,34 +170,15 @@ public class EnemyRangedAgent : Enemy
     /**************************
      *       Collision        *
      **************************/
-    private void OnCollisionEnter2D(Collision2D collision)
+    private new void OnTriggerEnter2D(Collider2D collision)
     {
+        base.OnTriggerEnter2D(collision);
 
-    }
+        // Enemy is dying but not yet disabled
+        if (currentStateInfo.fullPathHash == dying.GetHash()) return;
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // Ignore collisions with critters
-        if (collision.tag == "CritterTag")
+        if (collision.gameObject.tag == "PlayerAttack" || collision.gameObject.tag == "PlayerStrongAttack" || collision.gameObject.tag == "PlayerBullet")
         {
-            return;
-        }
-
-        // Set as ready to fall if colliding with falloff boundary
-        if (collision.tag == "FalloffTag")
-        {
-            animator.Play(fall.GetHash());
-            return;
-        }
-
-        if (collision.gameObject.tag == "PlayerAttack" || collision.gameObject.tag == "PlayerBullet")
-        {
-            // Enemy is dying but not yet disabled
-            if (currentStateInfo.fullPathHash == dying.GetHash())
-            {
-                return;
-            }
-
             // Hit during attacking state
             if (currentStateInfo.fullPathHash == attack.GetHash() && !attack.Interrupt(animator))
             {
@@ -207,11 +186,20 @@ public class EnemyRangedAgent : Enemy
                 return;
             }
 
-            UISystem.uiSystem.UpdateAmmo(1);
-            Vector2 collisionDirection = transform.position - collision.transform.position;
-
-            Hurt(collisionDirection);
-            DecreaseHealth(1);
+            switch (collision.gameObject.tag)
+            {
+                case "PlayerBullet":
+                    TakeBulletHit(1, collision);
+                    break;
+                case "PlayerAttack":
+                    TakeNormalHit(1, collision);
+                    break;
+                case "PlayerStrongAttack":
+                    TakeStrongHit(2, collision);
+                    break;
+                default:
+                    break;
+            }
 
             // Make enemy active if player hits them, even if outside range
             if (passive)
@@ -221,22 +209,12 @@ public class EnemyRangedAgent : Enemy
                 animator.SetBool("Idling", false);
             }
 
+            // Check health status
             if (HealthZero() && !IsDead())
             {
                 dying.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
                 animator.Play(dying.GetHash());
             }
         }
-    }
-
-
-    /**************************
-     *         Hurt          *
-     **************************/
-    private new void Hurt(Vector2 collisionDirection)
-    {
-        // Flash, particle fx and damage
-        base.Hurt(collisionDirection);
-        CameraSystem.cameraSystem.ActivateShake(2, 0.1f);
     }
 }

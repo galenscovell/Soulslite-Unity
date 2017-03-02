@@ -8,6 +8,8 @@ public class Enemy : BaseEntity
 
     protected AnimatorStateInfo currentStateInfo;
     protected bool passive = true;
+    protected EnemyFall fall;
+    protected EnemyFullIdle fullIdle;
 
     protected int attackCounter = 0;
     protected int idleCounter = 0;
@@ -195,8 +197,56 @@ public class Enemy : BaseEntity
     }
 
 
+    /**************************
+     *        Getters         *
+     **************************/
     public Rigidbody2D GetTarget()
     {
         return target;
+    }
+
+
+    /**************************
+     *       Collision        *
+     **************************/
+    protected void OnCollisionEnter2D(Collision2D collision)
+    {
+
+    }
+
+    protected void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Ignore collisions with critters
+        if (collision.tag == "CritterTag") return;
+        
+        // Set as ready to fall if colliding with falloff boundary
+        if (collision.tag == "FalloffTag")
+        {
+            animator.Play(fall.GetHash());
+            return;
+        }
+    }
+
+    protected void TakeNormalHit(int damage, Collider2D collision)
+    {
+        UISystem.uiSystem.UpdateAmmo(1);
+        Vector2 collisionDirection = transform.position - collision.transform.position;
+        Hurt(collisionDirection);
+        DecreaseHealth(damage);
+    }
+
+    protected void TakeStrongHit(int damage, Collider2D collision)
+    {
+        UISystem.uiSystem.UpdateAmmo(1);
+        Vector2 collisionDirection = transform.position - collision.transform.position;
+        Hurt(collisionDirection);
+        DecreaseHealth(damage);
+    }
+
+    protected void TakeBulletHit(int damage, Collider2D collision)
+    {
+        Vector2 collisionDirection = transform.position - collision.transform.position;
+        Hurt(collisionDirection);
+        DecreaseHealth(damage);
     }
 }

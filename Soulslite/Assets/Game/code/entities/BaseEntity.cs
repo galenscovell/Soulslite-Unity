@@ -169,6 +169,7 @@ public class BaseEntity : MonoBehaviour
         SetHurtImpulse(collisionDirection.normalized, 3, 0.1f);
         BloodSystem.bloodSystem.SpawnBlood(body.position, collisionDirection);
         StartCoroutine(FlashSpriteColor(Color.white, 0.05f, 1f, 0.4f, 0));
+        CameraSystem.cameraSystem.ActivateShake(2, 0.1f);
     }
 
     protected void ApplyHurtImpulse()
