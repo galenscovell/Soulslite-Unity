@@ -55,23 +55,14 @@ public class Enemy : BaseEntity
 
     protected new void FixedUpdate()
     {
+        // Enemies all operate on x axis only, so we can mirror at all times
+        EnableMirrorX();
         base.FixedUpdate();
 
         // Always face player if not dead, passive, attacking or fleeing
         if (!animator.GetBool("Passive") && !animator.GetBool("Attacking") && !IsDead())
         {
             FaceTarget();
-        }
-
-        // Enemies all operate on x axis only, so we can mirror at all times
-        // If x is negative, completely flip entity to mirror colliders and animations
-        if (facingDirection.x < 0)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        else
-        {
-            transform.localScale = new Vector3(1, 1, 1);
         }
     }
 

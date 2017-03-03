@@ -10,6 +10,7 @@ public class BaseEntity : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
 
     protected bool canMove = true;
+    protected bool mirrorX;
     protected float speed;
     protected Vector2 nextVelocity;
     protected Vector2 facingDirection;
@@ -102,6 +103,19 @@ public class BaseEntity : MonoBehaviour
     protected bool IsMoving()
     {
         return Vector2.Distance(nextVelocity, Vector2.zero) > 0.1f;
+    }
+
+    protected void MirrorEntityX()
+    {
+        // If x is negative, completely flip entity to mirror colliders and animations
+        if (mirrorX && facingDirection.x < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
     }
 
 
@@ -339,6 +353,16 @@ public class BaseEntity : MonoBehaviour
     public void DisableFlippedX()
     {
         spriteRenderer.flipX = false;
+    }
+
+    public void EnableMirrorX()
+    {
+        mirrorX = true;
+    }
+
+    public void DisableMirrorX()
+    {
+        mirrorX = false;
     }
 
     public void SetSortingLayer(string value)

@@ -8,6 +8,7 @@ public class PlayerAgent : BaseEntity
     private int attackChainWaitFrames;
     private bool inputEnabled = false;
     private bool falling = false;
+    private bool chargeAttacked = false;
 
     // State machines
     private PlayerAttack1 attack1;
@@ -89,15 +90,21 @@ public class PlayerAgent : BaseEntity
             // Charge attack tracking
             if (Input.GetButton("Button0"))
             {
-                float chargeHeldTime = animator.GetFloat("ChargeHeldTime") + Time.deltaTime;
-                animator.SetFloat("ChargeHeldTime", chargeHeldTime);
-                if (chargeHeldTime > 0.3f && currentStateInfo.fullPathHash != chargingAttack.GetHash())
+                if (!chargeAttacked)
                 {
-                    animator.SetBool("ChargingAttack", true);
+                    float chargeHeldTime = animator.GetFloat("ChargeHeldTime") + Time.deltaTime;
+                    animator.SetFloat("ChargeHeldTime", chargeHeldTime);
+                    if (chargeHeldTime > 0.3f && currentStateInfo.fullPathHash != chargingAttack.GetHash())
+                    {
+                        chargeAttacked = true;
+                        animator.SetBool("ChargingAttack", true);
+                    }
                 }
             }
             else
             {
+                chargeAttacked = false;
+
                 if (!chargingAttack.AttackIsReady())
                 {
                     animator.SetBool("ChargingAttack", false);
