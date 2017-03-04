@@ -32,7 +32,7 @@ public class EnemyFall : StateMachineBehaviour
 
         enemy.IgnoreAllPhysics();
         enemy.FaceTarget();
-        enemy.SetHurtImpulse(new Vector2(enemy.GetFacingDirection().x * -0.5f, -0.5f), 4, 0.15f);
+        enemy.SetMovementImpulse(new Vector2(enemy.GetFacingDirection().x * -0.5f, -0.5f), 4, 0.15f);
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -44,7 +44,7 @@ public class EnemyFall : StateMachineBehaviour
             if (!descentBegan)
             {
                 float facingX = enemy.GetFacingDirection().x;
-                enemy.SetHurtImpulse(new Vector2(facingX * -0.05f, -1), 3, 0.5f);
+                enemy.SetMovementImpulse(new Vector2(facingX * -0.05f, -1), 3, 0.5f);
                 descentBegan = true;
             }
 

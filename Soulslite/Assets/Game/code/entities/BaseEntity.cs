@@ -10,12 +10,11 @@ public class BaseEntity : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
 
     protected bool canMove = true;
-    protected bool mirrorX;
     protected float speed;
     protected Vector2 nextVelocity;
     protected Vector2 facingDirection;
-    protected Vector2 hurtImpulse;
-    protected float hurtImpulseTime;
+    protected Vector2 movementImpulse;
+    protected float movementImpulseTime;
 
     public AudioClip[] soundEffects;
     public bool flipX = false;
@@ -85,7 +84,7 @@ public class BaseEntity : MonoBehaviour
         // Set new body velocity directly based on nextVelocity
         body.velocity = nextVelocity.normalized * speed;
         // Update body position for hurt impulse
-        ApplyHurtImpulse();
+        ApplyMovementImpulse();
     }
 
 
@@ -103,19 +102,6 @@ public class BaseEntity : MonoBehaviour
     protected bool IsMoving()
     {
         return Vector2.Distance(nextVelocity, Vector2.zero) > 0.1f;
-    }
-
-    protected void MirrorEntityX()
-    {
-        // If x is negative, completely flip entity to mirror colliders and animations
-        if (mirrorX && facingDirection.x < 0)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
-        else
-        {
-            transform.localScale = new Vector3(1, 1, 1);
-        }
     }
 
 
@@ -178,27 +164,27 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *          Hurt          *
      **************************/
-    protected void Hurt(Vector2 collisionDirection)
+    protected void Hurt(Vector2 collisionDirection, float force)
     {
-        SetHurtImpulse(collisionDirection.normalized, 3, 0.1f);
+        SetMovementImpulse(collisionDirection.normalized, force, 0.1f);
         BloodSystem.bloodSystem.SpawnBlood(body.position, collisionDirection);
         StartCoroutine(FlashSpriteColor(Color.white, 0.05f, 1f, 0.4f, 0));
-        CameraSystem.cameraSystem.ActivateShake(2, 0.1f);
+        CameraSystem.cameraSystem.ActivateShake(force - 1, 0.1f);
     }
 
-    protected void ApplyHurtImpulse()
+    protected void ApplyMovementImpulse()
     {
-        if (hurtImpulseTime > 0)
+        if (movementImpulseTime > 0)
         {
-            hurtImpulseTime -= Time.deltaTime;
-            body.MovePosition(body.position + hurtImpulse);
+            movementImpulseTime -= Time.deltaTime;
+            body.MovePosition(body.position + movementImpulse);
         }
     }
 
-    public void SetHurtImpulse(Vector2 direction, float force, float time)
+    public void SetMovementImpulse(Vector2 direction, float force, float time)
     {
-        hurtImpulse = direction * force;
-        hurtImpulseTime = time;
+        movementImpulse = direction * force;
+        movementImpulseTime = time;
     }
 
 
@@ -353,16 +339,6 @@ public class BaseEntity : MonoBehaviour
     public void DisableFlippedX()
     {
         spriteRenderer.flipX = false;
-    }
-
-    public void EnableMirrorX()
-    {
-        mirrorX = true;
-    }
-
-    public void DisableMirrorX()
-    {
-        mirrorX = false;
     }
 
     public void SetSortingLayer(string value)

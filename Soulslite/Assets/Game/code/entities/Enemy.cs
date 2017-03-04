@@ -55,14 +55,23 @@ public class Enemy : BaseEntity
 
     protected new void FixedUpdate()
     {
-        // Enemies all operate on x axis only, so we can mirror at all times
-        EnableMirrorX();
         base.FixedUpdate();
 
         // Always face player if not dead, passive, attacking or fleeing
         if (!animator.GetBool("Passive") && !animator.GetBool("Attacking") && !IsDead())
         {
             FaceTarget();
+        }
+
+        // Enemies all operate on x axis only, so we can mirror at all times
+        // If x is negative, completely flip entity to mirror colliders and animations
+        if (facingDirection.x < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        else
+        {
+            transform.localScale = new Vector3(1, 1, 1);
         }
     }
 
@@ -222,7 +231,7 @@ public class Enemy : BaseEntity
     {
         UISystem.uiSystem.UpdateAmmo(1);
         Vector2 collisionDirection = transform.position - collision.transform.position;
-        Hurt(collisionDirection);
+        Hurt(collisionDirection, 3);
         DecreaseHealth(damage);
     }
 
@@ -230,14 +239,14 @@ public class Enemy : BaseEntity
     {
         UISystem.uiSystem.UpdateAmmo(1);
         Vector2 collisionDirection = transform.position - collision.transform.position;
-        Hurt(collisionDirection);
+        Hurt(collisionDirection, 5);
         DecreaseHealth(damage);
     }
 
     protected void TakeBulletHit(int damage, Collider2D collision)
     {
         Vector2 collisionDirection = transform.position - collision.transform.position;
-        Hurt(collisionDirection);
+        Hurt(collisionDirection, 2);
         DecreaseHealth(damage);
     }
 }

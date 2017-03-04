@@ -29,6 +29,7 @@ public class PlayerChargingAttack : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        player.DisableMotion();
         attackReady = false;
     }
 
@@ -55,5 +56,6 @@ public class PlayerChargingAttack : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetFloat("ChargeHeldTime", 0);
+        player.EnableMotion();
     }
 }

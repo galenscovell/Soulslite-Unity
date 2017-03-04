@@ -265,82 +265,56 @@ public class PlayerAgent : BaseEntity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Ignore collisions with transition zones
-        if (collision.tag == "TransitionTag")
+        switch (collision.tag)
         {
-            return;
-        }
-
-        // Ignore collisions with critters
-        if (collision.tag == "CritterTag")
-        {
-            return;
-        }
-
-        // Interrupt attack if collided with obstacle
-        if (collision.tag == "ObstacleTag")
-        {
-            animator.Play(attackInterrupt.GetHash());
-            return;
-        }
-
-        // Set player as ready to fall if colliding with falloff boundary
-        if (collision.tag == "FalloffTag")
-        {
-            // falling = !falling;
-            falling = true;
-            return;
-        }
-
-        // Enemy collision
-        if (collision.tag != "Enemy")
-        {
-            // Ignore if already hurting
-            if (currentStateInfo.fullPathHash == hurt.GetHash())
-            {
+            case "TransitionTag":
+                // Ignore collisions with transition zones
                 return;
-            }
-            // Ignore if attacking and not interruptible
-            if (currentStateInfo.fullPathHash == attack1.GetHash() && !attack1.Interrupt(animator))
-            {
+            case "CritterTag":
+                // Ignore collisions with critters
                 return;
-            }
-            // Ignore if attacking and not interruptible
-            if (currentStateInfo.fullPathHash == attack2.GetHash() && !attack2.Interrupt(animator))
-            {
+            case "ObstacleTag":
+                // Interrupt and stop attack if collided with obstacle
+                if (InterruptAttack()) return;
+                break;
+            case "FalloffTag":
+                // Set player as ready to fall if colliding with falloff boundary
+                falling = true;
                 return;
-            }
-            // Ignore if attacking and not interruptible
-            if (currentStateInfo.fullPathHash == attack3.GetHash() && !attack3.Interrupt(animator))
-            {
-                return;
-            }
+            case "EnemyAttackTag":
+            case "EnemyBulletTag":
+                // Ignore if already hurting
+                if (currentStateInfo.fullPathHash == hurt.GetHash()) return;
 
-            // Interrupt dash if currently dashing
-            if (currentStateInfo.fullPathHash == dash.GetHash())
-            {
-                dash.Interrupt(animator);
-            }
+                // Interrupt dash if currently dashing
+                if (currentStateInfo.fullPathHash == dash.GetHash())
+                {
+                    dash.Interrupt(animator);
+                }
 
-            Vector2 collisionDirection = transform.position - collision.transform.position;
-            Hurt(collisionDirection);
+                Vector2 collisionDirection = transform.position - collision.transform.position;
+                Hurt(collisionDirection, 3);
 
-            // Show damage vignette when player health low
-            if (GetHealth() == 1)
-            {
-                CameraSystem.cameraSystem.FadeInVignette(Color.black, 2);
-                StartCoroutine(heartbeat);
-            }
+                // Show damage vignette when player health low
+                if (GetHealth() == 1)
+                {
+                    CameraSystem.cameraSystem.FadeInVignette(Color.black, 2);
+                    StartCoroutine(heartbeat);
+                }
 
-            // Die if player health is zero
-            if (HealthZero())
-            {
-                Die();
-            }
-            else
-            {
-                animator.Play(hurt.GetHash());
-            }
+                // Die if player health is zero
+                if (HealthZero())
+                {
+                    Die();
+                }
+                else
+                {
+                    animator.Play(hurt.GetHash());
+                }
+                break;
+            default:
+                // Unhandled collision tag
+                break;
         }
     }
 
@@ -361,14 +335,67 @@ public class PlayerAgent : BaseEntity
         }
     }
 
+    private bool InterruptAttack()
+    {
+        if (currentStateInfo.fullPathHash == attack1.GetHash() && attack1.Interrupt(animator))
+        {
+            return true;
+        }
+        else if (currentStateInfo.fullPathHash == attack2.GetHash() && attack2.Interrupt(animator))
+        {
+            return true;
+        }
+        else if (currentStateInfo.fullPathHash == attack3.GetHash() && attack3.Interrupt(animator))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private bool IsInAttackStateAndInvulnerable()
+    {
+        if (currentStateInfo.fullPathHash == attack1.GetHash())
+        {
+            if (!attack1.IsVulnerable())
+            {
+                return true;
+            }
+        }
+        else if (currentStateInfo.fullPathHash == attack2.GetHash())
+        {
+            if (!attack2.IsVulnerable())
+            {
+                return true;
+            }
+        }
+        else if (currentStateInfo.fullPathHash == attack3.GetHash())
+        {
+            if (!attack3.IsVulnerable())
+            {
+                return true;
+            }
+        }
+        else if (currentStateInfo.fullPathHash == chargedAttack.GetHash())
+        {
+            if (!chargedAttack.IsVulnerable())
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     /**************************
      *          Hurt          *
      **************************/
-    private new void Hurt(Vector2 collisionDirection)
+    private new void Hurt(Vector2 collisionDirection, float force)
     {
-        base.Hurt(collisionDirection);
-        CameraSystem.cameraSystem.ActivateShake(2, 0.1f);
+        base.Hurt(collisionDirection, force);
         DecreaseHealth(1);
     }
 

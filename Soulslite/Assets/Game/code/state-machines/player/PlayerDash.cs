@@ -161,7 +161,7 @@ public class PlayerDash : StateMachineBehaviour
 
             if (sfxCounter > sfxRate)
             {
-                player.PlaySfxRandomPitch(sfx[1], 0.7f, 1.4f, 0.25f);
+                player.PlaySfxRandomPitch(sfx[1], 0.7f, 1.4f, 0.15f);
                 sfxCounter = 0;
             }
         }

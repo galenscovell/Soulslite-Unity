@@ -35,9 +35,9 @@ public class LevelSystem : MonoBehaviour
         RainSystem.rainSystem.gameObject.SetActive(true);
 
         // Fade in main music
-        StartCoroutine(fadeInAudio(musicSources[0], 0.8f, 0.0025f));
+        StartCoroutine(fadeInAudio(musicSources[0], 0.8f, 0.005f));
         // Fade in ambient music
-        StartCoroutine(fadeInAudio(musicSources[1], 0.4f, 0.001f));
+        StartCoroutine(fadeInAudio(musicSources[1], 0.4f, 0.0025f));
 
         // Disable player input while initial scene fades in
         player.SetInput(false);
@@ -154,7 +154,7 @@ public class LevelSystem : MonoBehaviour
         player.SetNextVelocity(GetTransitionVelocity());
         player.Transition(GetSceneEntrance(lastUsedEntrance));
 
-        CameraSystem.cameraSystem.FadeInFromBlack(1.25f).setOnComplete(ResetTransitionSettings);
+        CameraSystem.cameraSystem.FadeInFromBlack(1.5f).setOnComplete(ResetTransitionSettings);
     }
 
     private void ResetTransitionSettings()

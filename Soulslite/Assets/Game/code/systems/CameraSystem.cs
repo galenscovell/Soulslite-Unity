@@ -104,7 +104,7 @@ public class CameraSystem : MonoBehaviour
     /**************************
      *         Shake          *
      **************************/
-    public void ActivateShake(int magnitude, float length)
+    public void ActivateShake(float magnitude, float length)
     {
         shakeAmt = 100 * (magnitude / 100f);
         InvokeRepeating("CameraShake", 0, 0.01f);
