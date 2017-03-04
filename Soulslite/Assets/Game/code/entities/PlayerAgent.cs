@@ -92,12 +92,21 @@ public class PlayerAgent : BaseEntity
             {
                 if (!chargeAttacked)
                 {
-                    float chargeHeldTime = animator.GetFloat("ChargeHeldTime") + Time.deltaTime;
-                    animator.SetFloat("ChargeHeldTime", chargeHeldTime);
-                    if (chargeHeldTime > 0.3f && currentStateInfo.fullPathHash != chargingAttack.GetHash())
+                    if (UISystem.uiSystem.GetCurrentStamina() >= 30)
                     {
-                        chargeAttacked = true;
-                        animator.SetBool("ChargingAttack", true);
+                        float chargeHeldTime = animator.GetFloat("ChargeHeldTime") + Time.deltaTime;
+                        animator.SetFloat("ChargeHeldTime", chargeHeldTime);
+
+                        if (chargeHeldTime > 0.3f && currentStateInfo.fullPathHash != chargingAttack.GetHash())
+                        {
+                            UISystem.uiSystem.UpdateStamina(-30);
+                            chargeAttacked = true;
+                            animator.SetBool("ChargingAttack", true);
+                        }
+                    }
+                    else
+                    {
+                        animator.SetFloat("ChargeHeldTime", 0);
                     }
                 }
             }

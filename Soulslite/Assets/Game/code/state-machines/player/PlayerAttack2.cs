@@ -10,6 +10,7 @@ public class PlayerAttack2 : StateMachineBehaviour
 
     // Denotes when this state can be interrupted
     private bool vulnerable = true;
+    private bool moved;
     private bool interrupted;
 
 
@@ -46,13 +47,12 @@ public class PlayerAttack2 : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        moved = false;
         interrupted = false;
         vulnerable = true;
 
-        player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
+        player.DisableMotion();
         player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
-        player.SetSpeed(80f);
-
         DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
     }
 
@@ -60,16 +60,18 @@ public class PlayerAttack2 : StateMachineBehaviour
     {
         float stateTime = stateInfo.normalizedTime;
 
-        if (stateTime > 0.2f && stateTime < 1)
+        if (stateTime > 0.1f && stateTime < 1)
         {
-            if (player.AbleToMove())
+            if (!moved)
             {
-                player.DisableMotion();
-                player.RestoreDefaultSpeed();
+                player.SetMovementImpulse(player.GetFacingDirection().normalized, 1f, 0.075f);
+                DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
+                moved = true;
             }
 
             if (interrupted)
             {
+                player.SetMovementImpulse(Vector2.zero, 0, 0);
                 animator.SetInteger("AttackVersion", 1);
                 animator.SetBool("Attacking", false);
             }

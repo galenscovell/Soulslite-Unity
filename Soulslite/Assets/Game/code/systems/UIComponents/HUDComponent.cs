@@ -7,9 +7,9 @@ class HUDComponent : MonoBehaviour
     public Slider staminaSlider;
     public Slider ammoSlider;
 
-    private float staminaRechargeRate = 0.05f;
+    private float staminaRechargeRate = 0.25f;
     private bool staminaRechargeWait = false;
-    private float staminaRechargeWaitTime = 2;
+    private float staminaRechargeWaitTime = 4;
     private float staminaRechargeCounter = 0;
 
 
