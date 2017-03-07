@@ -15,6 +15,7 @@ public class CameraSystem : MonoBehaviour
     private GameObject targetObject;
     private Rigidbody2D targetBody;
     private Vector3 cameraOffset = new Vector3(0, 0, -10);
+    private bool follow = true;
 
     private Vector3 velocity = Vector3.zero;
     private float dampTime;
@@ -44,30 +45,38 @@ public class CameraSystem : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 targetCenter = transform.position;
-
-        if (targetObject != null)
+        if (follow)
         {
-            targetCenter = targetObject.transform.position;
+            Vector3 targetCenter = transform.position;
 
-            if (targetObject.tag == "Player")
+            if (targetObject != null)
             {
-                Vector2 bodyVelocity = targetBody.velocity.normalized * 80;
-                targetCenter.x += bodyVelocity.x;
-                targetCenter.y += bodyVelocity.y;
+                targetCenter = targetObject.transform.position;
+
+                if (targetObject.tag == "Player")
+                {
+                    Vector2 bodyVelocity = targetBody.velocity.normalized * 80;
+                    targetCenter.x += bodyVelocity.x;
+                    targetCenter.y += bodyVelocity.y;
+                }
             }
+
+            Vector3 focusPosition = Vector3.SmoothDamp(transform.position, targetCenter + cameraOffset, ref velocity, dampTime);
+            focusPosition = Vector3.Min(focusPosition, maxPosition);
+            focusPosition = Vector3.Max(focusPosition, minPosition);
+
+            transform.position = focusPosition + Vector3.forward * -10;
         }
-
-        Vector3 focusPosition = Vector3.SmoothDamp(transform.position, targetCenter + cameraOffset, ref velocity, dampTime);
-        focusPosition = Vector3.Min(focusPosition, maxPosition);
-        focusPosition = Vector3.Max(focusPosition, minPosition);
-
-        transform.position = focusPosition + Vector3.forward * -10;
     }
 
     public Camera GetCamera()
     {
         return camera;
+    }
+
+    public void SetCameraFollow(bool setting)
+    {
+        follow = setting;
     }
 
 

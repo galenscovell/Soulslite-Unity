@@ -147,6 +147,7 @@ public class LevelSystem : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
+        player.SetInput(false);
         SetupScene();
         CameraSystem.cameraSystem.SetDampTime(0);
         SetPlayerAsFocalPoint();
@@ -160,7 +161,7 @@ public class LevelSystem : MonoBehaviour
     private void ResetTransitionSettings()
     {
         CameraSystem.cameraSystem.RestoreDefaultDampTime();
-        StartCoroutine(RestorePlayerControl(0.2f));
+        StartCoroutine(RestorePlayerControl(0.1f));
     }
 
     private IEnumerator RestorePlayerControl(float time)

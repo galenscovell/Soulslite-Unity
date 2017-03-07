@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayerAgent : BaseEntity
 {
     private AnimatorStateInfo currentStateInfo;
+
     private int attackChainWaitFrames;
+
     private bool inputEnabled = false;
     private bool falling = false;
     private bool chargeAttacked = false;
@@ -62,7 +64,7 @@ public class PlayerAgent : BaseEntity
         attackInterrupt.Setup(this, 2);
         chargingAttack.Setup(this, 11);
         chargedAttack.Setup(this, 12);
-        dash.Setup(this, GetComponent<DashTrail>(), GetComponent<LineRenderer>(), new int[]{3, 10});
+        dash.Setup(this, GetComponent<DashTrail>(), GetComponent<LineRenderer>(), new int[2] { 3, 10 });
         death.Setup(this, 4);
         fall.Setup(this, 4);
         fullIdle.Setup(this);
@@ -88,7 +90,7 @@ public class PlayerAgent : BaseEntity
         if (inputEnabled)
         {
             // Charge attack tracking
-            if (Input.GetButton("Button0"))
+            if (Input.GetButton("Attack"))
             {
                 if (!chargeAttacked)
                 {
@@ -166,7 +168,7 @@ public class PlayerAgent : BaseEntity
         SetNextVelocity(GetAxisInput() * speed);
 
         // Start attack
-        if (Input.GetButtonDown("Button0"))
+        if (Input.GetButtonDown("Attack"))
         {
             if (animator.GetInteger("AttackChain") == 2 && attackChainWaitFrames > 0)
             {
@@ -180,12 +182,12 @@ public class PlayerAgent : BaseEntity
             animator.SetBool("Attacking", true);
         }
         // Start dash
-        else if (Input.GetButtonDown("Button1"))
+        else if (Input.GetButtonDown("Dash"))
         {
             animator.SetBool("Dashing", true);
         }
         // Start ranged attack mode
-        else if (Input.GetButton("Button5"))
+        else if (Input.GetButton("Ranged"))
         {
             animator.SetBool("Ranged", true);
         }
@@ -194,7 +196,7 @@ public class PlayerAgent : BaseEntity
     private void DashUpdate()
     {
         // Chain dash
-        if (Input.GetButtonDown("Button1"))
+        if (Input.GetButtonDown("Dash"))
         {
             Vector2 dashDirection = GetAxisInput();
             if (dashDirection.magnitude == 0)
@@ -217,13 +219,13 @@ public class PlayerAgent : BaseEntity
         Vector2 direction = GetAxisInput();
 
         // Reduce precision of axis input
-        if (direction.magnitude > 0.5f)
+        if (direction.magnitude > 0.6f)
         {
             SetFacingDirection(direction);
         }
 
         // Start ranged attack shot
-        if (Input.GetButtonDown("Button0"))
+        if (Input.GetButtonDown("Attack"))
         {
             if (UISystem.uiSystem.GetCurrentAmmo() >= 1)
             {
@@ -238,7 +240,7 @@ public class PlayerAgent : BaseEntity
         }
 
         // End ranged attack mode when button released
-        if (!Input.GetButton("Button5"))
+        if (!Input.GetButton("Ranged"))
         {
             animator.SetBool("Attacking", false);
             animator.SetBool("Ranged", false);
@@ -256,7 +258,7 @@ public class PlayerAgent : BaseEntity
         Vector2 direction = GetAxisInput();
 
         // Exit fullIdle upon any user input + update facing direction out of fullIdle
-        if (direction.magnitude > 0.1f || Input.GetButtonDown("Button0") || Input.GetButtonDown("Button5"))
+        if (direction.magnitude > 0.1f || Input.GetButtonDown("Attack") || Input.GetButtonDown("Ranged") || Input.GetButtonDown("Dash"))
         {
             SetFacingDirection(direction);
             animator.SetBool("FullIdle", false);
@@ -487,6 +489,11 @@ public class PlayerAgent : BaseEntity
      **************************/
     public void Transition(Vector2 newPosition)
     {
+        // Interrupt dash if currently dashing
+        if (currentStateInfo.fullPathHash == dash.GetHash())
+        {
+            dash.Interrupt(animator);
+        }
         // Disable all collisions
         gameObject.layer = 10;
         // Set new position

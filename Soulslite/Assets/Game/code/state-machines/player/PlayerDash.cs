@@ -3,13 +3,13 @@
 
 public class PlayerDash : StateMachineBehaviour
 {
-    private int hash = Animator.StringToHash("Base Layer.PlayerDash");
+    private int hash = Animator.StringToHash("Base Layer.PlayerDash.PlayerDash");
     private PlayerAgent player;
     private DashTrail dashTrail;
     private LineRenderer dashLine;
 
     private int chainCounter = 0;
-    private float dashSpeed = 700f;
+    private float dashSpeed = 600f;
     private float skidTime;
 
     private bool chainableState;
@@ -89,6 +89,11 @@ public class PlayerDash : StateMachineBehaviour
         if (animator.GetInteger("DashChain") >= 3)
         {
             skidTime += animator.GetInteger("DashChain") * 0.2f;
+
+            if (skidTime > 2.5f)
+            {
+                skidTime = 2.5f;
+            }
         }
 
         preventChain = false;
@@ -107,7 +112,7 @@ public class PlayerDash : StateMachineBehaviour
 
         float stateTime = stateInfo.normalizedTime;
 
-        if (stateTime > 0.45f)
+        if (stateTime > 0.3f)
         {
             // Fall once dash main movement stops
             if (player.PlayerIsFalling())
@@ -118,20 +123,17 @@ public class PlayerDash : StateMachineBehaviour
             }
         }
 
-        if (stateTime > 0.2f && stateTime < 0.45f)
+        if (stateTime > 0.2f && stateTime < 0.6f)
         {
             player.RestoreDefaultSpeed();
             dashTrail.SetEnabled(false);
         }
-        else if (stateTime > 0.45f && stateTime < 0.75f)
+        else if (stateTime > 0.6f && stateTime < 0.85f)
         {
-            // This is the brief window for dash chaining input
-            if (!preventChain)
-            {
-                chainableState = true;
-            }
+            // Chain input period
+            chainableState = true;
         }
-        else if (stateTime > 0.75f && stateTime < 0.8f)
+        else if (stateTime > 0.85f && stateTime < 1)
         {
             chainableState = false;
             player.SetInput(false);
@@ -141,7 +143,7 @@ public class PlayerDash : StateMachineBehaviour
                 float slowTime = 0.1f;
                 if (skidTime > 1)
                 {
-                    slowTime += (0.4f * skidTime);
+                    slowTime += (0.3f * skidTime);
                 }
                 player.TweenSpeed(player.GetDefaultSpeed(), 40, slowTime);
                 fxCounter = fxRate;
@@ -149,7 +151,7 @@ public class PlayerDash : StateMachineBehaviour
                 slowed = true;
             }
         }
-        else if (stateTime > 0.8f && stateTime < skidTime)
+        else if (stateTime > 1 && stateTime < skidTime)
         {
             fxCounter += Time.deltaTime;
             sfxCounter += Time.deltaTime;
