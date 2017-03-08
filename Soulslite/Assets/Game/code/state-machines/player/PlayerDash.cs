@@ -128,12 +128,12 @@ public class PlayerDash : StateMachineBehaviour
             player.RestoreDefaultSpeed();
             dashTrail.SetEnabled(false);
         }
-        else if (stateTime > 0.6f && stateTime < 0.85f)
+        else if (stateTime > 0.6f && stateTime < 0.95f)
         {
             // Chain input period
             chainableState = true;
         }
-        else if (stateTime > 0.85f && stateTime < 1)
+        else if (stateTime > 0.95f && stateTime < 1)
         {
             chainableState = false;
             player.SetInput(false);

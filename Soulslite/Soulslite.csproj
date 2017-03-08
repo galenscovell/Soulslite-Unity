@@ -269,6 +269,7 @@
     <None Include="Assets\Game\lib\AstarPathfindingProject\link.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\1_DemoLevel_Map.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\2_DemoLevel_Map.tiled2unity.xml" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Imported\3_DemoLevel_Map.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\DemoLevel_0_Map.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\DemoLevel_1_Map.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\_ReadMe.txt" />
