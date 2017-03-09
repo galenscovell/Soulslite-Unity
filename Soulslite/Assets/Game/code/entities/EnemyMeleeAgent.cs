@@ -184,16 +184,18 @@ public class EnemyMeleeAgent : Enemy
                 return;
             }
 
+            Vector2 collisionDirection = (transform.position - collision.transform.position).normalized;
+
             switch (collision.gameObject.tag)
             {
                 case "PlayerBullet":
-                    TakeBulletHit(1, collision);
+                    TakeBulletHit(1, collisionDirection);
                     break;
                 case "PlayerAttack":
-                    TakeNormalHit(1, collision);
+                    TakeNormalHit(1, collisionDirection);
                     break;
                 case "PlayerStrongAttack":
-                    TakeStrongHit(2, collision);
+                    TakeStrongHit(2, collisionDirection);
                     break;
                 default:
                     break;
@@ -210,7 +212,9 @@ public class EnemyMeleeAgent : Enemy
             // Check health status
             if (HealthZero() && !IsDead())
             {
-                dying.SetFlungVelocity(collision.attachedRigidbody.velocity.normalized);
+                
+                dying.SetFlungVelocity(collisionDirection);
+                TimeSystem.timeSystem.SlowTime(0.3f, 0.3f);
                 animator.Play(dying.GetHash());
             }
         }

@@ -49,6 +49,7 @@ public class PlayerAttack3 : StateMachineBehaviour
         player.DisableMotion();
         player.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1f);
         DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
+        TrailSystem.trailSystem.BeginTrail();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -80,6 +81,7 @@ public class PlayerAttack3 : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        TrailSystem.trailSystem.EndTrail();
         if (interrupted)
         {
             animator.Play(interruptHash);

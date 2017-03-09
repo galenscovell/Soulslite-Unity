@@ -227,25 +227,22 @@ public class Enemy : BaseEntity
         }
     }
 
-    protected void TakeNormalHit(int damage, Collider2D collision)
+    protected void TakeNormalHit(int damage, Vector2 collisionDirection)
     {
         UISystem.uiSystem.UpdateAmmo(1);
-        Vector2 collisionDirection = transform.position - collision.transform.position;
         Hurt(collisionDirection, 3);
         DecreaseHealth(damage);
     }
 
-    protected void TakeStrongHit(int damage, Collider2D collision)
+    protected void TakeStrongHit(int damage, Vector2 collisionDirection)
     {
         UISystem.uiSystem.UpdateAmmo(1);
-        Vector2 collisionDirection = transform.position - collision.transform.position;
         Hurt(collisionDirection, 5);
         DecreaseHealth(damage);
     }
 
-    protected void TakeBulletHit(int damage, Collider2D collision)
+    protected void TakeBulletHit(int damage, Vector2 collisionDirection)
     {
-        Vector2 collisionDirection = transform.position - collision.transform.position;
         Hurt(collisionDirection, 2);
         DecreaseHealth(damage);
     }

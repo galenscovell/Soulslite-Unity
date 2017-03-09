@@ -92,7 +92,6 @@
     <Compile Include="Assets\Game\code\effects\BulletCollisionObject.cs" />
     <Compile Include="Assets\Game\code\effects\BulletFireObject.cs" />
     <Compile Include="Assets\Game\code\effects\BulletObject.cs" />
-    <Compile Include="Assets\Game\code\effects\DashTrail.cs" />
     <Compile Include="Assets\Game\code\effects\DashTrailObject.cs" />
     <Compile Include="Assets\Game\code\effects\DustObject.cs" />
     <Compile Include="Assets\Game\code\effects\RainDropObject.cs" />
@@ -132,6 +131,8 @@
     <Compile Include="Assets\Game\code\systems\DustSystem.cs" />
     <Compile Include="Assets\Game\code\systems\LevelSystem.cs" />
     <Compile Include="Assets\Game\code\systems\RainSystem.cs" />
+    <Compile Include="Assets\Game\code\systems\TimeSystem.cs" />
+    <Compile Include="Assets\Game\code\systems\TrailSystem.cs" />
     <Compile Include="Assets\Game\code\systems\UIComponents\HUDComponent.cs" />
     <Compile Include="Assets\Game\code\systems\UISystem.cs" />
     <Compile Include="Assets\Game\code\util\SceneLoader.cs" />

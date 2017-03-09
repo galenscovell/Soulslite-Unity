@@ -5,12 +5,10 @@ public class PlayerDash : StateMachineBehaviour
 {
     private int hash = Animator.StringToHash("Base Layer.PlayerDash.PlayerDash");
     private PlayerAgent player;
-    private DashTrail dashTrail;
     private LineRenderer dashLine;
 
     private int chainCounter = 0;
-    private float dashSpeed = 600f;
-    private float skidTime;
+    private float dashSpeed = 960f;
 
     private bool chainableState;
     private bool preventChain;
@@ -32,10 +30,9 @@ public class PlayerDash : StateMachineBehaviour
         return hash;
     }
 
-    public void Setup(PlayerAgent playerEntity, DashTrail trail, LineRenderer line, int[] assignedSfx)
+    public void Setup(PlayerAgent playerEntity, LineRenderer line, int[] assignedSfx)
     {
         player = playerEntity;
-        dashTrail = trail;
         dashLine = line;
         dashLine.sortingLayerName = "Foreground";
         sfx = assignedSfx;
@@ -70,38 +67,23 @@ public class PlayerDash : StateMachineBehaviour
     {
         animator.SetInteger("DashChain", animator.GetInteger("DashChain") + 1);
 
+        TrailSystem.trailSystem.BeginTrail();
         DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
         CameraSystem.cameraSystem.SetDampTime(0.3f);
 
-        if (chainCounter < 6)
-        {
-            currentPitch = 1 + (chainCounter * 0.1f);
-        }
-        else
-        {
-            currentPitch = 1.6f;
-        }
+        if (chainCounter < 6) currentPitch = 1 + (chainCounter * 0.1f);
+        else currentPitch = 1.6f;
 
         player.SetSpeed(dashSpeed);
         player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
 
-        skidTime = 1;
-        if (animator.GetInteger("DashChain") >= 3)
-        {
-            skidTime += animator.GetInteger("DashChain") * 0.2f;
-
-            if (skidTime > 2.5f)
-            {
-                skidTime = 2.5f;
-            }
-        }
-
         preventChain = false;
         chainableState = false;
         slowed = false;
-        
+        fxCounter = fxRate;
+        sfxCounter = sfxRate;
+
         BeginDashLine();
-        dashTrail.SetEnabled(true);
 
         player.PlaySfxRandomPitch(sfx[0], currentPitch - 0.05f, currentPitch + 0.05f, 1f);
     }
@@ -123,36 +105,28 @@ public class PlayerDash : StateMachineBehaviour
             }
         }
 
-        if (stateTime > 0.2f && stateTime < 0.6f)
+        if (stateTime > 0.125f && stateTime < 0.2f)
         {
-            player.RestoreDefaultSpeed();
-            dashTrail.SetEnabled(false);
+            player.SetSpeed(player.GetDefaultSpeed() / 2);
         }
-        else if (stateTime > 0.6f && stateTime < 0.95f)
+        else if (stateTime > 0.4f && stateTime < 0.45f)
+        {
+            TrailSystem.trailSystem.EndTrail();
+        }
+        else if (stateTime > 0.5f && stateTime < 0.9f)
         {
             // Chain input period
             chainableState = true;
         }
-        else if (stateTime > 0.95f && stateTime < 1)
-        {
-            chainableState = false;
-            player.SetInput(false);
 
-            if (!slowed)
-            {
-                float slowTime = 0.1f;
-                if (skidTime > 1)
-                {
-                    slowTime += (0.3f * skidTime);
-                }
-                player.TweenSpeed(player.GetDefaultSpeed(), 40, slowTime);
-                fxCounter = fxRate;
-                sfxCounter = sfxRate;
-                slowed = true;
-            }
-        }
-        else if (stateTime > 1 && stateTime < skidTime)
+        if (stateTime > 0.6f && stateTime < 1)
         {
+            if (stateTime > 0.9f)
+            {
+                chainableState = false;
+                player.SetInput(false);
+            }
+
             fxCounter += Time.deltaTime;
             sfxCounter += Time.deltaTime;
             if (fxCounter > fxRate)
@@ -163,11 +137,11 @@ public class PlayerDash : StateMachineBehaviour
 
             if (sfxCounter > sfxRate)
             {
-                player.PlaySfxRandomPitch(sfx[1], 0.7f, 1.4f, 0.15f);
+                player.PlaySfxRandomPitch(sfx[1], 0.7f, 1.4f, 0.1f);
                 sfxCounter = 0;
             }
         }
-        else if (stateTime > skidTime)
+        else if (stateTime > 1)
         {
             animator.speed = 1f;
             currentPitch = 1f;
@@ -181,7 +155,6 @@ public class PlayerDash : StateMachineBehaviour
     {
         player.RestoreDefaultSpeed();
         preventChain = false;
-        dashTrail.SetEnabled(false);
         dashLine.enabled = false;
         player.SetInput(true);
         CameraSystem.cameraSystem.RestoreDefaultDampTime();

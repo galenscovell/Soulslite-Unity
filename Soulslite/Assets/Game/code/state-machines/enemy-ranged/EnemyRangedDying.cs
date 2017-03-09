@@ -45,7 +45,7 @@ public class EnemyRangedDying : StateMachineBehaviour
         {
             if (!flung)
             {
-                enemy.SetMovementImpulse(flungVelocity, 3, 0.25f);
+                enemy.SetMovementImpulse(flungVelocity, 4, 0.2f);
                 flung = true;
             }
         }

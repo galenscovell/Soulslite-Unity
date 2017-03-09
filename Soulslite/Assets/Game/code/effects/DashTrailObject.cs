@@ -3,7 +3,6 @@
 
 public class DashTrailObject : MonoBehaviour
 {
-    private DashTrail spawner;
     private Vector2 position;
 
     private float displayTime;
@@ -13,30 +12,30 @@ public class DashTrailObject : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Color[] colorPool;
 
-    private Color startColor;
-    private Color endColor;
+    private Color color;
 
-
-    private void Start()
-    {
-        spriteRenderer.enabled = false;
-    }
 
     private void Update()
     {
         if (inUse)
         {
             transform.position = position;
-            timeDisplayed += Time.deltaTime;
-            spriteRenderer.color = Color.Lerp(startColor, endColor, timeDisplayed / displayTime);
+            spriteRenderer.color = color;
 
-            if (timeDisplayed >= displayTime)
+            timeDisplayed -= Time.deltaTime;
+            color.a = timeDisplayed / displayTime;
+                
+            if (timeDisplayed <= 0)
             {
-                spawner.RemoveTrailObject(this);
+                TrailSystem.trailSystem.RemoveTrailObject(this);
                 inUse = false;
-                spriteRenderer.enabled = false;
             }
         }
+    }
+
+    public void SetActive(bool setting)
+    {
+        gameObject.SetActive(setting);
     }
 
     private Color GetRandomColor()
@@ -45,16 +44,13 @@ public class DashTrailObject : MonoBehaviour
         return colorPool[randomIndex];
     }
 
-    public void Initiate(float time, Sprite sprite, Vector2 pos, DashTrail trail)
+    public void Initiate(float time, Sprite sprite, Vector2 pos)
     {
         displayTime = time;
         spriteRenderer.sprite = sprite;
-        spriteRenderer.enabled = true;
         position = pos;
-        timeDisplayed = 0;
-        spawner = trail;
-        startColor = GetRandomColor();
-        endColor = new Color(startColor.r, startColor.g, startColor.b, 0);
+        timeDisplayed = time;
+        color = GetRandomColor();
         inUse = true;
     }
 }

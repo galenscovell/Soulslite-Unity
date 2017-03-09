@@ -64,7 +64,7 @@ public class PlayerAgent : BaseEntity
         attackInterrupt.Setup(this, 2);
         chargingAttack.Setup(this, 11);
         chargedAttack.Setup(this, 12);
-        dash.Setup(this, GetComponent<DashTrail>(), GetComponent<LineRenderer>(), new int[2] { 3, 10 });
+        dash.Setup(this, GetComponent<LineRenderer>(), new int[2] { 3, 10 });
         death.Setup(this, 4);
         fall.Setup(this, 4);
         fullIdle.Setup(this);
