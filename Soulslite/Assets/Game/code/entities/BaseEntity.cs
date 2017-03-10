@@ -10,6 +10,7 @@ public class BaseEntity : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
 
     protected bool canMove = true;
+    protected bool falling = false;
     protected float speed;
     protected Vector2 nextVelocity;
     protected Vector2 facingDirection;
@@ -145,12 +146,12 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *         Death          *
      **************************/
-    public void IgnoreAllPhysics()
+    public void IgnoreAllCollisions()
     {
         gameObject.layer = 10;
     }
 
-    public void IgnoreEntitiesPhysics()
+    public void IgnoreEntityCollisions()
     {
         gameObject.layer = 18;
     }
@@ -296,6 +297,11 @@ public class BaseEntity : MonoBehaviour
         return defaultSpeed;
     }
 
+    public bool IsFalling()
+    {
+        return falling;
+    }
+
 
     /**************************
      *        Setters         *
@@ -349,5 +355,10 @@ public class BaseEntity : MonoBehaviour
     public void SetSortingOrder(int value)
     {
         spriteRenderer.sortingOrder = value;
+    }
+
+    public void SetFalling(bool setting)
+    {
+        falling = setting;
     }
 }

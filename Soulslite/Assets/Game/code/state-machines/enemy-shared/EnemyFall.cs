@@ -30,7 +30,7 @@ public class EnemyFall : StateMachineBehaviour
         descentBegan = false;
         fadeOutBegan = false;
 
-        enemy.IgnoreAllPhysics();
+        enemy.IgnoreAllCollisions();
         enemy.FaceTarget();
         enemy.SetMovementImpulse(new Vector2(enemy.GetFacingDirection().x * -0.5f, -0.5f), 4, 0.15f);
     }

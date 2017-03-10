@@ -175,17 +175,18 @@ public class Enemy : BaseEntity
         animator.SetBool("Attacking", false);
         animator.SetBool("Dead", true);
         StartCoroutine(ChangeSpriteColorInto(Color.black, 1f, 0.4f));
-        IgnoreAllPhysics();
+        IgnoreAllCollisions();
     }
 
     public void DisableDeath()
     {
-        gameObject.layer = 0;
+        RestoreCollisionLayer();
+        falling = false;
         StartCoroutine(ChangeSpriteColorOutof(Color.black, 1f, 0));
         animator.SetBool("Dead", false);
     }
 
-    public void SetEnablePhysics()
+    public void RestoreCollisionLayer()
     {
         // Enable physics by assigning enemy back to EnemyLayer
         gameObject.layer = 16;
@@ -222,6 +223,7 @@ public class Enemy : BaseEntity
         // Set as ready to fall if colliding with falloff boundary
         if (collision.tag == "FalloffTag")
         {
+            SetFalling(true);
             animator.Play(fall.GetHash());
             return;
         }

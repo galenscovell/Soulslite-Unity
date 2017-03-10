@@ -47,7 +47,7 @@ public class EnemyRangedAttack : StateMachineBehaviour
         shotTwo = false;
         shotThree = false;
         resetting = false;
-        vulnerable = true;
+        vulnerable = false;
 
         Vector2 positionDiff = enemy.GetTarget().position - enemy.GetBody().position;
         gunLimb.UpdateGunLimb(positionDiff, enemy);

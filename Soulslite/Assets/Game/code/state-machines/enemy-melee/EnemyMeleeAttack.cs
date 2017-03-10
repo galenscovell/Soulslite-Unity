@@ -42,7 +42,7 @@ public class EnemyMeleeAttack : StateMachineBehaviour
         targeted = false;
         prepared = false;
         reset = false;
-        vulnerable = true;
+        vulnerable = false;
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -64,7 +64,6 @@ public class EnemyMeleeAttack : StateMachineBehaviour
                 enemy.EnableMotion();
                 enemy.SetSpeed(240f);
                 enemy.SetNextVelocity(enemy.directionToTarget * enemy.GetSpeed());
-                vulnerable = false;
                 prepared = true;
             }
         }
@@ -75,7 +74,6 @@ public class EnemyMeleeAttack : StateMachineBehaviour
                 enemy.RestoreDefaultSpeed();
                 enemy.DisableMotion();
                 enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.3f, 1);
-                vulnerable = true;
                 reset = true;
             }
         }

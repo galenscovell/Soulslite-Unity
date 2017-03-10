@@ -175,17 +175,19 @@ public class EnemyRangedAgent : Enemy
         base.OnTriggerEnter2D(collision);
 
         // Enemy is dying but not yet disabled
-        if (currentStateInfo.fullPathHash == dying.GetHash()) return;
+        if (currentStateInfo.fullPathHash == dying.GetHash())
+        {
+            // Set as ready to fall if falling off level
+            if (collision.tag == "FalloffTag")
+            {
+                SetFalling(true);
+                animator.Play(fall.GetHash());
+                return;
+            }
+        }
 
         if (collision.gameObject.tag == "PlayerAttack" || collision.gameObject.tag == "PlayerStrongAttack" || collision.gameObject.tag == "PlayerBullet")
         {
-            // Hit during attacking state
-            if (currentStateInfo.fullPathHash == attack.GetHash() && !attack.Interrupt(animator))
-            {
-                // Invulnerable state
-                return;
-            }
-
             Vector2 collisionDirection = (transform.position - collision.transform.position).normalized;
 
             switch (collision.gameObject.tag)
@@ -214,7 +216,6 @@ public class EnemyRangedAgent : Enemy
             // Check health status
             if (HealthZero() && !IsDead())
             {
-
                 dying.SetFlungVelocity(collisionDirection);
                 TimeSystem.timeSystem.SlowTime(0.3f, 0.3f);
                 animator.Play(dying.GetHash());

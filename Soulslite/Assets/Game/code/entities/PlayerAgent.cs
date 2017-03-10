@@ -9,7 +9,6 @@ public class PlayerAgent : BaseEntity
     private int attackChainWaitFrames;
 
     private bool inputEnabled = false;
-    private bool falling = false;
     private bool chargeAttacked = false;
 
     // State machines
@@ -290,7 +289,7 @@ public class PlayerAgent : BaseEntity
                 break;
             case "FalloffTag":
                 // Set player as ready to fall if colliding with falloff boundary
-                falling = true;
+                SetFalling(true);
                 return;
             case "EnemyAttackTag":
             case "EnemyBulletTag":
@@ -443,7 +442,7 @@ public class PlayerAgent : BaseEntity
         BeginDeath();
         animator.SetBool("Dead", true);
 
-        IgnoreAllPhysics();
+        IgnoreAllCollisions();
         SetSortingLayer("UI");
         CameraSystem.cameraSystem.FadeOutToBlack(2);
 
@@ -478,9 +477,9 @@ public class PlayerAgent : BaseEntity
         LevelSystem.levelSystem.ReviveTransition();
     }
 
-    public bool PlayerIsFalling()
+    public void RestorePhysics()
     {
-        return falling;
+        gameObject.layer = 12;
     }
 
 

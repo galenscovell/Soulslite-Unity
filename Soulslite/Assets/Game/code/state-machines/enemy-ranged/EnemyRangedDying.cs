@@ -30,7 +30,7 @@ public class EnemyRangedDying : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         enemy.DisableMotion();
-        enemy.IgnoreEntitiesPhysics();
+        enemy.IgnoreEntityCollisions();
         enemy.EnableFlippedX();
         flung = false;
         
@@ -45,7 +45,7 @@ public class EnemyRangedDying : StateMachineBehaviour
         {
             if (!flung)
             {
-                enemy.SetMovementImpulse(flungVelocity, 4, 0.2f);
+                enemy.SetMovementImpulse(flungVelocity, 4, 0.25f);
                 flung = true;
             }
         }

@@ -30,8 +30,9 @@ public class EnemyMeleeDying : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         enemy.DisableMotion();
-        enemy.IgnoreEntitiesPhysics();
+        enemy.IgnoreEntityCollisions();
         enemy.EnableFlippedX();
+
         flung = false;
 
         enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.1f, 1);
@@ -41,11 +42,11 @@ public class EnemyMeleeDying : StateMachineBehaviour
     {
         float stateTime = stateInfo.normalizedTime;
 
-        if (stateTime < 0.2f)
+        if (stateTime < 0.4f)
         {
             if (!flung)
             {
-                enemy.SetMovementImpulse(flungVelocity, 4, 0.2f);
+                enemy.SetMovementImpulse(flungVelocity, 4, 0.25f);
                 flung = true;
             }
         }

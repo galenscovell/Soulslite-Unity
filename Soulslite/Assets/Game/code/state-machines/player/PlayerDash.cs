@@ -17,10 +17,8 @@ public class PlayerDash : StateMachineBehaviour
     private float currentPitch;
     private int[] sfx;
 
-    private float fxRate = 0.05f;
+    private float fxRate = 0.1f;
     private float fxCounter;
-    private float sfxRate = 0.1f;
-    private float sfxCounter;
     
     public Color flashColor;
 
@@ -40,7 +38,7 @@ public class PlayerDash : StateMachineBehaviour
 
     public void Interrupt(Animator animator)
     {
-        animator.speed = 1f;
+        TrailSystem.trailSystem.EndTrail();
         currentPitch = 1f;
         chainCounter = 0;
         animator.SetBool("Dashing", false);
@@ -50,7 +48,7 @@ public class PlayerDash : StateMachineBehaviour
     public void Chain(Animator animator, Vector2 direction)
     {
         // If dash input is received within the "chainable state" time a dash chain occurs
-        if (chainableState && !player.PlayerIsFalling())
+        if (chainableState && !player.IsFalling())
         {
             chainCounter++;
             player.SetFacingDirection(direction);
@@ -81,11 +79,12 @@ public class PlayerDash : StateMachineBehaviour
         chainableState = false;
         slowed = false;
         fxCounter = fxRate;
-        sfxCounter = sfxRate;
 
         BeginDashLine();
 
         player.PlaySfxRandomPitch(sfx[0], currentPitch - 0.05f, currentPitch + 0.05f, 1f);
+
+        player.IgnoreEntityCollisions();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -97,7 +96,7 @@ public class PlayerDash : StateMachineBehaviour
         if (stateTime > 0.3f)
         {
             // Fall once dash main movement stops
-            if (player.PlayerIsFalling())
+            if (player.IsFalling())
             {
                 Interrupt(animator);
                 player.Fall();
@@ -121,6 +120,7 @@ public class PlayerDash : StateMachineBehaviour
 
         if (stateTime > 0.6f && stateTime < 1)
         {
+            player.RestorePhysics();
             if (stateTime > 0.9f)
             {
                 chainableState = false;
@@ -128,22 +128,14 @@ public class PlayerDash : StateMachineBehaviour
             }
 
             fxCounter += Time.deltaTime;
-            sfxCounter += Time.deltaTime;
             if (fxCounter > fxRate)
             {
                 DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
                 fxCounter = 0;
             }
-
-            if (sfxCounter > sfxRate)
-            {
-                player.PlaySfxRandomPitch(sfx[1], 0.7f, 1.4f, 0.1f);
-                sfxCounter = 0;
-            }
         }
         else if (stateTime > 1)
         {
-            animator.speed = 1f;
             currentPitch = 1f;
             chainCounter = 0;
             animator.SetBool("Dashing", false);
