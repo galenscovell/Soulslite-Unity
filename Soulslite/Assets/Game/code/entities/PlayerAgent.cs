@@ -302,6 +302,9 @@ public class PlayerAgent : BaseEntity
                     dash.Interrupt(animator);
                 }
 
+                // Interrupt attack if attacking
+                InterruptAttack();
+
                 Vector2 collisionDirection = transform.position - collision.transform.position;
                 Hurt(collisionDirection, 3);
 
@@ -365,40 +368,6 @@ public class PlayerAgent : BaseEntity
         }
     }
 
-    private bool IsInAttackStateAndInvulnerable()
-    {
-        if (currentStateInfo.fullPathHash == attack1.GetHash())
-        {
-            if (!attack1.IsVulnerable())
-            {
-                return true;
-            }
-        }
-        else if (currentStateInfo.fullPathHash == attack2.GetHash())
-        {
-            if (!attack2.IsVulnerable())
-            {
-                return true;
-            }
-        }
-        else if (currentStateInfo.fullPathHash == attack3.GetHash())
-        {
-            if (!attack3.IsVulnerable())
-            {
-                return true;
-            }
-        }
-        else if (currentStateInfo.fullPathHash == chargedAttack.GetHash())
-        {
-            if (!chargedAttack.IsVulnerable())
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
 
     /**************************
      *          Hurt          *
@@ -433,6 +402,7 @@ public class PlayerAgent : BaseEntity
         StopCoroutine(heartbeat);
 
         animator.SetBool("Attacking", false);
+        animator.SetBool("Dashing", false);
         animator.SetBool("Idling", false);
         animator.SetBool("Ranged", false);
     }

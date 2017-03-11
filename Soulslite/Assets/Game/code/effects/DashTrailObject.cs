@@ -10,7 +10,6 @@ public class DashTrailObject : MonoBehaviour
     private bool inUse;
 
     public SpriteRenderer spriteRenderer;
-    public Color[] colorPool;
 
     private Color color;
 
@@ -38,19 +37,13 @@ public class DashTrailObject : MonoBehaviour
         gameObject.SetActive(setting);
     }
 
-    private Color GetRandomColor()
-    {
-        int randomIndex = Random.Range(0, colorPool.Length - 1);
-        return colorPool[randomIndex];
-    }
-
-    public void Initiate(float time, Sprite sprite, Vector2 pos)
+    public void Initiate(float time, Sprite sprite, Vector2 pos, Color c)
     {
         displayTime = time;
         spriteRenderer.sprite = sprite;
         position = pos;
         timeDisplayed = time;
-        color = GetRandomColor();
+        color = c;
         inUse = true;
     }
 }

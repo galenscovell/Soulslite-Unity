@@ -9,17 +9,21 @@ public class TrailSystem : MonoBehaviour
     private List<DashTrailObject> trailObjectsInUse;
     private List<DashTrailObject> trailObjects;
 
-    private float spawnInterval;
     private float spawnTimer;
     private bool on;
 
     private int trailIndex;
-    private int maxTrails = 40;
+    private int maxTrails = 30;
 
     public SpriteRenderer leadingSprite;
     public DashTrailObject trailObject;
-    public int segments;
-    public float segmentLifetime;
+    public Color[] colorPool;
+
+    private int colorIndex = 0;
+    private int segments = 5;
+    private int currentSegment;
+    private List<float> segmentLifetimes = new List<float> { 1f, 0.8f, 0.7f, 0.5f, 0.4f };
+    private List<float> spawnTimes = new List<float> { 0, 0.05f, 0.07f, 0.09f, 0.11f };
 
 
     private void Awake()
@@ -31,8 +35,6 @@ public class TrailSystem : MonoBehaviour
 
     private void Start()
     {
-        spawnInterval = segmentLifetime / segments / 2;
-
         trailObjectsInUse = new List<DashTrailObject>();
         trailObjects = new List<DashTrailObject>();
 
@@ -54,19 +56,25 @@ public class TrailSystem : MonoBehaviour
         {
             spawnTimer += Time.deltaTime;
 
-            if (spawnTimer > spawnInterval)
+            if (currentSegment < segments)
             {
-                if (trailObjectsInUse.Count < segments)
-                {
+                if (spawnTimer > spawnTimes[currentSegment])
+                { 
                     if (trailIndex >= maxTrails) trailIndex = 0;
 
                     DashTrailObject trailObject = trailObjects[trailIndex];
-                    trailObject.Initiate(segmentLifetime, leadingSprite.sprite, transform.position);
+                    trailObject.Initiate(segmentLifetimes[currentSegment], leadingSprite.sprite, transform.position, colorPool[colorIndex]);
                     trailObjectsInUse.Add(trailObject);
                     trailObject.SetActive(true);
-                    spawnTimer = 0;
 
                     trailIndex++;
+                    currentSegment++;
+                    colorIndex++;
+
+                    if (colorIndex >= colorPool.Length)
+                    {
+                        colorIndex = 0;
+                    }
                 }
             }
         }
@@ -81,7 +89,8 @@ public class TrailSystem : MonoBehaviour
     public void BeginTrail()
     {
         on = true;
-        spawnTimer = spawnInterval;
+        spawnTimer = 0;
+        currentSegment = 0;
     }
 
     public void EndTrail()

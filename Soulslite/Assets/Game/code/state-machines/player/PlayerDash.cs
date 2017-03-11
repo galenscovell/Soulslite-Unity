@@ -14,12 +14,15 @@ public class PlayerDash : StateMachineBehaviour
     private bool preventChain;
     private bool slowed;
 
+    private float runtime;
     private float currentPitch;
     private int[] sfx;
 
-    private float fxRate = 0.1f;
+    private float fxRate = 0.075f;
     private float fxCounter;
-    
+    private float sfxRate = 0.1f;
+    private float sfxCounter;
+
     public Color flashColor;
 
 
@@ -39,10 +42,12 @@ public class PlayerDash : StateMachineBehaviour
     public void Interrupt(Animator animator)
     {
         TrailSystem.trailSystem.EndTrail();
+        EndDashLine();
         currentPitch = 1f;
         chainCounter = 0;
         animator.SetBool("Dashing", false);
         animator.SetInteger("DashChain", 0);
+        player.EnableMotion();
     }
 
     public void Chain(Animator animator, Vector2 direction)
@@ -63,6 +68,8 @@ public class PlayerDash : StateMachineBehaviour
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        BeginDashLine();
+
         animator.SetInteger("DashChain", animator.GetInteger("DashChain") + 1);
 
         TrailSystem.trailSystem.BeginTrail();
@@ -72,16 +79,18 @@ public class PlayerDash : StateMachineBehaviour
         if (chainCounter < 6) currentPitch = 1 + (chainCounter * 0.1f);
         else currentPitch = 1.6f;
 
+        if (animator.GetInteger("DashChain") > 2) runtime = 2f;
+        else runtime = 1;
+
+        player.DisableMotion();
         player.SetSpeed(dashSpeed);
-        player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
 
         preventChain = false;
         chainableState = false;
         slowed = false;
         fxCounter = fxRate;
-
-        BeginDashLine();
-
+        sfxCounter = sfxRate;
+        
         player.PlaySfxRandomPitch(sfx[0], currentPitch - 0.05f, currentPitch + 0.05f, 1f);
 
         player.IgnoreEntityCollisions();
@@ -104,28 +113,30 @@ public class PlayerDash : StateMachineBehaviour
             }
         }
 
-        if (stateTime > 0.125f && stateTime < 0.2f)
+        if (stateTime > 0.1f && stateTime < 0.25f)
+        {
+            player.EnableMotion();
+            player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
+        }
+        else if (stateTime > 0.25f && stateTime < 0.3f)
         {
             player.SetSpeed(player.GetDefaultSpeed() / 2);
+            player.StartCoroutine(player.FlashSpriteColor(flashColor, 0.1f, 1f, 0.4f, 0));
         }
-        else if (stateTime > 0.4f && stateTime < 0.45f)
+        else if (stateTime > 0.6f && stateTime < 0.8f)
         {
             TrailSystem.trailSystem.EndTrail();
         }
-        else if (stateTime > 0.5f && stateTime < 0.9f)
+        else if (stateTime > 0.5f && stateTime < 0.8f)
         {
             // Chain input period
             chainableState = true;
         }
 
-        if (stateTime > 0.6f && stateTime < 1)
+        if (stateTime > 0.8f && stateTime < runtime)
         {
             player.RestorePhysics();
-            if (stateTime > 0.9f)
-            {
-                chainableState = false;
-                player.SetInput(false);
-            }
+            chainableState = false;
 
             fxCounter += Time.deltaTime;
             if (fxCounter > fxRate)
@@ -133,8 +144,18 @@ public class PlayerDash : StateMachineBehaviour
                 DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
                 fxCounter = 0;
             }
+
+            if (runtime > 1)
+            {
+                sfxCounter += Time.deltaTime;
+                if (sfxCounter > sfxRate)
+                {
+                    player.PlaySfxRandomPitch(sfx[1], 0.7f, 1.4f, 0.15f);
+                    sfxCounter = 0;
+                }
+            }
         }
-        else if (stateTime > 1)
+        else if (stateTime > runtime)
         {
             currentPitch = 1f;
             chainCounter = 0;
@@ -147,8 +168,8 @@ public class PlayerDash : StateMachineBehaviour
     {
         player.RestoreDefaultSpeed();
         preventChain = false;
-        dashLine.enabled = false;
-        player.SetInput(true);
+        EndDashLine();
+        player.EnableMotion();
         CameraSystem.cameraSystem.RestoreDefaultDampTime();
     }
 
@@ -156,10 +177,16 @@ public class PlayerDash : StateMachineBehaviour
 
     private void BeginDashLine()
     {
-        dashLine.enabled = true;
         dashLine.SetPosition(0, player.GetBody().position + new Vector2(0, 8));
+        dashLine.SetPosition(1, player.GetBody().position + new Vector2(0, 8));
         Color c = dashLine.material.color;
         dashLine.material.color = new Color(c.r, c.g, c.b, 1);
+        dashLine.enabled = true;
+    }
+
+    private void EndDashLine()
+    {
+        dashLine.enabled = false;
     }
 
     private void UpdateDashLine()
@@ -170,7 +197,7 @@ public class PlayerDash : StateMachineBehaviour
         c.a -= 0.035f;
         if (c.a <= 0)
         {
-            dashLine.enabled = false;
+            EndDashLine();
         }
         else
         {
