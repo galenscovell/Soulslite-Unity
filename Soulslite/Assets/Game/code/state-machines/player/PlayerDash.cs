@@ -39,32 +39,7 @@ public class PlayerDash : StateMachineBehaviour
         sfx = assignedSfx;
     }
 
-    public void Interrupt(Animator animator)
-    {
-        TrailSystem.trailSystem.EndTrail();
-        EndDashLine();
-        currentPitch = 1f;
-        chainCounter = 0;
-        animator.SetBool("Dashing", false);
-        animator.SetInteger("DashChain", 0);
-        player.EnableMotion();
-    }
 
-    public void Chain(Animator animator, Vector2 direction)
-    {
-        // If dash input is received within the "chainable state" time a dash chain occurs
-        if (chainableState && !player.IsFalling())
-        {
-            chainCounter++;
-            player.SetFacingDirection(direction);
-            animator.Play(hash, -1, 0f);
-        }
-        // If input is received any other time, the chain becomes locked
-        else
-        {
-            preventChain = true;
-        }
-    }
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -72,9 +47,9 @@ public class PlayerDash : StateMachineBehaviour
 
         animator.SetInteger("DashChain", animator.GetInteger("DashChain") + 1);
 
-        TrailSystem.trailSystem.BeginTrail();
-        DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
         CameraSystem.cameraSystem.SetDampTime(0.3f);
+        DustSystem.dustSystem.SpawnDust(player.GetBody().position, player.GetFacingDirection());
+        TrailSystem.trailSystem.BeginTrail();
 
         if (chainCounter < 6) currentPitch = 1 + (chainCounter * 0.1f);
         else currentPitch = 1.6f;
@@ -92,8 +67,6 @@ public class PlayerDash : StateMachineBehaviour
         sfxCounter = sfxRate;
         
         player.PlaySfxRandomPitch(sfx[0], currentPitch - 0.05f, currentPitch + 0.05f, 1f);
-
-        player.IgnoreEntityCollisions();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -107,7 +80,8 @@ public class PlayerDash : StateMachineBehaviour
             // Fall once dash main movement stops
             if (player.IsFalling())
             {
-                Interrupt(animator);
+                End(animator);
+                CameraSystem.cameraSystem.RestoreDefaultDampTime();
                 player.Fall();
                 return;
             }
@@ -115,6 +89,7 @@ public class PlayerDash : StateMachineBehaviour
 
         if (stateTime > 0.1f && stateTime < 0.25f)
         {
+            player.IgnoreEntityCollisions();
             player.EnableMotion();
             player.SetNextVelocity(player.GetFacingDirection() * player.GetSpeed());
         }
@@ -130,12 +105,15 @@ public class PlayerDash : StateMachineBehaviour
         else if (stateTime > 0.5f && stateTime < 0.8f)
         {
             // Chain input period
-            chainableState = true;
+            if (!preventChain)
+            {
+                chainableState = true;
+            }
         }
 
         if (stateTime > 0.8f && stateTime < runtime)
         {
-            player.RestorePhysics();
+            player.RestoreCollisions();
             chainableState = false;
 
             fxCounter += Time.deltaTime;
@@ -157,23 +135,44 @@ public class PlayerDash : StateMachineBehaviour
         }
         else if (stateTime > runtime)
         {
-            currentPitch = 1f;
-            chainCounter = 0;
-            animator.SetBool("Dashing", false);
-            animator.SetInteger("DashChain", 0);
+            CameraSystem.cameraSystem.RestoreDefaultDampTime();
+            End(animator);
         }
     }
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player.RestoreDefaultSpeed();
-        preventChain = false;
         EndDashLine();
+
         player.EnableMotion();
-        CameraSystem.cameraSystem.RestoreDefaultDampTime();
+        player.RestoreDefaultSpeed();
     }
 
 
+
+    public void Chain(Animator animator, Vector2 direction)
+    {
+        // If dash input is received within the "chainable state" time a dash chain occurs
+        if (chainableState && !player.IsFalling())
+        {
+            chainCounter++;
+            player.SetFacingDirection(direction);
+            animator.Play(hash, -1, 0f);
+        }
+        // If input is received any other time, the chain becomes locked
+        else
+        {
+            preventChain = true;
+        }
+    }
+
+    public void End(Animator animator)
+    {
+        currentPitch = 1f;
+        chainCounter = 0;
+        animator.SetInteger("DashChain", 0);
+        animator.SetBool("Dashing", false);
+    }
 
     private void BeginDashLine()
     {
@@ -195,13 +194,7 @@ public class PlayerDash : StateMachineBehaviour
 
         Color c = dashLine.material.color;
         c.a -= 0.035f;
-        if (c.a <= 0)
-        {
-            EndDashLine();
-        }
-        else
-        {
-            dashLine.material.color = c;
-        }
+        if (c.a <= 0) EndDashLine();
+        else dashLine.material.color = c;
     }
 }

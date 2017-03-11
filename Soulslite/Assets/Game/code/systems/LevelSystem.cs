@@ -116,28 +116,27 @@ public class LevelSystem : MonoBehaviour
     private Vector2 GetTransitionVelocity()
     {
         Vector2 transitionVelocity = new Vector2(0, 0);
-        if (lastUsedEntrance == "N_Entrance")
+
+        switch (lastUsedEntrance)
         {
-            transitionVelocity.y = -1;
+            case "N_Entrance":
+                transitionVelocity.y = -1;
+                break;
+            case "E_Entrance":
+                transitionVelocity.x = 1;
+                break;
+            case "S_Entrance":
+                transitionVelocity.y = 1;
+                break;
+            case "W_Entrance":
+                transitionVelocity.x = -1;
+                break;
+            default:
+                transitionVelocity.x = 0;
+                transitionVelocity.y = 0;
+                break;
         }
-        else if (lastUsedEntrance == "E_Entrance")
-        {
-            transitionVelocity.x = 1;
-        }
-        else if (lastUsedEntrance == "S_Entrance")
-        {
-            transitionVelocity.y = 1;
-        }
-        else if (lastUsedEntrance == "W_Entrance")
-        {
-            transitionVelocity.x = -1;
-        }
-        else
-        {
-            transitionVelocity.x = 0;
-            transitionVelocity.y = 0;
-        }
-        return transitionVelocity * player.GetDefaultSpeed();
+        return transitionVelocity;
     }
 
     private void LoadNextScene()
@@ -153,22 +152,25 @@ public class LevelSystem : MonoBehaviour
         SetPlayerAsFocalPoint();
 
         player.SetNextVelocity(GetTransitionVelocity());
+        player.SetSpeed(player.GetDefaultSpeed() / 2);
         player.Transition(GetSceneEntrance(lastUsedEntrance));
 
-        CameraSystem.cameraSystem.FadeInFromBlack(1.5f).setOnComplete(ResetTransitionSettings);
+        CameraSystem.cameraSystem.FadeInFromBlack(1.25f).setOnComplete(ResetTransitionSettings);
     }
 
     private void ResetTransitionSettings()
     {
-        CameraSystem.cameraSystem.RestoreDefaultDampTime();
         StartCoroutine(RestorePlayerControl(0.1f));
     }
 
     private IEnumerator RestorePlayerControl(float time)
     {
         yield return new WaitForSeconds(time);
+        player.RestoreDefaultSpeed();
         player.SetInput(true);
-        player.EndTransition();
+        player.RestoreCollisions();
+
+        CameraSystem.cameraSystem.RestoreDefaultDampTime();
     }
 
 

@@ -61,6 +61,7 @@ public class EnemyMeleeAttack : StateMachineBehaviour
         {
             if (!prepared)
             {
+                DustSystem.dustSystem.SpawnDust(enemy.GetBody().position, enemy.GetFacingDirection());
                 enemy.EnableMotion();
                 enemy.SetSpeed(240f);
                 enemy.SetNextVelocity(enemy.directionToTarget * enemy.GetSpeed());

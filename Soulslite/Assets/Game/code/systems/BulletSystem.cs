@@ -6,12 +6,18 @@ public class BulletSystem : MonoBehaviour
 {
     public static BulletSystem bulletSystem;
 
+    private AudioSource audioSource;
+    public AudioClip[] soundEffects;
+
     public GameObject bulletFireObject;
-    public GameObject bulletObject;
+    public BulletObject bulletObject;
     public GameObject bulletCollisionObject;
 
+    public Sprite playerBulletSprite;
+    public Sprite enemyBulletSprite;
+
     private List<GameObject> bulletFires;
-    private List<GameObject> bullets;
+    private List<BulletObject> bullets;
     private List<GameObject> bulletCollisions;
 
     private int maxBullets = 20;
@@ -25,6 +31,8 @@ public class BulletSystem : MonoBehaviour
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         if (bulletSystem != null) Destroy(bulletSystem);
         else bulletSystem = this;
         DontDestroyOnLoad(this);
@@ -34,7 +42,7 @@ public class BulletSystem : MonoBehaviour
     {
         // Create separate object pools for fires, bullets and collisions
         bulletFires = new List<GameObject>();
-        bullets = new List<GameObject>();
+        bullets = new List<BulletObject>();
         bulletCollisions = new List<GameObject>();
 
         for (int i = 0; i < maxBullets; i++)
@@ -44,7 +52,7 @@ public class BulletSystem : MonoBehaviour
             fireObj.transform.parent = transform;
             bulletFires.Add(fireObj);
 
-            GameObject bulletObj = Instantiate(bulletObject);
+            BulletObject bulletObj = Instantiate(bulletObject);
             bulletObj.SetActive(false);
             bulletObj.transform.parent = transform;
             bullets.Add(bulletObj);
@@ -65,7 +73,7 @@ public class BulletSystem : MonoBehaviour
         return nextBulletDirection;
     }
 
-    public void SpawnBullet(Vector2 position, Vector2 direction, string designatedTag, string designatedLayer)
+    public void SpawnBullet(Vector2 position, Vector2 direction, string tag, string layer)
     {
         nextBulletDirection = direction;
 
@@ -82,20 +90,39 @@ public class BulletSystem : MonoBehaviour
 
         // Pull out a bullet object and mark it active
         // Also set its tag for collision layers and set it to spawn location
-        GameObject bulletObj = bullets[bulletObjectIndex];
-        bulletObj.tag = designatedTag;
-        bulletObj.layer = LayerMask.NameToLayer(designatedLayer);
+        BulletObject bulletObj = bullets[bulletObjectIndex];
+        bulletObj.SetActive(true);
+        if (tag == "PlayerBullet")
+        {
+            bulletObj.Setup(playerBulletSprite, tag, LayerMask.NameToLayer(layer));
+        } 
+        else
+        {
+            bulletObj.Setup(enemyBulletSprite, tag, LayerMask.NameToLayer(layer));
+        }
         bulletObj.transform.position = position;
         bulletObj.transform.right = direction;
-        bulletObj.SetActive(true);
+        
 
         spawnedBullets++;
         bulletFireIndex++;
         bulletObjectIndex++;
     }
 
-    public void DespawnBullet(GameObject gameObj, Vector2 collisionDirection)
+    public void DespawnBullet(GameObject gameObj, Vector2 collisionDirection, string collisionObjName)
     {
+        switch (collisionObjName)
+        {
+            case "BulletBoundary":
+                break;
+            case "Obstacle":
+                PlaySfxRandomPitch(1, 0.9f, 1.2f, 1f);
+                break;
+            default:
+                PlaySfxRandomPitch(0, 0.9f, 1.2f, 1f);
+                break;
+        }
+
         // Disable bullet
         gameObj.SetActive(false);
         spawnedBullets--;
@@ -118,5 +145,12 @@ public class BulletSystem : MonoBehaviour
     {
         // Disable particle system
         gameObj.SetActive(false);
+    }
+
+    public void PlaySfxRandomPitch(int index, float low, float high, float volume)
+    {
+        audioSource.pitch = Random.Range(low, high);
+        audioSource.volume = volume;
+        audioSource.PlayOneShot(soundEffects[index]);
     }
 }

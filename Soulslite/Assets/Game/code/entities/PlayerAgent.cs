@@ -299,7 +299,8 @@ public class PlayerAgent : BaseEntity
                 // Interrupt dash if currently dashing
                 if (currentStateInfo.fullPathHash == dash.GetHash())
                 {
-                    dash.Interrupt(animator);
+                    dash.End(animator);
+                    CameraSystem.cameraSystem.RestoreDefaultDampTime();
                 }
 
                 // Interrupt attack if attacking
@@ -396,7 +397,8 @@ public class PlayerAgent : BaseEntity
         // Interrupt dash if currently dashing
         if (currentStateInfo.fullPathHash == dash.GetHash())
         {
-            dash.Interrupt(animator);
+            dash.End(animator);
+            CameraSystem.cameraSystem.RestoreDefaultDampTime();
         }
 
         StopCoroutine(heartbeat);
@@ -410,12 +412,13 @@ public class PlayerAgent : BaseEntity
     public void Die()
     {
         BeginDeath();
-        animator.SetBool("Dead", true);
 
         IgnoreAllCollisions();
         SetSortingLayer("UI");
+
         CameraSystem.cameraSystem.FadeOutToBlack(2);
 
+        animator.SetBool("Dead", true);
         animator.Play("PlayerDie");
     }
 
@@ -423,8 +426,9 @@ public class PlayerAgent : BaseEntity
     {
         BeginDeath();
 
-        gameObject.layer = 10;
+        IgnoreAllCollisions();
         SetSortingLayer("UI");
+
         CameraSystem.cameraSystem.FadeOutToBlack(0.75f);
 
         SetInput(false);
@@ -437,17 +441,20 @@ public class PlayerAgent : BaseEntity
     public void Revive()
     {
         // Restore defaults on everything
-        CameraSystem.cameraSystem.FadeOutVignette(0);
         animator.SetBool("Dead", false);
-        RestoreFullHealth();
+        
         FadeInSprite(0);
         SetSortingLayer("Entity");
+
         falling = false;
+        RestoreFullHealth();
         RestoreDefaultSpeed();
+
+        CameraSystem.cameraSystem.FadeOutVignette(0);
         LevelSystem.levelSystem.ReviveTransition();
     }
 
-    public void RestorePhysics()
+    public void RestoreCollisions()
     {
         gameObject.layer = 12;
     }
@@ -461,18 +468,11 @@ public class PlayerAgent : BaseEntity
         // Interrupt dash if currently dashing
         if (currentStateInfo.fullPathHash == dash.GetHash())
         {
-            dash.Interrupt(animator);
+            dash.End(animator);
         }
-        // Disable all collisions
-        gameObject.layer = 10;
-        // Set new position
-        body.position = newPosition;
-    }
 
-    public void EndTransition()
-    {
-        // Enable collisions
-        gameObject.layer = 12;
+        IgnoreAllCollisions();
+        body.position = newPosition;
     }
 
 

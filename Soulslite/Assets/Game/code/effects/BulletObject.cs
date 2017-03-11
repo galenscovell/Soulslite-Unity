@@ -4,12 +4,26 @@
 public class BulletObject : MonoBehaviour
 {
     private Rigidbody2D body;
+    private SpriteRenderer spriteRenderer;
     private int speed = 300;
 
 
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    public void Setup(Sprite s, string tag, int layer)
+    {
+        spriteRenderer.sprite = s;
+        gameObject.tag = tag;
+        gameObject.layer = layer;
+    }
+
+    public void SetActive(bool setting)
+    {
+        gameObject.SetActive(setting);
     }
 
     private void OnEnable()
@@ -33,6 +47,6 @@ public class BulletObject : MonoBehaviour
         }
 
         Vector2 collisionDirection = transform.position - collision.transform.position;
-        BulletSystem.bulletSystem.DespawnBullet(gameObject, collisionDirection);
+        BulletSystem.bulletSystem.DespawnBullet(gameObject, collisionDirection, collision.name);
     }
 }

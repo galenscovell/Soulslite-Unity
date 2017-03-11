@@ -65,7 +65,7 @@ public class CameraSystem : MonoBehaviour
             focusPosition = Vector3.Min(focusPosition, maxPosition);
             focusPosition = Vector3.Max(focusPosition, minPosition);
 
-            transform.position = focusPosition + Vector3.forward * -10;
+            SetToPoint(focusPosition);
         }
     }
 
@@ -77,6 +77,11 @@ public class CameraSystem : MonoBehaviour
     public void SetCameraFollow(bool setting)
     {
         follow = setting;
+    }
+
+    public void SetToPoint(Vector3 point)
+    {
+        transform.position = point + Vector3.forward * -10;
     }
 
 

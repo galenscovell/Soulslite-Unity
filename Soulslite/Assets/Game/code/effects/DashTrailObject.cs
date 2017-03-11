@@ -9,6 +9,8 @@ public class DashTrailObject : MonoBehaviour
     private float timeDisplayed;
     private bool inUse;
 
+    private float blinkTimer;
+
     public SpriteRenderer spriteRenderer;
 
     private Color color;
@@ -22,7 +24,17 @@ public class DashTrailObject : MonoBehaviour
             spriteRenderer.color = color;
 
             timeDisplayed -= Time.deltaTime;
-            color.a = timeDisplayed / displayTime;
+            blinkTimer += Time.deltaTime;
+
+            if (blinkTimer > 0.2f)
+            {
+                color.a = 0;
+                blinkTimer = 0;
+            }
+            else
+            {
+                color.a = timeDisplayed / displayTime;
+            }
                 
             if (timeDisplayed <= 0)
             {
@@ -43,6 +55,7 @@ public class DashTrailObject : MonoBehaviour
         spriteRenderer.sprite = sprite;
         position = pos;
         timeDisplayed = time;
+        blinkTimer = 0;
         color = c;
         inUse = true;
     }
