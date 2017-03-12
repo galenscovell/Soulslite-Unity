@@ -10,7 +10,7 @@ public class BaseEntity : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
 
     protected bool canMove = true;
-    protected bool falling = false;
+    protected bool falling;
     protected float speed;
     protected Vector2 nextVelocity;
     protected Vector2 facingDirection;
@@ -18,12 +18,11 @@ public class BaseEntity : MonoBehaviour
     protected float movementImpulseTime;
 
     public AudioClip[] soundEffects;
-    public bool flipX = false;
+    public bool flipX;
     public float defaultSpeed;
 
-    // Health
     public int maxHealth;
-    protected int health;
+    protected int currentHealth;
 
 
     /**************************
@@ -41,12 +40,13 @@ public class BaseEntity : MonoBehaviour
     {
         // Determine entity facing direction on spawn
         if (flipX) EnableFlippedX();
+
         facingDirection = new Vector2(
             animator.GetFloat("DirectionX"),
             animator.GetFloat("DirectionY")
         );
 
-        health = maxHealth;
+        currentHealth = maxHealth;
     }
 
 
@@ -111,35 +111,35 @@ public class BaseEntity : MonoBehaviour
      **************************/
     protected void DecreaseHealth(int amount)
     {
-        health -= amount;
-        if (health < 0)
+        currentHealth -= amount;
+        if (currentHealth < 0)
         {
-            health = 0;
+            currentHealth = 0;
         }
     }
 
     protected void IncreaseHealth(int amount)
     {
-        health += amount;
-        if (health > maxHealth)
+        currentHealth += amount;
+        if (currentHealth > maxHealth)
         {
-            health = maxHealth;
+            currentHealth = maxHealth;
         }
     }
 
     protected bool HealthZero()
     {
-        return health <= 0;
+        return currentHealth <= 0;
     }
 
     protected void RestoreFullHealth()
     {
-        health = maxHealth;
+        currentHealth = maxHealth;
     }
 
-    protected int GetHealth()
+    protected int GetCurrentHealth()
     {
-        return health;
+        return currentHealth;
     }
 
 

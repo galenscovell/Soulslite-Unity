@@ -1,33 +1,33 @@
 ﻿using UnityEngine;
 
 
-public class EnemyMeleeAgent : Enemy
+public class MinibossAgent : Enemy
 {
     // State machines
     private EnemyMeleeAttack attack;
     private EnemyMeleeDying dying;
-    
+
 
     /**************************
      *          Init          *
      **************************/
-    private new void Start() 
+    private new void Start()
     {
         base.Start();
 
         behavior = new Behavior();
         seeker = GetComponent<Seeker>();
 
-        attack = animator.GetBehaviour<EnemyMeleeAttack>();
-        dying = animator.GetBehaviour<EnemyMeleeDying>();
-        fall = animator.GetBehaviour<EnemyFall>();
-        fullIdle = animator.GetBehaviour<EnemyFullIdle>();
+        //attack = animator.GetBehaviour<EnemyMeleeAttack>();
+        //dying = animator.GetBehaviour<EnemyMeleeDying>();
+        //fall = animator.GetBehaviour<EnemyFall>();
+        //fullIdle = animator.GetBehaviour<EnemyFullIdle>();
 
         // Ints in state Setups are the sfx index
-        attack.Setup(this, 0);
-        dying.Setup(this, 1);
-        fall.Setup(this, 2);
-        fullIdle.Setup(this);
+        //attack.Setup(this, 0);
+        //dying.Setup(this, 1);
+        //fall.Setup(this, 2);
+        //fullIdle.Setup(this);
     }
 
 

@@ -12,6 +12,7 @@ public class PlayerAttack3 : StateMachineBehaviour
     private bool vulnerable = true;
     private bool moved;
     private bool interrupted;
+    private bool skipInterruptAnim;
 
 
     public int GetHash()
@@ -25,11 +26,12 @@ public class PlayerAttack3 : StateMachineBehaviour
         sfxIndex = assignedSfxIndex;
     }
 
-    public bool Interrupt(Animator animator)
+    public bool Interrupt(Animator animator, bool skipAnim)
     {
         if (vulnerable)
         {
             interrupted = true;
+            skipInterruptAnim = skipAnim;
             return true;
         }
         return false;
@@ -84,7 +86,10 @@ public class PlayerAttack3 : StateMachineBehaviour
         TrailSystem.trailSystem.EndTrail();
         if (interrupted)
         {
-            animator.Play(interruptHash);
+            if (!skipInterruptAnim)
+            {
+                animator.Play(interruptHash);
+            }
         }
         else
         {

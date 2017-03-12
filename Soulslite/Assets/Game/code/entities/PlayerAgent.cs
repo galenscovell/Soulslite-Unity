@@ -285,7 +285,7 @@ public class PlayerAgent : BaseEntity
                 return;
             case "ObstacleTag":
                 // Interrupt and stop attack if collided with obstacle
-                if (InterruptAttack()) return;
+                if (InterruptAttack(false)) return;
                 break;
             case "FalloffTag":
                 // Set player as ready to fall if colliding with falloff boundary
@@ -303,27 +303,29 @@ public class PlayerAgent : BaseEntity
                     CameraSystem.cameraSystem.RestoreDefaultDampTime();
                 }
 
-                // Interrupt attack if attacking
-                InterruptAttack();
-
                 Vector2 collisionDirection = transform.position - collision.transform.position;
                 Hurt(collisionDirection, 3);
 
-                // Show damage vignette when player health low
-                if (GetHealth() == 1)
-                {
-                    CameraSystem.cameraSystem.FadeInVignette(Color.black, 2);
-                    StartCoroutine(heartbeat);
-                }
+                // Interrupt attack if attacking
+                // If this hit will kill player, skip attack interruption animation
+                InterruptAttack(HealthZero());
 
-                // Die if player health is zero
-                if (HealthZero())
+                switch (GetCurrentHealth())
                 {
-                    Die();
-                }
-                else
-                {
-                    animator.Play(hurt.GetHash());
+                    case 0:
+                        // Die if health is zeroed out
+                        Die();
+                        break;
+                    case 1:
+                        // Show damage vignette when player health low
+                        CameraSystem.cameraSystem.FadeInVignette(Color.black, 2);
+                        StartCoroutine(heartbeat);
+                        animator.Play(hurt.GetHash());
+                        break;
+                    default:
+                        // Play damaged animation
+                        animator.Play(hurt.GetHash());
+                        break;
                 }
                 break;
             default:
@@ -349,17 +351,17 @@ public class PlayerAgent : BaseEntity
         }
     }
 
-    private bool InterruptAttack()
+    private bool InterruptAttack(bool skipInterruptAnim)
     {
-        if (currentStateInfo.fullPathHash == attack1.GetHash() && attack1.Interrupt(animator))
+        if (currentStateInfo.fullPathHash == attack1.GetHash() && attack1.Interrupt(animator, skipInterruptAnim))
         {
             return true;
         }
-        else if (currentStateInfo.fullPathHash == attack2.GetHash() && attack2.Interrupt(animator))
+        else if (currentStateInfo.fullPathHash == attack2.GetHash() && attack2.Interrupt(animator, skipInterruptAnim))
         {
             return true;
         }
-        else if (currentStateInfo.fullPathHash == attack3.GetHash() && attack3.Interrupt(animator))
+        else if (currentStateInfo.fullPathHash == attack3.GetHash() && attack3.Interrupt(animator, skipInterruptAnim))
         {
             return true;
         }
@@ -407,14 +409,14 @@ public class PlayerAgent : BaseEntity
         animator.SetBool("Dashing", false);
         animator.SetBool("Idling", false);
         animator.SetBool("Ranged", false);
+
+        IgnoreAllCollisions();
+        SetSortingLayer("UI");
     }
 
     public void Die()
     {
         BeginDeath();
-
-        IgnoreAllCollisions();
-        SetSortingLayer("UI");
 
         CameraSystem.cameraSystem.FadeOutToBlack(2);
 
@@ -425,9 +427,6 @@ public class PlayerAgent : BaseEntity
     public void Fall()
     {
         BeginDeath();
-
-        IgnoreAllCollisions();
-        SetSortingLayer("UI");
 
         CameraSystem.cameraSystem.FadeOutToBlack(0.75f);
 
@@ -446,9 +445,10 @@ public class PlayerAgent : BaseEntity
         FadeInSprite(0);
         SetSortingLayer("Entity");
 
-        falling = false;
+        SetFalling(false);
         RestoreFullHealth();
         RestoreDefaultSpeed();
+        RestoreCollisions();
 
         CameraSystem.cameraSystem.FadeOutVignette(0);
         LevelSystem.levelSystem.ReviveTransition();

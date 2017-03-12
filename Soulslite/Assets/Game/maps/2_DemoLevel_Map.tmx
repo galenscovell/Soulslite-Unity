@@ -778,7 +778,7 @@
    <property name="unity:isTrigger" type="bool" value="true"/>
    <property name="unity:tag" value="TransitionTag"/>
   </properties>
-  <object id="3" name="S_Entrance" x="256" y="596" width="128" height="8">
+  <object id="3" name="South" x="256" y="596" width="128" height="8">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
     <property name="unity:layer" value="TransitionLayer"/>
@@ -792,7 +792,7 @@
     <property name="unity:tag" value="TransitionTag"/>
    </properties>
   </object>
-  <object id="117" name="E_Entrance" x="632" y="264" width="8" height="48">
+  <object id="117" name="East" x="632" y="264" width="8" height="48">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
     <property name="unity:layer" value="TransitionLayer"/>

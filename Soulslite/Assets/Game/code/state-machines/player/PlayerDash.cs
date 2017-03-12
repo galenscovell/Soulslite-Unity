@@ -98,22 +98,19 @@ public class PlayerDash : StateMachineBehaviour
             player.SetSpeed(player.GetDefaultSpeed() / 2);
             player.StartCoroutine(player.FlashSpriteColor(flashColor, 0.1f, 1f, 0.4f, 0));
         }
-        else if (stateTime > 0.6f && stateTime < 0.8f)
+        else if (stateTime > 0.5f && stateTime < 0.6f)
         {
-            TrailSystem.trailSystem.EndTrail();
-        }
-        else if (stateTime > 0.5f && stateTime < 0.8f)
-        {
-            // Chain input period
+            // Allow chain input if dash not attempted prior
             if (!preventChain)
             {
                 chainableState = true;
             }
-        }
 
+            TrailSystem.trailSystem.EndTrail();
+            player.RestoreCollisions();
+        }
         if (stateTime > 0.8f && stateTime < runtime)
         {
-            player.RestoreCollisions();
             chainableState = false;
 
             fxCounter += Time.deltaTime;

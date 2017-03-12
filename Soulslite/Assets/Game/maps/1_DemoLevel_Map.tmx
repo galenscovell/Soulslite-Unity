@@ -908,7 +908,7 @@
    <property name="unity:isTrigger" type="bool" value="true"/>
    <property name="unity:tag" value="TransitionTag"/>
   </properties>
-  <object id="107" name="N_Entrance" x="128" y="4" width="128" height="8">
+  <object id="107" name="North" x="128" y="4" width="128" height="8">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
     <property name="unity:layer" value="TransitionLayer"/>

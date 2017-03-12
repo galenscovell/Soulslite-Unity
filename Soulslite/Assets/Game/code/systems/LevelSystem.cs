@@ -119,17 +119,17 @@ public class LevelSystem : MonoBehaviour
 
         switch (lastUsedEntrance)
         {
-            case "N_Entrance":
+            case "North":
                 transitionVelocity.y = -1;
                 break;
-            case "E_Entrance":
-                transitionVelocity.x = 1;
+            case "East":
+                transitionVelocity.x = -1;
                 break;
-            case "S_Entrance":
+            case "South":
                 transitionVelocity.y = 1;
                 break;
-            case "W_Entrance":
-                transitionVelocity.x = -1;
+            case "West":
+                transitionVelocity.x = 1;
                 break;
             default:
                 transitionVelocity.x = 0;

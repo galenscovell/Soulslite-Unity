@@ -180,13 +180,13 @@ public class Enemy : BaseEntity
 
     public void DisableDeath()
     {
-        RestoreCollisionLayer();
-        falling = false;
+        RestoreCollisions();
+        SetFalling(false);
         StartCoroutine(ChangeSpriteColorOutof(Color.black, 1f, 0));
         animator.SetBool("Dead", false);
     }
 
-    public void RestoreCollisionLayer()
+    public void RestoreCollisions()
     {
         // Enable physics by assigning enemy back to EnemyLayer
         gameObject.layer = 16;
