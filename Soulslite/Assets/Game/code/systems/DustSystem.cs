@@ -6,15 +6,17 @@ public class DustSystem : MonoBehaviour
 {
     public static DustSystem dustSystem;
 
-    public GameObject dustObject;
+    public DustObject dustObject;
+    public ShockDustObject shockDustObject;
 
-    private List<GameObject> dustObjects;
+    private List<DustObject> dustObjects;
+    private List<ShockDustObject> shockDustObjects;
 
     private int maxDust = 20;
+    private int maxShockDust = 6;
     private int spawnedDust;
     private int dustObjectIndex;
-
-    private float nextDustForce;
+    private int shockDustObjectIndex;
 
 
     private void Awake()
@@ -27,29 +29,33 @@ public class DustSystem : MonoBehaviour
     private void Start()
     {
         // Create object pools for dust objects
-        dustObjects = new List<GameObject>();
+        dustObjects = new List<DustObject>();
 
         for (int i = 0; i < maxDust; i++)
         {
-            GameObject dustObj = Instantiate(dustObject);
-            dustObj.SetActive(false);
+            DustObject dustObj = Instantiate(dustObject);
+            dustObj.gameObject.SetActive(false);
             dustObj.transform.parent = transform;
             dustObjects.Add(dustObj);
         }
 
-        dustObjectIndex = 0;
-    }
+        // Create object pools for shock dust objects
+        shockDustObjects = new List<ShockDustObject>();
 
-    public float GetNextDustForce()
-    {
-        return nextDustForce;
+        for (int i = 0; i < maxShockDust; i++)
+        {
+            ShockDustObject shockDustObj = Instantiate(shockDustObject);
+            shockDustObj.gameObject.SetActive(false);
+            shockDustObj.transform.parent = transform;
+            shockDustObjects.Add(shockDustObj);
+        }
+
+        dustObjectIndex = 0;
+        shockDustObjectIndex = 0;
     }
 
     public void SpawnDust(Vector2 rawPosition, Vector2 facingDirection)
     {
-        // TODO: Use force to change size of dust produced by movement
-        // Force is float between 1-8
-
         if (dustObjectIndex >= maxDust) dustObjectIndex = 0;
 
         float x = rawPosition.x;
@@ -75,17 +81,33 @@ public class DustSystem : MonoBehaviour
 
         Vector2 stepPosition = new Vector2(x, y);
 
-        GameObject dustObj = dustObjects[dustObjectIndex];
+        DustObject dustObj = dustObjects[dustObjectIndex];
         dustObj.transform.position = stepPosition;
-        dustObj.SetActive(true);
+        dustObj.gameObject.SetActive(true);
 
         dustObjectIndex++;
         spawnedDust++;
     }
 
-    public void DespawnDust(GameObject gameObj)
+    public void DespawnDust(DustObject dustObj)
     {
-        gameObj.SetActive(false);
+        dustObj.gameObject.SetActive(false);
         spawnedDust--;
+    }
+
+    public void SpawnShockDust(Vector2 rawPosition)
+    {
+        if (shockDustObjectIndex >= maxShockDust) shockDustObjectIndex = 0;
+
+        ShockDustObject shockDustObj = shockDustObjects[shockDustObjectIndex];
+        shockDustObj.transform.position = new Vector2(rawPosition.x, rawPosition.y - 16);
+        shockDustObj.gameObject.SetActive(true);
+
+        shockDustObjectIndex++;
+    }
+
+    public void DespawnShockDust(ShockDustObject shockDustObj)
+    {
+        shockDustObj.gameObject.SetActive(false);
     }
 }

@@ -26,7 +26,7 @@ public class TransitionZone : MonoBehaviour
     {
         Vector2 center = new Vector2(
             transform.position.x + (bounds.size.x / 2),
-            transform.position.y + (bounds.size.y / 2)
+            transform.position.y - (bounds.size.y / 2)
         );
         return center;
     }

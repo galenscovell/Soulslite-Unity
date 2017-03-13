@@ -454,103 +454,103 @@
    <property name="unity:layer" value="ObstacleLayer"/>
    <property name="unity:tag" value="ObstacleTag"/>
   </properties>
-  <object id="1" name="Obstacle" x="112" y="670" width="33" height="18">
+  <object id="1" name="Obstacle" x="112" y="672" width="33" height="20">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="4" name="Obstacle" x="72" y="766" width="16" height="7">
+  <object id="4" name="Obstacle" x="72" y="768" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="5" name="Obstacle" x="130" y="605" width="28" height="12">
+  <object id="5" name="Obstacle" x="130" y="608" width="28" height="12">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="8" name="Obstacle" x="112" y="798" width="33" height="18">
+  <object id="8" name="Obstacle" x="112" y="800" width="33" height="20">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="9" name="Obstacle" x="72" y="670" width="16" height="7">
+  <object id="9" name="Obstacle" x="72" y="672" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="10" name="Obstacle" x="296" y="766" width="16" height="7">
+  <object id="10" name="Obstacle" x="296" y="768" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="11" name="Obstacle" x="296" y="670" width="16" height="7">
+  <object id="11" name="Obstacle" x="296" y="672" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="12" name="Obstacle" x="240" y="670" width="33" height="18">
+  <object id="12" name="Obstacle" x="240" y="672" width="33" height="20">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="13" name="Obstacle" x="240" y="542" width="33" height="18">
+  <object id="13" name="Obstacle" x="240" y="544" width="33" height="20">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="14" name="Obstacle" x="112" y="542" width="33" height="18">
+  <object id="14" name="Obstacle" x="112" y="544" width="33" height="20">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="15" name="Obstacle" x="104" y="478" width="16" height="7">
+  <object id="15" name="Obstacle" x="104" y="480" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="16" name="Obstacle" x="264" y="478" width="16" height="7">
+  <object id="16" name="Obstacle" x="264" y="480" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="17" name="Obstacle" x="232" y="254" width="16" height="7">
+  <object id="17" name="Obstacle" x="232" y="256" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="18" name="Obstacle" x="136" y="254" width="16" height="7">
+  <object id="18" name="Obstacle" x="136" y="256" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="88" name="Obstacle" x="104" y="222" width="16" height="7">
+  <object id="88" name="Obstacle" x="104" y="224" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="89" name="Obstacle" x="264" y="222" width="16" height="7">
+  <object id="89" name="Obstacle" x="264" y="224" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="93" name="Obstacle" x="199" y="767" width="15" height="17">
+  <object id="93" name="Obstacle" x="199" y="768" width="15" height="16">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
@@ -562,31 +562,31 @@
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="95" name="Obstacle" x="201" y="800" width="18" height="18">
+  <object id="95" name="Obstacle" x="201" y="800" width="18" height="24">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="96" name="Obstacle" x="223" y="770" width="22" height="14">
+  <object id="96" name="Obstacle" x="223" y="776" width="22" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="97" name="Obstacle" x="136" y="190" width="16" height="7">
+  <object id="97" name="Obstacle" x="136" y="192" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="98" name="Obstacle" x="232" y="190" width="16" height="7">
+  <object id="98" name="Obstacle" x="232" y="192" width="16" height="8">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="99" name="Obstacle" x="205" y="405" width="43" height="16">
+  <object id="99" name="Obstacle" x="205" y="408" width="43" height="13">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
@@ -598,61 +598,61 @@
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="160" name="Obstacle" x="64" y="408" width="56" height="24">
+  <object id="160" name="Obstacle" x="64" y="408" width="56" height="32">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="161" name="Obstacle" x="264" y="408" width="56" height="24">
+  <object id="161" name="Obstacle" x="264" y="408" width="56" height="32">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="162" name="Obstacle" x="352" y="350" width="32" height="18">
+  <object id="162" name="Obstacle" x="352" y="352" width="32" height="16">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="163" name="Obstacle" x="0" y="350" width="32" height="18">
+  <object id="163" name="Obstacle" x="0" y="352" width="32" height="16">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="164" name="Obstacle" x="0" y="94" width="32" height="18">
+  <object id="164" name="Obstacle" x="0" y="96" width="32" height="16">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="165" name="Obstacle" x="352" y="94" width="32" height="18">
+  <object id="165" name="Obstacle" x="352" y="96" width="32" height="16">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="166" name="Obstacle" x="352" y="702" width="32" height="18">
+  <object id="166" name="Obstacle" x="352" y="704" width="32" height="16">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="167" name="Obstacle" x="0" y="702" width="32" height="18">
+  <object id="167" name="Obstacle" x="0" y="704" width="32" height="16">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="168" name="Obstacle" x="96" y="894" width="32" height="18">
+  <object id="168" name="Obstacle" x="96" y="896" width="32" height="16">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="169" name="Obstacle" x="256" y="894" width="32" height="18">
+  <object id="169" name="Obstacle" x="256" y="896" width="32" height="16">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
@@ -908,7 +908,7 @@
    <property name="unity:isTrigger" type="bool" value="true"/>
    <property name="unity:tag" value="TransitionTag"/>
   </properties>
-  <object id="107" name="North" x="128" y="4" width="128" height="8">
+  <object id="107" name="North" x="128" y="8" width="128" height="8">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
     <property name="unity:layer" value="TransitionLayer"/>

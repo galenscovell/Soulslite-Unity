@@ -15,7 +15,7 @@ public class DustObject : MonoBehaviour
     {
         if (gameObject.activeInHierarchy && !pSystem.IsAlive())
         {
-            DustSystem.dustSystem.DespawnDust(gameObject);
+            DustSystem.dustSystem.DespawnDust(this);
         }
     }
 }

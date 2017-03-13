@@ -46,6 +46,5 @@ public class PlayerMovement : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player.StopCoroutine(footstep);
-        
     }
 }

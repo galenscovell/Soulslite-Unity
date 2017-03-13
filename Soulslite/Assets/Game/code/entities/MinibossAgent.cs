@@ -4,8 +4,16 @@
 public class MinibossAgent : Enemy
 {
     // State machines
-    private EnemyMeleeAttack attack;
+    private MinibossAttack attack;
+    private MinibossEntrance entrance;
+    private MinibossJump jump;
+    private MinibossMovement movement;
     private EnemyMeleeDying dying;
+
+    private int idleStateHash = Animator.StringToHash("Base Layer.MinibossIdle");
+
+    private int jumpCounter = 0;
+    private int jumpRate = 30;
 
 
     /**************************
@@ -18,16 +26,24 @@ public class MinibossAgent : Enemy
         behavior = new Behavior();
         seeker = GetComponent<Seeker>();
 
-        //attack = animator.GetBehaviour<EnemyMeleeAttack>();
-        //dying = animator.GetBehaviour<EnemyMeleeDying>();
-        //fall = animator.GetBehaviour<EnemyFall>();
-        //fullIdle = animator.GetBehaviour<EnemyFullIdle>();
+        attack = animator.GetBehaviour<MinibossAttack>();
+        dying = animator.GetBehaviour<EnemyMeleeDying>();
+        entrance = animator.GetBehaviour<MinibossEntrance>();
+        jump = animator.GetBehaviour<MinibossJump>();
+        movement = animator.GetBehaviour<MinibossMovement>();
+
+        fall = animator.GetBehaviour<EnemyFall>();
+        fullIdle = animator.GetBehaviour<EnemyFullIdle>();
 
         // Ints in state Setups are the sfx index
-        //attack.Setup(this, 0);
-        //dying.Setup(this, 1);
-        //fall.Setup(this, 2);
-        //fullIdle.Setup(this);
+        attack.Setup(this, 0);
+        dying.Setup(this, 1);
+        jump.Setup(this, new int[2] { 2, 3 });
+        entrance.Setup(this, new int[2] { 3, 4 });
+        movement.Setup(this, 5);
+        
+        fall.Setup(this, 1);
+        fullIdle.Setup(this);
     }
 
 
@@ -45,14 +61,7 @@ public class MinibossAgent : Enemy
 
         if (!IsDead())
         {
-            if (animator.GetBool("Passive"))
-            {
-                PassiveUpdate();
-            }
-            else
-            {
-                ActiveUpdate();
-            }
+            ActiveUpdate();
 
             // Will update body velocity and facing direction
             base.FixedUpdate();
@@ -63,31 +72,27 @@ public class MinibossAgent : Enemy
     /**************************
      *      Enemy States      *
      **************************/
-    private void PassiveUpdate()
-    {
-        if (IdleAnimCheck())
-        {
-            animator.SetBool("Idling", true);
-        }
-
-        if (TargetInView())
-        {
-            if (HasFlippedX()) DisableFlippedX();
-            animator.SetBool("Passive", false);
-            animator.SetBool("Idling", false);
-        }
-    }
-
     private void ActiveUpdate()
     {
         bool attackReady = AttackCheck();
+        bool jumpReady = JumpCheck();
         bool wanderReady = WanderCheck();
         bool inAttackRange = InAttackRange();
         bool targetInView = TargetInView();
         bool visionBlockedByEnemy = VisionBlockedByEnemy();
 
-        if (currentStateInfo.fullPathHash != attack.GetHash())
+        if (currentStateInfo.fullPathHash == movement.GetHash() || currentStateInfo.fullPathHash == idleStateHash)
         {
+            /****************
+             * JUMP ATTACK
+             ****************/
+            if (jumpReady)
+            {
+                jump.SetJumpTarget(GetTarget().position);
+                animator.SetBool("Jumping", true);
+                return;
+            }
+
             /****************
              * REPATH
              ****************/
@@ -165,6 +170,18 @@ public class MinibossAgent : Enemy
     }
 
 
+    protected bool JumpCheck()
+    {
+        jumpCounter--;
+        if (jumpCounter <= 0)
+        {
+            jumpCounter = Random.Range(jumpRate - 20, jumpRate + 20);
+            return true;
+        }
+        return false;
+    }
+
+
     /**************************
      *       Collision        *
      **************************/
@@ -203,19 +220,11 @@ public class MinibossAgent : Enemy
                     break;
             }
 
-            // Make enemy active if player hits them, even if outside range
-            if (passive)
-            {
-                if (HasFlippedX()) DisableFlippedX();
-                animator.SetBool("Passive", false);
-                animator.SetBool("Idling", false);
-            }
-
             // Check health status
             if (HealthZero() && !IsDead())
             {
                 dying.SetFlungVelocity(collisionDirection);
-                TimeSystem.timeSystem.SlowTime(0.2f, 0.05f);
+                TimeSystem.timeSystem.SlowTime(0.5f, 1f);
                 animator.Play(dying.GetHash());
             }
         }

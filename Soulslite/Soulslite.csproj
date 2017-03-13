@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>5.5.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -96,6 +98,7 @@
     <Compile Include="Assets\Game\code\effects\DustObject.cs" />
     <Compile Include="Assets\Game\code\effects\RainDropObject.cs" />
     <Compile Include="Assets\Game\code\effects\RainSplashObject.cs" />
+    <Compile Include="Assets\Game\code\effects\ShockDustObject.cs" />
     <Compile Include="Assets\Game\code\entities\BaseEntity.cs" />
     <Compile Include="Assets\Game\code\entities\Enemy.cs" />
     <Compile Include="Assets\Game\code\entities\EnemyMeleeAgent.cs" />
@@ -111,6 +114,10 @@
     <Compile Include="Assets\Game\code\state-machines\enemy-ranged\EnemyRangedDying.cs" />
     <Compile Include="Assets\Game\code\state-machines\enemy-shared\EnemyFall.cs" />
     <Compile Include="Assets\Game\code\state-machines\enemy-shared\EnemyFullIdle.cs" />
+    <Compile Include="Assets\Game\code\state-machines\miniboss\MinibossAttack.cs" />
+    <Compile Include="Assets\Game\code\state-machines\miniboss\MinibossEntrance.cs" />
+    <Compile Include="Assets\Game\code\state-machines\miniboss\MinibossJump.cs" />
+    <Compile Include="Assets\Game\code\state-machines\miniboss\MinibossMovement.cs" />
     <Compile Include="Assets\Game\code\state-machines\player\PlayerAttack1.cs" />
     <Compile Include="Assets\Game\code\state-machines\player\PlayerAttack2.cs" />
     <Compile Include="Assets\Game\code\state-machines\player\PlayerAttack3.cs" />
@@ -137,6 +144,7 @@
     <Compile Include="Assets\Game\code\systems\UIComponents\HUDComponent.cs" />
     <Compile Include="Assets\Game\code\systems\UISystem.cs" />
     <Compile Include="Assets\Game\code\util\SceneLoader.cs" />
+    <Compile Include="Assets\Game\code\util\SpawnTrigger.cs" />
     <Compile Include="Assets\Game\code\util\TransitionZone.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\AILerp.cs" />
     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\AIPath.cs" />

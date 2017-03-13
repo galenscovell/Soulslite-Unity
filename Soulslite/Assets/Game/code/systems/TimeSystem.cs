@@ -29,9 +29,7 @@ public class TimeSystem : MonoBehaviour
         float originalTimeScale = Time.timeScale;
 
         Time.timeScale = timeScale;
-
-        yield return new WaitForSeconds(forTime);
-
+        yield return new WaitForSecondsRealtime(forTime);
         Time.timeScale = originalTimeScale;
     }
 }
