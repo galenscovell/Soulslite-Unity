@@ -100,7 +100,7 @@ public class DustSystem : MonoBehaviour
         if (shockDustObjectIndex >= maxShockDust) shockDustObjectIndex = 0;
 
         ShockDustObject shockDustObj = shockDustObjects[shockDustObjectIndex];
-        shockDustObj.transform.position = new Vector2(rawPosition.x, rawPosition.y - 16);
+        shockDustObj.transform.position = new Vector2(rawPosition.x, rawPosition.y - 20);
         shockDustObj.gameObject.SetActive(true);
 
         shockDustObjectIndex++;

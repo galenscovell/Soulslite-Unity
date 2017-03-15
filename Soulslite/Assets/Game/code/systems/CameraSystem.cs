@@ -132,6 +132,7 @@ public class CameraSystem : MonoBehaviour
             float quakeAmt = Random.value * shakeAmt * 2 - shakeAmt;
             Vector3 pp = camera.transform.position;
             pp.y += quakeAmt;
+            pp.x += quakeAmt / 2;
             camera.transform.position = pp;
         }
     }

@@ -13,7 +13,7 @@ public class MinibossAgent : Enemy
     private int idleStateHash = Animator.StringToHash("Base Layer.MinibossIdle");
 
     private int jumpCounter = 0;
-    private int jumpRate = 30;
+    private int jumpRate = 50;
 
 
     /**************************
@@ -88,6 +88,7 @@ public class MinibossAgent : Enemy
              ****************/
             if (jumpReady)
             {
+                FaceTarget();
                 jump.SetJumpTarget(GetTarget().position);
                 animator.SetBool("Jumping", true);
                 return;

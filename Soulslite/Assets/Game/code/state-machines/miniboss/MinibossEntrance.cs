@@ -32,7 +32,7 @@ public class MinibossEntrance : StateMachineBehaviour
         roared = false;
 
         enemy.IgnoreAllCollisions();
-        enemy.SetSpeed(440);
+        enemy.SetSpeed(460);
         enemy.SetNextVelocity(new Vector2(0, -1));
     }
 
@@ -48,7 +48,7 @@ public class MinibossEntrance : StateMachineBehaviour
                 enemy.RestoreDefaultSpeed();
                 enemy.PlaySfx(sfx[0], 0.8f, 1f);
                 DustSystem.dustSystem.SpawnShockDust(enemy.GetBody().position);
-                CameraSystem.cameraSystem.ActivateShake(6, 0.3f);
+                CameraSystem.cameraSystem.ActivateShake(4, 0.3f);
 
                 landed = true;
             }
@@ -58,7 +58,7 @@ public class MinibossEntrance : StateMachineBehaviour
             if (!roared)
             {
                 enemy.PlaySfx(sfx[1], 0.5f, 0.8f);
-                CameraSystem.cameraSystem.ActivateShake(4, 0.7f);
+                CameraSystem.cameraSystem.ActivateShake(3, 0.7f);
 
                 roared = true;
             }
