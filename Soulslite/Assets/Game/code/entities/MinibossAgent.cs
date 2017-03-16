@@ -5,15 +5,20 @@ public class MinibossAgent : Enemy
 {
     // State machines
     private MinibossAttack attack;
+    private MinibossDying dying;
     private MinibossEntrance entrance;
     private MinibossJump jump;
     private MinibossMovement movement;
-    private EnemyMeleeDying dying;
+    private MinibossRoar roar;
 
     private int idleStateHash = Animator.StringToHash("Base Layer.MinibossIdle");
 
+    public int jumpRate;
+
     private int jumpCounter = 0;
-    private int jumpRate = 50;
+    private int randomizedJumpRate;
+    private int jumpCount = 0;
+    private int roarThreshold = 3;
 
 
     /**************************
@@ -27,10 +32,11 @@ public class MinibossAgent : Enemy
         seeker = GetComponent<Seeker>();
 
         attack = animator.GetBehaviour<MinibossAttack>();
-        dying = animator.GetBehaviour<EnemyMeleeDying>();
+        dying = animator.GetBehaviour<MinibossDying>();
         entrance = animator.GetBehaviour<MinibossEntrance>();
         jump = animator.GetBehaviour<MinibossJump>();
         movement = animator.GetBehaviour<MinibossMovement>();
+        roar = animator.GetBehaviour<MinibossRoar>();
 
         fall = animator.GetBehaviour<EnemyFall>();
         fullIdle = animator.GetBehaviour<EnemyFullIdle>();
@@ -41,6 +47,7 @@ public class MinibossAgent : Enemy
         jump.Setup(this, new int[2] { 2, 3 });
         entrance.Setup(this, new int[2] { 3, 4 });
         movement.Setup(this, 5);
+        roar.Setup(this, 4);
         
         fall.Setup(this, 1);
         fullIdle.Setup(this);
@@ -76,6 +83,7 @@ public class MinibossAgent : Enemy
     {
         bool attackReady = AttackCheck();
         bool jumpReady = JumpCheck();
+        bool roarReady = RoarCheck();
         bool wanderReady = WanderCheck();
         bool inAttackRange = InAttackRange();
         bool targetInView = TargetInView();
@@ -88,10 +96,13 @@ public class MinibossAgent : Enemy
              ****************/
             if (jumpReady)
             {
-                FaceTarget();
-                jump.SetJumpTarget(GetTarget().position);
-                animator.SetBool("Jumping", true);
-                return;
+                if (jump.SetJumpTarget(TrackTarget()))
+                {
+                    jumpCount++;
+                    FaceTarget();
+                    animator.SetBool("Jumping", true);
+                    return;
+                }
             }
 
             /****************
@@ -176,7 +187,19 @@ public class MinibossAgent : Enemy
         jumpCounter--;
         if (jumpCounter <= 0)
         {
-            jumpCounter = Random.Range(jumpRate - 20, jumpRate + 20);
+            jumpCounter = (int) Random.Range(jumpRate * 0.5f, jumpRate);
+            return true;
+        }
+        return false;
+    }
+
+    protected bool RoarCheck()
+    {
+        if (jumpCount >= roarThreshold)
+        {
+            animator.SetBool("Roaring", true);
+            jumpCount = 0;
+            roarThreshold = Random.Range(3, 6);
             return true;
         }
         return false;
@@ -209,13 +232,13 @@ public class MinibossAgent : Enemy
             switch (collision.gameObject.tag)
             {
                 case "PlayerBullet":
-                    TakeBulletHit(1, collisionDirection);
+                    TakeBulletHit(1, 0, collisionDirection);
                     break;
                 case "PlayerAttack":
-                    TakeNormalHit(1, collisionDirection);
+                    TakeNormalHit(1, 0, collisionDirection);
                     break;
                 case "PlayerStrongAttack":
-                    TakeStrongHit(2, collisionDirection);
+                    TakeStrongHit(2, 0, collisionDirection);
                     break;
                 default:
                     break;

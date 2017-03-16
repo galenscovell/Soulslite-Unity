@@ -165,12 +165,12 @@ public class BaseEntity : MonoBehaviour
     /**************************
      *          Hurt          *
      **************************/
-    protected void Hurt(Vector2 collisionDirection, float force)
+    protected void Hurt(Vector2 collisionDirection, float recoil)
     {
-        SetMovementImpulse(collisionDirection.normalized, force, 0.1f);
+        SetMovementImpulse(collisionDirection.normalized, recoil, 0.1f);
         BloodSystem.bloodSystem.SpawnBlood(body.position, collisionDirection);
         StartCoroutine(FlashSpriteColor(Color.white, 0.05f, 1f, 0.4f, 0));
-        CameraSystem.cameraSystem.ActivateShake(force - 1, 0.1f);
+        CameraSystem.cameraSystem.ActivateShake(recoil - 1, 0.1f);
     }
 
     protected void ApplyMovementImpulse()

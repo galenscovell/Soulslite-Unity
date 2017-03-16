@@ -3,9 +3,7 @@
 
 public class MinibossEntrance : StateMachineBehaviour
 {
-    public string stateName;
-
-    private int hash;
+    private int hash = Animator.StringToHash("Base Layer.MinibossEntrance");
     private Enemy enemy;
 
     private int[] sfx;
@@ -21,7 +19,6 @@ public class MinibossEntrance : StateMachineBehaviour
 
     public void Setup(Enemy e, int[] assignedSfx)
     {
-        hash = Animator.StringToHash(stateName);
         enemy = e;
         sfx = assignedSfx;
     }
@@ -44,6 +41,8 @@ public class MinibossEntrance : StateMachineBehaviour
         {
             if (!landed)
             {
+                LevelSystem.levelSystem.ChangeMusic(1);
+                CameraSystem.cameraSystem.ChangeTarget(enemy.gameObject);
                 enemy.SetNextVelocity(Vector2.zero);
                 enemy.RestoreDefaultSpeed();
                 enemy.PlaySfx(sfx[0], 0.8f, 1f);
@@ -71,6 +70,7 @@ public class MinibossEntrance : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        CameraSystem.cameraSystem.ChangeTarget(LevelSystem.levelSystem.player.gameObject);
         enemy.RestoreCollisions();
     }
 }

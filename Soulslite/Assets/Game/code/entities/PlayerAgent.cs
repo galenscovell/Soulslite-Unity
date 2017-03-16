@@ -293,40 +293,10 @@ public class PlayerAgent : BaseEntity
                 return;
             case "EnemyAttackTag":
             case "EnemyBulletTag":
-                // Ignore if already hurting
-                if (currentStateInfo.fullPathHash == hurt.GetHash()) return;
-
-                // Interrupt dash if currently dashing
-                if (currentStateInfo.fullPathHash == dash.GetHash())
-                {
-                    dash.End(animator);
-                    CameraSystem.cameraSystem.RestoreDefaultDampTime();
-                }
-
-                Vector2 collisionDirection = transform.position - collision.transform.position;
-                Hurt(collisionDirection, 3);
-
-                // Interrupt attack if attacking
-                // If this hit will kill player, skip attack interruption animation
-                InterruptAttack(HealthZero());
-
-                switch (GetCurrentHealth())
-                {
-                    case 0:
-                        // Die if health is zeroed out
-                        Die();
-                        break;
-                    case 1:
-                        // Show damage vignette when player health low
-                        CameraSystem.cameraSystem.FadeInVignette(Color.black, 2);
-                        StartCoroutine(heartbeat);
-                        animator.Play(hurt.GetHash());
-                        break;
-                    default:
-                        // Play damaged animation
-                        animator.Play(hurt.GetHash());
-                        break;
-                }
+                TakeEnemyHit(collision, 3, 1);
+                break;
+            case "EnemyStrongAttackTag":
+                TakeEnemyHit(collision, 6, 2);
                 break;
             default:
                 // Unhandled collision tag
@@ -375,10 +345,10 @@ public class PlayerAgent : BaseEntity
     /**************************
      *          Hurt          *
      **************************/
-    private new void Hurt(Vector2 collisionDirection, float force)
+    private void Hurt(Vector2 collisionDirection, float force, int damage)
     {
         base.Hurt(collisionDirection, force);
-        DecreaseHealth(1);
+        DecreaseHealth(damage);
     }
 
     private IEnumerator NearDeathHeartbeat()
@@ -387,6 +357,44 @@ public class PlayerAgent : BaseEntity
         {
             yield return new WaitForSeconds(1.5f);
             PlaySfx(9, 1, 1);
+        }
+    }
+
+    private void TakeEnemyHit(Collider2D collision, int force, int damage)
+    {
+        // Ignore if already hurting
+        if (currentStateInfo.fullPathHash == hurt.GetHash()) return;
+
+        // Interrupt dash if currently dashing
+        if (currentStateInfo.fullPathHash == dash.GetHash())
+        {
+            dash.End(animator);
+            CameraSystem.cameraSystem.RestoreDefaultDampTime();
+        }
+
+        Vector2 collisionDirection = transform.position - collision.transform.position;
+        Hurt(collisionDirection, force, damage);
+
+        // Interrupt attack if attacking
+        // If this hit will kill player, skip attack interruption animation
+        InterruptAttack(HealthZero());
+
+        switch (GetCurrentHealth())
+        {
+            case 0:
+                // Die if health is zeroed out
+                Die();
+                break;
+            case 1:
+                // Show damage vignette when player health low
+                CameraSystem.cameraSystem.FadeInVignette(Color.black, 2);
+                StartCoroutine(heartbeat);
+                animator.Play(hurt.GetHash());
+                break;
+            default:
+                // Play damaged animation
+                animator.Play(hurt.GetHash());
+                break;
         }
     }
 

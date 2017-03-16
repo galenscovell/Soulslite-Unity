@@ -193,13 +193,13 @@ public class EnemyRangedAgent : Enemy
             switch (collision.gameObject.tag)
             {
                 case "PlayerBullet":
-                    TakeBulletHit(1, collisionDirection);
+                    TakeBulletHit(1, 2, collisionDirection);
                     break;
                 case "PlayerAttack":
-                    TakeNormalHit(1, collisionDirection);
+                    TakeNormalHit(1, 3, collisionDirection);
                     break;
                 case "PlayerStrongAttack":
-                    TakeStrongHit(2, collisionDirection);
+                    TakeStrongHit(2, 5, collisionDirection);
                     break;
                 default:
                     break;

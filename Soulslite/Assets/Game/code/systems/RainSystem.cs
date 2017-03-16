@@ -75,6 +75,12 @@ public class RainSystem : MonoBehaviour
         }
     }
 
+
+    public void ChangeRainRate(int rate)
+    {
+        rainRate = rate;
+    }
+
     private void SpawnRaindrop(Vector2 position)
     {
         // Ensure object index is within pool size

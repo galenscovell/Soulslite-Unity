@@ -229,23 +229,23 @@ public class Enemy : BaseEntity
         }
     }
 
-    protected void TakeNormalHit(int damage, Vector2 collisionDirection)
+    protected void TakeNormalHit(int damage, int recoil, Vector2 collisionDirection)
     {
         UISystem.uiSystem.UpdateAmmo(1);
-        Hurt(collisionDirection, 3);
+        Hurt(collisionDirection, recoil);
         DecreaseHealth(damage);
     }
 
-    protected void TakeStrongHit(int damage, Vector2 collisionDirection)
+    protected void TakeStrongHit(int damage, int recoil, Vector2 collisionDirection)
     {
         UISystem.uiSystem.UpdateAmmo(1);
-        Hurt(collisionDirection, 5);
+        Hurt(collisionDirection, recoil);
         DecreaseHealth(damage);
     }
 
-    protected void TakeBulletHit(int damage, Vector2 collisionDirection)
+    protected void TakeBulletHit(int damage, int recoil, Vector2 collisionDirection)
     {
-        Hurt(collisionDirection, 2);
+        Hurt(collisionDirection, recoil);
         DecreaseHealth(damage);
     }
 }

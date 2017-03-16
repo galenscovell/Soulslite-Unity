@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class MinibossJump : StateMachineBehaviour
 {
-    public string stateName;
-
-    private int hash;
+    private int hash = Animator.StringToHash("Base Layer.MinibossJump");
     private Enemy enemy;
 
     private int[] sfx;
 
     private Vector2 startPosition;
     private Vector2 jumpTarget;
-    private Vector2 directionToTarget;
     private bool jumped;
     private bool jumpSfx;
     private bool landed;
@@ -26,17 +23,25 @@ public class MinibossJump : StateMachineBehaviour
 
     public void Setup(Enemy e, int[] assignedSfx)
     {
-        hash = Animator.StringToHash(stateName);
         enemy = e;
         sfx = assignedSfx;
     }
 
-    public void SetJumpTarget(Vector2 target)
+    public bool SetJumpTarget(Vector2 target)
     {
         startPosition = enemy.transform.position;
-        jumpTarget = target;
-        directionToTarget = (target - enemy.GetBody().position).normalized;
+        jumpTarget = target + new Vector2(0, 20);
+
+        var distanceToTarget = (jumpTarget - startPosition).magnitude;
+        if (distanceToTarget < 200)
+        {
+            return true;
+        }
+
+        return false;
     }
+
+
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -56,11 +61,11 @@ public class MinibossJump : StateMachineBehaviour
         {
             if (!jumped)
             {
-                enemy.StartCoroutine(Jump(180, 0.75f));
+                enemy.StartCoroutine(Jump(200, 0.75f));
                 jumped = true;
             }
         }
-        else if (stateTime > 0.35f && stateTime < 0.75f)
+        else if (stateTime > 0.35f && stateTime < 0.7f)
         {
             if (!jumpSfx)
             {
@@ -69,7 +74,7 @@ public class MinibossJump : StateMachineBehaviour
                 jumpSfx = true;
             }
         }
-        else if (stateTime > 0.75f && stateTime < 1f)
+        else if (stateTime > 0.7f && stateTime < 1f)
         {
             if (!landed)
             {
@@ -92,6 +97,26 @@ public class MinibossJump : StateMachineBehaviour
         enemy.EnableMotion();
     }
 
+
+
+    private IEnumerator Jump(float height, float time)
+    {
+        var startPos = enemy.transform.position;
+        var timer = 0.0f;
+
+        // Debug.DrawLine(startPos, jumpTarget, Color.red, 1f);
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime / time;
+
+            Vector3 parabolaPoint = SampleParabola(startPos, jumpTarget, height, timer);
+            // Debug.DrawLine(enemy.transform.position, parabolaPoint, Color.green, timer);
+            enemy.transform.position = Vector3.Lerp(startPos, parabolaPoint, timer);
+
+            yield return null;
+        }
+    }
 
     private Vector3 SampleParabola(Vector3 start, Vector3 end, float height, float t)
     {
@@ -120,25 +145,6 @@ public class MinibossJump : StateMachineBehaviour
             Vector3 result = start + t * travelDirection;
             result += ((-parabolicT * parabolicT + 1) * height) * up.normalized;
             return result;
-        }
-    }
-
-    private IEnumerator Jump(float height, float time)
-    {
-        var startPos = enemy.transform.position;
-        var timer = 0.0f;
-
-        // Debug.DrawLine(startPos, jumpTarget, Color.red, 1f);
-
-        while (timer < 1)
-        {
-            timer += Time.deltaTime / time;
-
-            Vector3 parabolaPoint = SampleParabola(startPos, jumpTarget, height, timer);
-            // Debug.DrawLine(enemy.transform.position, parabolaPoint, Color.green, timer);
-            enemy.transform.position = Vector3.Lerp(startPos, parabolaPoint, timer);
-
-            yield return null;
         }
     }
 }

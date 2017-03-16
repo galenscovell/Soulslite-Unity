@@ -10,6 +10,7 @@ public class LevelSystem : MonoBehaviour
 
     public PlayerAgent player;
     public List<GameObject> focalPoints;
+    public List<AudioClip> music;
 
     private AudioSource[] musicSources;
     private string sceneName;
@@ -34,9 +35,9 @@ public class LevelSystem : MonoBehaviour
     {
         RainSystem.rainSystem.gameObject.SetActive(true);
 
-        // Fade in main music
+        // Fade in rain
         StartCoroutine(fadeInAudio(musicSources[0], 0.8f, 0.005f));
-        // Fade in ambient music
+        // Fade in music
         StartCoroutine(fadeInAudio(musicSources[1], 0.4f, 0.0025f));
 
         // Disable player input while initial scene fades in
@@ -78,6 +79,12 @@ public class LevelSystem : MonoBehaviour
             audioSource.volume = Mathf.Lerp(audioSource.volume, targetVolume, speed);
             yield return 0;
         }
+    }
+
+    public void ChangeMusic(int index)
+    {
+        musicSources[1].clip = music[index];
+        musicSources[1].Play();
     }
 
 
