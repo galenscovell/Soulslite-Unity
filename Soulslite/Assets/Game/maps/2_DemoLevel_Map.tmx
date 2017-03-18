@@ -354,7 +354,7 @@
  <layer name="ObstacleBase" width="20" height="19">
   <properties>
    <property name="unity:layer" value="GroundLayer"/>
-   <property name="unity:sortingLayerName" value="Ground"/>
+   <property name="unity:sortingLayerName" value="Entity"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -818,7 +818,7 @@
  <objectgroup name="PathfindRail">
   <properties>
    <property name="unity:isTrigger" type="bool" value="true"/>
-   <property name="unity:layer" value="PathfindRail"/>
+   <property name="unity:layer" value="PathfindRailLayer"/>
   </properties>
   <object id="78" name="PathfindRail" x="216" y="384" width="136" height="8">
    <properties>

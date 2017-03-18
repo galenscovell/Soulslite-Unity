@@ -376,7 +376,7 @@
  <layer name="ObstacleBase" width="12" height="30">
   <properties>
    <property name="unity:layer" value="GroundLayer"/>
-   <property name="unity:sortingLayerName" value="Ground"/>
+   <property name="unity:sortingLayerName" value="Entity"/>
   </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,
