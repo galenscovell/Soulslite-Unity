@@ -42,7 +42,7 @@ public class LevelSystem : MonoBehaviour
 
         // Disable player input while initial scene fades in
         player.EnableInput(false);
-        StartCoroutine(temporarilyDisableInput(2));
+        StartCoroutine(temporarilyDisableInput(1.5f));
     }
 
 

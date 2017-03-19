@@ -456,6 +456,8 @@ public class PlayerAgent : BaseEntity
         FadeInSprite(0);
         SetSortingLayer("Entity");
 
+        UISystem.uiSystem.UpdateHealth(4);
+        UISystem.uiSystem.EnableBossHealthDisplay(false);
         GetShadow().TurnOn();
         SetFalling(false);
         RestoreFullHealth();
