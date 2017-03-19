@@ -29,6 +29,7 @@ public class PlayerIdle : StateMachineBehaviour
 
         if (idleTime > 8)
         {
+            player.GetShadow().LerpScale(new Vector2(1.25f, 1.25f), 0.2f);
             animator.SetBool("FullIdle", true);
         }
     }

@@ -4,12 +4,14 @@
 public class MinibossEntrance : StateMachineBehaviour
 {
     private int hash = Animator.StringToHash("Base Layer.MinibossEntrance");
-    private Enemy enemy;
+    private MinibossAgent enemy;
 
     private int[] sfx;
 
     private bool landed;
     private bool roared;
+
+    private BlobShadow jumpShadow;
 
 
     public int GetHash()
@@ -17,16 +19,27 @@ public class MinibossEntrance : StateMachineBehaviour
         return hash;
     }
 
-    public void Setup(Enemy e, int[] assignedSfx)
+    public void Setup(MinibossAgent e, int[] assignedSfx, BlobShadow shadow)
     {
         enemy = e;
         sfx = assignedSfx;
+        jumpShadow = shadow;
     }
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         landed = false;
         roared = false;
+
+        enemy.GetShadow().TurnOff();
+
+        LevelSystem.levelSystem.player.SetNextVelocity(Vector2.zero);
+        LevelSystem.levelSystem.player.EnableInput(false);
+
+        // Small to large over time to simulate enemy getting closer to ground
+        jumpShadow.TurnOn();
+        jumpShadow.LerpScale(new Vector2(0, 0), 0);
+        jumpShadow.LerpScale(new Vector2(3, 2), 0.4f);
 
         enemy.IgnoreAllCollisions();
         enemy.SetSpeed(460);
@@ -41,6 +54,9 @@ public class MinibossEntrance : StateMachineBehaviour
         {
             if (!landed)
             {
+                jumpShadow.TurnOff();
+                enemy.GetShadow().TurnOn();
+
                 LevelSystem.levelSystem.ChangeMusic(1);
                 CameraSystem.cameraSystem.ChangeTarget(enemy.gameObject);
                 enemy.SetNextVelocity(Vector2.zero);
@@ -71,6 +87,11 @@ public class MinibossEntrance : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         CameraSystem.cameraSystem.ChangeTarget(LevelSystem.levelSystem.player.gameObject);
+        LevelSystem.levelSystem.player.EnableInput(true);
+
         enemy.RestoreCollisions();
+
+        UISystem.uiSystem.EnableBossHealthDisplay(true);
+        UISystem.uiSystem.UpdateBossHealth(20);
     }
 }

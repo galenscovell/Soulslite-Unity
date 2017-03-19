@@ -9,6 +9,7 @@ public class EnemyMeleeDying : StateMachineBehaviour
     private int sfxIndex;
 
     private bool flung;
+    private bool fallen;
 
 
     public int GetHash()
@@ -34,6 +35,7 @@ public class EnemyMeleeDying : StateMachineBehaviour
         enemy.EnableFlippedX();
 
         flung = false;
+        fallen = false;
 
         enemy.PlaySfxRandomPitch(sfxIndex, 0.9f, 1.1f, 1);
     }
@@ -46,8 +48,17 @@ public class EnemyMeleeDying : StateMachineBehaviour
         {
             if (!flung)
             {
+                TimeSystem.timeSystem.SlowTime(0f, 0.1f);
                 enemy.SetMovementImpulse(flungVelocity, 4, 0.25f);
                 flung = true;
+            }
+        }
+        else if (stateTime > 0.7f && stateTime < 1)
+        {
+            if (!fallen)
+            {
+                enemy.GetShadow().LerpScale(new Vector2(1.5f, 1.5f), 0.2f);
+                fallen = true;
             }
         }
         else if (stateTime > 1)

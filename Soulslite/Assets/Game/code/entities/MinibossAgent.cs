@@ -14,6 +14,7 @@ public class MinibossAgent : Enemy
     private int idleStateHash = Animator.StringToHash("Base Layer.MinibossIdle");
 
     public int jumpRate;
+    public BlobShadow jumpShadow;
 
     private int jumpCounter = 0;
     private int randomizedJumpRate;
@@ -44,8 +45,8 @@ public class MinibossAgent : Enemy
         // Ints in state Setups are the sfx index
         attack.Setup(this, 0);
         dying.Setup(this, 1);
-        jump.Setup(this, new int[2] { 2, 3 });
-        entrance.Setup(this, new int[2] { 3, 4 });
+        jump.Setup(this, new int[2] { 2, 3 }, jumpShadow);
+        entrance.Setup(this, new int[2] { 3, 4 }, jumpShadow);
         movement.Setup(this, 5);
         roar.Setup(this, 4);
         
@@ -96,7 +97,7 @@ public class MinibossAgent : Enemy
              ****************/
             if (jumpReady)
             {
-                if (jump.SetJumpTarget(TrackTarget()))
+                if (jump.CheckTargetRange(TrackTarget()))
                 {
                     jumpCount++;
                     FaceTarget();
@@ -233,12 +234,15 @@ public class MinibossAgent : Enemy
             {
                 case "PlayerBullet":
                     TakeBulletHit(1, 0, collisionDirection);
+                    UISystem.uiSystem.UpdateBossHealth(-1);
                     break;
                 case "PlayerAttack":
                     TakeNormalHit(1, 0, collisionDirection);
+                    UISystem.uiSystem.UpdateBossHealth(-1);
                     break;
                 case "PlayerStrongAttack":
                     TakeStrongHit(2, 0, collisionDirection);
+                    UISystem.uiSystem.UpdateBossHealth(-2);
                     break;
                 default:
                     break;

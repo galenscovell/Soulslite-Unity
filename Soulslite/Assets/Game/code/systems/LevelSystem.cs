@@ -41,8 +41,8 @@ public class LevelSystem : MonoBehaviour
         StartCoroutine(fadeInAudio(musicSources[1], 0.4f, 0.0025f));
 
         // Disable player input while initial scene fades in
-        player.SetInput(false);
-        StartCoroutine(temporarilyDisableInput(1));
+        player.EnableInput(false);
+        StartCoroutine(temporarilyDisableInput(2));
     }
 
 
@@ -94,7 +94,7 @@ public class LevelSystem : MonoBehaviour
     public IEnumerator temporarilyDisableInput(float time)
     {
         yield return new WaitForSeconds(time);
-        player.SetInput(true);
+        player.EnableInput(true);
     }
 
 
@@ -103,7 +103,7 @@ public class LevelSystem : MonoBehaviour
      **************************/
     public void BeginTransition(string nextSceneName, string connecting)
     {
-        player.SetInput(false);
+        player.EnableInput(false);
         sceneName = nextSceneName;
         lastUsedEntrance = connecting;
 
@@ -113,7 +113,7 @@ public class LevelSystem : MonoBehaviour
 
     public void ReviveTransition()
     {
-        player.SetInput(false);
+        player.EnableInput(false);
         player.SetNextVelocity(Vector2.zero);
 
         lastUsedEntrance = "PlayerSpawn";
@@ -153,7 +153,7 @@ public class LevelSystem : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
-        player.SetInput(false);
+        player.EnableInput(false);
         SetupScene();
         CameraSystem.cameraSystem.SetDampTime(0);
         SetPlayerAsFocalPoint();
@@ -174,7 +174,7 @@ public class LevelSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         player.RestoreDefaultSpeed();
-        player.SetInput(true);
+        player.EnableInput(true);
         player.RestoreCollisions();
 
         CameraSystem.cameraSystem.RestoreDefaultDampTime();

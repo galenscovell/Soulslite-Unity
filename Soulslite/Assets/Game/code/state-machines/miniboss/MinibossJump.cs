@@ -5,7 +5,7 @@ using UnityEngine;
 public class MinibossJump : StateMachineBehaviour
 {
     private int hash = Animator.StringToHash("Base Layer.MinibossJump");
-    private Enemy enemy;
+    private MinibossAgent enemy;
 
     private int[] sfx;
 
@@ -15,25 +15,29 @@ public class MinibossJump : StateMachineBehaviour
     private bool jumpSfx;
     private bool landed;
 
+    private BlobShadow jumpShadow;
+    private Vector2 shadowOffset = new Vector2(-2, -45);
+
 
     public int GetHash()
     {
         return hash;
     }
 
-    public void Setup(Enemy e, int[] assignedSfx)
+    public void Setup(MinibossAgent e, int[] assignedSfx, BlobShadow shadow)
     {
         enemy = e;
         sfx = assignedSfx;
+        jumpShadow = shadow;
     }
 
-    public bool SetJumpTarget(Vector2 target)
+    public bool CheckTargetRange(Vector2 target)
     {
         startPosition = enemy.transform.position;
-        jumpTarget = target + new Vector2(0, 20);
+        jumpTarget = target;
 
         var distanceToTarget = (jumpTarget - startPosition).magnitude;
-        if (distanceToTarget < 200)
+        if (distanceToTarget < 180)
         {
             return true;
         }
@@ -51,6 +55,10 @@ public class MinibossJump : StateMachineBehaviour
 
         enemy.IgnoreAllCollisions();
         enemy.DisableMotion();
+        
+        jumpShadow.SetWorldPosition(enemy.transform.position + new Vector3(-2, -25, 1));
+        enemy.GetShadow().TurnOff();
+        jumpShadow.TurnOn();
     }
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -61,7 +69,10 @@ public class MinibossJump : StateMachineBehaviour
         {
             if (!jumped)
             {
-                enemy.StartCoroutine(Jump(200, 0.75f));
+                jumpTarget = enemy.TrackTarget() + new Vector2(0, 32);
+                jumpShadow.LerpWorldPosition(jumpTarget + shadowOffset, 0.8f);
+                jumpShadow.LerpScaleInThenOut(new Vector2(3, 2), new Vector2(1, 0.5f), 0.8f);
+                enemy.StartCoroutine(Jump(300, 0.8f));
                 jumped = true;
             }
         }
@@ -78,6 +89,9 @@ public class MinibossJump : StateMachineBehaviour
         {
             if (!landed)
             {
+                jumpShadow.TurnOff();
+                enemy.GetShadow().TurnOn();
+
                 enemy.SetSortingLayer("Entity");
                 enemy.RestoreCollisions();
                 enemy.PlaySfxRandomPitch(sfx[1], 0.8f, 1.1f, 0.4f);
@@ -104,14 +118,11 @@ public class MinibossJump : StateMachineBehaviour
         var startPos = enemy.transform.position;
         var timer = 0.0f;
 
-        // Debug.DrawLine(startPos, jumpTarget, Color.red, 1f);
-
         while (timer < 1)
         {
             timer += Time.deltaTime / time;
 
             Vector3 parabolaPoint = SampleParabola(startPos, jumpTarget, height, timer);
-            // Debug.DrawLine(enemy.transform.position, parabolaPoint, Color.green, timer);
             enemy.transform.position = Vector3.Lerp(startPos, parabolaPoint, timer);
 
             yield return null;

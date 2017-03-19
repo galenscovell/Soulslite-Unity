@@ -26,7 +26,7 @@ public class Enemy : BaseEntity
     [HideInInspector]
     public Vector2 directionToTarget;
 
-    private Rigidbody2D target;
+    private BaseEntity target;
     private LayerMask visionLayer;
     private LayerMask enemyLayer;
 
@@ -39,7 +39,7 @@ public class Enemy : BaseEntity
         base.Start();
 
         repathCounter = repathRate;
-        target = LevelSystem.levelSystem.player.GetBody();
+        target = LevelSystem.levelSystem.player;
         visionLayer = (1 << LayerMask.NameToLayer("ObstacleLayer") | 1 << LayerMask.NameToLayer("PlayerLayer"));
         enemyLayer = 1 << LayerMask.NameToLayer("EnemyLayer");
     }
@@ -81,15 +81,25 @@ public class Enemy : BaseEntity
      **************************/
     public Vector2 TrackTarget()
     {
+        Rigidbody2D targetBody = target.GetBody();
         Vector2 trackedPosition = Vector2.zero;
         if (pathTracking > 0)
         {
-            Vector2 currentTargetVelocity = target.velocity;
-            trackedPosition = target.position + (target.velocity * pathTracking);
+            Vector2 currentTargetVelocity = targetBody.velocity;
+
+            // Only use player default speed (not dash) for tracking
+            if (currentTargetVelocity.magnitude > 80)
+            {
+                trackedPosition = target.GetCenter() + (targetBody.velocity.normalized * 80 * pathTracking);
+            }
+            else
+            {
+                trackedPosition = target.GetCenter() + (targetBody.velocity * pathTracking);
+            }
         }
         else
         {
-            trackedPosition = target.position;
+            trackedPosition = target.GetCenter();
         }
 
         return trackedPosition;
@@ -97,27 +107,27 @@ public class Enemy : BaseEntity
 
     public void FaceTarget()
     {
-        Vector2 dirToTarget = (target.position - body.position).normalized;
+        Vector2 dirToTarget = (target.GetCenter() - body.position).normalized;
         SetFacingDirection(dirToTarget);
     }
 
     protected bool TargetInView()
     {
-        Vector2 rayDirection = target.position - body.position;
+        Vector2 rayDirection = target.GetCenter() - body.position;
         RaycastHit2D hit = Physics2D.Raycast(body.position, rayDirection, visionRange, visionLayer.value);
         return hit && hit.collider.tag == target.tag;
     }
 
     protected bool VisionBlockedByEnemy()
     {
-        Vector2 rayDirection = target.position - body.position;
+        Vector2 rayDirection = target.GetCenter() - body.position;
         RaycastHit2D hit = Physics2D.Raycast(body.position, rayDirection, visionRange, enemyLayer.value);
         return hit;
     }
 
     protected bool InAttackRange()
     {
-        float distance = Vector2.Distance(body.position, target.position);
+        float distance = Vector2.Distance(body.position, target.GetCenter());
         return distance < attackRange;
     }
 
@@ -201,9 +211,9 @@ public class Enemy : BaseEntity
     /**************************
      *        Getters         *
      **************************/
-    public Rigidbody2D GetTarget()
+    public Rigidbody2D GetTargetBody()
     {
-        return target;
+        return target.GetBody();
     }
 
 

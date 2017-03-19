@@ -215,7 +215,6 @@ public class EnemyMeleeAgent : Enemy
             if (HealthZero() && !IsDead())
             {
                 dying.SetFlungVelocity(collisionDirection);
-                TimeSystem.timeSystem.SlowTime(0f, 0.1f);
                 animator.Play(dying.GetHash());
             }
         }

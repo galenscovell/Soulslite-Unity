@@ -44,6 +44,7 @@ public class PlayerDash : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         BeginDashLine();
+        player.GetShadow().TurnOff();
 
         animator.SetInteger("DashChain", animator.GetInteger("DashChain") + 1);
 
@@ -106,6 +107,7 @@ public class PlayerDash : StateMachineBehaviour
                 chainableState = true;
             }
 
+            player.GetShadow().TurnOn();
             TrailSystem.trailSystem.EndTrail();
             player.RestoreCollisions();
         }
@@ -169,6 +171,7 @@ public class PlayerDash : StateMachineBehaviour
         chainCounter = 0;
         animator.SetInteger("DashChain", 0);
         animator.SetBool("Dashing", false);
+        player.GetShadow().TurnOn();
     }
 
     private void BeginDashLine()

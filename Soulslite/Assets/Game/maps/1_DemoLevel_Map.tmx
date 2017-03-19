@@ -915,7 +915,7 @@
     <property name="unity:tag" value="TransitionTag"/>
    </properties>
   </object>
-  <object id="109" name="PlayerSpawn" x="182" y="728" width="20" height="12">
+  <object id="109" name="PlayerSpawn" x="182" y="719" width="20" height="12">
    <properties>
     <property name="unity:isTrigger" type="bool" value="true"/>
     <property name="unity:layer" value="IgnoredLayer"/>

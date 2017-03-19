@@ -18,6 +18,7 @@ public class BaseEntity : MonoBehaviour
     protected float movementImpulseTime;
 
     public AudioClip[] soundEffects;
+    public BlobShadow blobShadow;
     public bool flipX;
     public float defaultSpeed;
 
@@ -260,11 +261,25 @@ public class BaseEntity : MonoBehaviour
 
 
     /**************************
+     *         Shadow         *
+     **************************/
+    public BlobShadow GetShadow()
+    {
+        return blobShadow;
+    }
+
+
+    /**************************
      *        Getters         *
      **************************/
     public Rigidbody2D GetBody()
     {
         return body;
+    }
+
+    public Vector2 GetCenter()
+    {
+        return spriteRenderer.bounds.center;
     }
 
     public float GetSpeed()

@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Game\code\behaviors\Behavior.cs" />
+    <Compile Include="Assets\Game\code\effects\BlobShadow.cs" />
     <Compile Include="Assets\Game\code\effects\BloodSplashObject.cs" />
     <Compile Include="Assets\Game\code\effects\BulletCollisionObject.cs" />
     <Compile Include="Assets\Game\code\effects\BulletFireObject.cs" />
@@ -281,6 +282,7 @@
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\1_DemoLevel_Map.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\2_DemoLevel_Map.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\3_DemoLevel_Map.tiled2unity.xml" />
+    <None Include="Assets\Game\lib\Tiled2Unity\Imported\4_DemoLevel_Map.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\DemoLevel_0_Map.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\DemoLevel_1_Map.tiled2unity.xml" />
     <None Include="Assets\Game\lib\Tiled2Unity\Imported\_ReadMe.txt" />

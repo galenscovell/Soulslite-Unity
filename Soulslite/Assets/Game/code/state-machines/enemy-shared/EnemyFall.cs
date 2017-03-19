@@ -43,6 +43,7 @@ public class EnemyFall : StateMachineBehaviour
         {
             if (!descentBegan)
             {
+                enemy.GetShadow().TurnOff();
                 float facingX = enemy.GetFacingDirection().x;
                 enemy.SetMovementImpulse(new Vector2(facingX * -0.05f, -1), 3, 0.5f);
                 descentBegan = true;

@@ -260,6 +260,7 @@ public class PlayerAgent : BaseEntity
         if (direction.magnitude > 0.1f || Input.GetButtonDown("Attack") || Input.GetButtonDown("Ranged") || Input.GetButtonDown("Dash"))
         {
             SetFacingDirection(direction);
+            GetShadow().LerpScale(new Vector2(1f, 1f), 0.2f);
             animator.SetBool("FullIdle", false);
         }
     }
@@ -349,6 +350,7 @@ public class PlayerAgent : BaseEntity
     {
         base.Hurt(collisionDirection, force);
         DecreaseHealth(damage);
+        UISystem.uiSystem.UpdateHealth(-damage);
     }
 
     private IEnumerator NearDeathHeartbeat()
@@ -438,7 +440,8 @@ public class PlayerAgent : BaseEntity
 
         CameraSystem.cameraSystem.FadeOutToBlack(0.75f);
 
-        SetInput(false);
+        GetShadow().TurnOff();
+        EnableInput(false);
         SetSpeed(40);
         SetNextVelocity(facingDirection.normalized);
 
@@ -453,6 +456,7 @@ public class PlayerAgent : BaseEntity
         FadeInSprite(0);
         SetSortingLayer("Entity");
 
+        GetShadow().TurnOn();
         SetFalling(false);
         RestoreFullHealth();
         RestoreDefaultSpeed();
@@ -492,7 +496,7 @@ public class PlayerAgent : BaseEntity
         return new Vector2(Input.GetAxisRaw("LeftAxisX"), Input.GetAxisRaw("LeftAxisY"));
     }
 
-    public void SetInput(bool setting)
+    public void EnableInput(bool setting)
     {
         inputEnabled = setting;
     }

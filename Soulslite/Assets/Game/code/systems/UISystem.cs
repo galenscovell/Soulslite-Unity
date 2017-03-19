@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 class UISystem : MonoBehaviour
@@ -20,6 +19,17 @@ class UISystem : MonoBehaviour
     /**************************
      *          HUD           *
      **************************/
+    public float GetCurrentHealth()
+    {
+        return hud.GetHealth();
+    }
+
+    public void UpdateHealth(float amount)
+    {
+        hud.ModifyHealth(amount);
+    }
+
+
     public float GetCurrentStamina()
     {
         return hud.GetStamina();
@@ -30,6 +40,7 @@ class UISystem : MonoBehaviour
         hud.ModifyStamina(amount);
     }
 
+
     public float GetCurrentAmmo()
     {
         return hud.GetAmmo();
@@ -38,5 +49,21 @@ class UISystem : MonoBehaviour
     public void UpdateAmmo(float amount)
     {
         hud.ModifyAmmo(amount);
+    }
+
+
+    public void EnableBossHealthDisplay(bool setting)
+    {
+        hud.EnableBossHealthDisplay(setting);
+    }
+
+    public float GetCurrentBossHealth()
+    {
+        return hud.GetBossHealth();
+    }
+
+    public void UpdateBossHealth(float amount)
+    {
+        hud.ModifyBossHealth(amount);
     }
 }

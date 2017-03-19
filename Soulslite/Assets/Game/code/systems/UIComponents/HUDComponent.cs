@@ -4,8 +4,12 @@ using UnityEngine.UI;
 
 class HUDComponent : MonoBehaviour
 {
+    public Slider healthSlider;
     public Slider staminaSlider;
     public Slider ammoSlider;
+
+    public Slider bossHealthSlider;
+    public GameObject bossHealthContainer;
 
     private float staminaRechargeRate = 0.25f;
     private bool staminaRechargeWait = false;
@@ -37,6 +41,29 @@ class HUDComponent : MonoBehaviour
         {
             ModifyStamina(staminaRechargeRate);
         }
+    }
+
+
+    /**************************
+     *         Health         *
+     **************************/
+    public void ModifyHealth(float value)
+    {
+        healthSlider.value += value;
+
+        if (GetHealth() > healthSlider.maxValue)
+        {
+            healthSlider.value = healthSlider.maxValue;
+        }
+        else if (GetHealth() < healthSlider.minValue)
+        {
+            healthSlider.value = healthSlider.minValue;
+        }
+    }
+
+    public float GetHealth()
+    {
+        return healthSlider.value;
     }
 
 
@@ -89,5 +116,33 @@ class HUDComponent : MonoBehaviour
     public float GetAmmo()
     {
         return ammoSlider.value;
+    }
+
+
+    /**************************
+     *       BossHealth       *
+     **************************/
+    public void ModifyBossHealth(float value)
+    {
+        bossHealthSlider.value += value;
+
+        if (GetBossHealth() > bossHealthSlider.maxValue)
+        {
+            bossHealthSlider.value = bossHealthSlider.maxValue;
+        }
+        else if (GetBossHealth() < bossHealthSlider.minValue)
+        {
+            bossHealthSlider.value = bossHealthSlider.minValue;
+        }
+    }
+
+    public float GetBossHealth()
+    {
+        return bossHealthSlider.value;
+    }
+
+    public void EnableBossHealthDisplay(bool setting)
+    {
+        bossHealthContainer.SetActive(setting);
     }
 }
