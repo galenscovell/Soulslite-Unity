@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <RootNamespace></RootNamespace>
+    <ProjectGuid>{2B2A60BC-DB7A-7B74-CDC2-9BC2341A8546}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BaseDirectory>Assets</BaseDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_5_0;UNITY_5_5;UNITY_5;UNITY_64;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VIDEO;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;DEVELOPMENT_BUILD;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Temp\bin\Release\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+     <Compile Include="Assets\Game\code\behaviors\Behavior.cs" />
+     <Compile Include="Assets\Game\code\effects\BlobShadow.cs" />
+     <Compile Include="Assets\Game\code\effects\BloodSplashObject.cs" />
+     <Compile Include="Assets\Game\code\effects\BulletCollisionObject.cs" />
+     <Compile Include="Assets\Game\code\effects\BulletFireObject.cs" />
+     <Compile Include="Assets\Game\code\effects\BulletObject.cs" />
+     <Compile Include="Assets\Game\code\effects\DashTrailObject.cs" />
+     <Compile Include="Assets\Game\code\effects\DustObject.cs" />
+     <Compile Include="Assets\Game\code\effects\RainDropObject.cs" />
+     <Compile Include="Assets\Game\code\effects\RainSplashObject.cs" />
+     <Compile Include="Assets\Game\code\effects\ShockDustObject.cs" />
+     <Compile Include="Assets\Game\code\entities\BaseEntity.cs" />
+     <Compile Include="Assets\Game\code\entities\Enemy.cs" />
+     <Compile Include="Assets\Game\code\entities\EnemyMeleeAgent.cs" />
+     <Compile Include="Assets\Game\code\entities\EnemyRangedAgent.cs" />
+     <Compile Include="Assets\Game\code\entities\MinibossAgent.cs" />
+     <Compile Include="Assets\Game\code\entities\PlayerAgent.cs" />
+     <Compile Include="Assets\Game\code\entities\critters\Bird.cs" />
+     <Compile Include="Assets\Game\code\entities\limbs\EnemyRangedGunLimb.cs" />
+     <Compile Include="Assets\Game\code\entities\limbs\PlayerGunLimb.cs" />
+     <Compile Include="Assets\Game\code\state-machines\enemy-melee\EnemyMeleeAttack.cs" />
+     <Compile Include="Assets\Game\code\state-machines\enemy-melee\EnemyMeleeDying.cs" />
+     <Compile Include="Assets\Game\code\state-machines\enemy-ranged\EnemyRangedAttack.cs" />
+     <Compile Include="Assets\Game\code\state-machines\enemy-ranged\EnemyRangedDying.cs" />
+     <Compile Include="Assets\Game\code\state-machines\enemy-shared\EnemyFall.cs" />
+     <Compile Include="Assets\Game\code\state-machines\enemy-shared\EnemyFullIdle.cs" />
+     <Compile Include="Assets\Game\code\state-machines\miniboss\MinibossAttack.cs" />
+     <Compile Include="Assets\Game\code\state-machines\miniboss\MinibossDying.cs" />
+     <Compile Include="Assets\Game\code\state-machines\miniboss\MinibossEntrance.cs" />
+     <Compile Include="Assets\Game\code\state-machines\miniboss\MinibossJump.cs" />
+     <Compile Include="Assets\Game\code\state-machines\miniboss\MinibossMovement.cs" />
+     <Compile Include="Assets\Game\code\state-machines\miniboss\MinibossRoar.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerAttack1.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerAttack2.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerAttack3.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerAttackInterrupt.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerChargedAttack.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerChargingAttack.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerDash.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerDeath.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerFall.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerFullIdle.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerHurt.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerIdle.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerMovement.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerRanged.cs" />
+     <Compile Include="Assets\Game\code\state-machines\player\PlayerRangedAttack.cs" />
+     <Compile Include="Assets\Game\code\systems\BloodSystem.cs" />
+     <Compile Include="Assets\Game\code\systems\BulletSystem.cs" />
+     <Compile Include="Assets\Game\code\systems\CameraSystem.cs" />
+     <Compile Include="Assets\Game\code\systems\DustSystem.cs" />
+     <Compile Include="Assets\Game\code\systems\LevelSystem.cs" />
+     <Compile Include="Assets\Game\code\systems\RainSystem.cs" />
+     <Compile Include="Assets\Game\code\systems\TimeSystem.cs" />
+     <Compile Include="Assets\Game\code\systems\TrailSystem.cs" />
+     <Compile Include="Assets\Game\code\systems\UIComponents\HUDComponent.cs" />
+     <Compile Include="Assets\Game\code\systems\UISystem.cs" />
+     <Compile Include="Assets\Game\code\util\SceneLoader.cs" />
+     <Compile Include="Assets\Game\code\util\SpawnTrigger.cs" />
+     <Compile Include="Assets\Game\code\util\TimedEnemySpawner.cs" />
+     <Compile Include="Assets\Game\code\util\TransitionZone.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\AILerp.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\AIPath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\NavmeshController.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\RichAI.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\RichPath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AI\Seeker.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AstarData.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AstarMath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\AstarPath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\GraphUpdateScene.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\GraphUpdateShape.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\AnimationLink.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\AstarDebugger.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\AstarEnumFlagAttr.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\BinaryHeap.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\GraphEditorBase.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\GraphModifier.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\GraphUpdateProcessor.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\Int3.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\ListPool.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\NodeLink.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\NodeLink2.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\NodeLink3.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\ObjectPool.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\PathPool.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\PathProcessor.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\PathReturnQueue.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\StackPool.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\ThreadControlQueue.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\WindowsStoreCompatibility.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Misc\WorkItemProcessor.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Nodes\GraphNode.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Path.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\PathHandler.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\RVO\RVOAgent.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\RVO\RVOCoreObstacle.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\RVO\RVOCoreSimulator.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\RVO\RVOLine.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\RVO\RVOQuadtree.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Serialization\JsonConverters.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Serialization\JsonSerializer.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Serialization\SimpleJsonReplacement.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\Serialization\SimpleZipReplacement.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Core\astarclasses.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Base.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\GridGenerator.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\LayerGridGraphGenerator.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\NavMeshGenerator.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\NodeClasses\GridNode.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\NodeClasses\PointNode.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\NodeClasses\TriangleMeshNode.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\PointGenerator.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\QuadtreeGraph.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\RecastGenerator.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\BBTree.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\EuclideanEmbedding.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\NavMeshRenderer.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\ObjImporter.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\RecastBBTree.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\RecastMeshGatherer.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\RecastMeshObj.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\TileHandler.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\Voxels\DebugUtility.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelClasses.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelContour.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelMesh.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelPolygonClipper.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelRasterization.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelRegion.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Generators\Utilities\Voxels\VoxelUtility.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Modifiers\AdvancedSmooth.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Modifiers\AlternativePath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Modifiers\FunnelModifier.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Modifiers\Modifiers.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Modifiers\RadiusModifier.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Modifiers\RaycastModifier.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Modifiers\SimpleSmoothModifier.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Modifiers\StartEndModifier.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Navmesh\NavmeshAdd.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Navmesh\NavmeshCut.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Navmesh\RelevantGraphSurface.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Navmesh\TileHandlerHelper.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Pathfinders\ABPath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Pathfinders\ConstantPath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Pathfinders\FleePath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Pathfinders\FloodPath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Pathfinders\FloodPathTracer.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Pathfinders\MultiTargetPath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Pathfinders\RandomPath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Pathfinders\XPath.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\RVO\RVOController.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\RVO\RVONavmesh.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\RVO\RVOObstacle.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\RVO\RVOSimulator.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\RVO\RVOSquareObstacle.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\AstarChecksum.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\AstarMemory.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\AstarParallel.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\AstarProfiler.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\DotNetReplacements.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\GraphUpdateUtilities.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\LockFreeStack.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\PathUtilities.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\ProfileHelper.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\Utilities\UnityReferenceHelper.cs" />
+     <Compile Include="Assets\Game\lib\AstarPathfindingProject\changelog.cs" />
+     <Compile Include="Assets\Game\lib\LeanTween\LTDescr.cs" />
+     <Compile Include="Assets\Game\lib\LeanTween\LTDescrOptional.cs" />
+     <Compile Include="Assets\Game\lib\LeanTween\LeanAudio.cs" />
+     <Compile Include="Assets\Game\lib\LeanTween\LeanTest.cs" />
+     <Compile Include="Assets\Game\lib\LeanTween\LeanTween.cs" />
+     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Runtime\ImportBehaviour.cs" />
+     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
+     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Runtime\SpriteDepthInMap.cs" />
+     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Runtime\TileAnimator.cs" />
+     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Runtime\TileObject.cs" />
+     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
+     <Compile Include="Assets\Game\lib\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
+     <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\Navmesh.shader" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Imported\2_DemoLevel_Map.tiled2unity.xml" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaDefault.shader" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Prefabs\_ReadMe.txt" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaTiledMap.shader" />
+     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\DotNetZip\DotNetZipLicense.txt" />
+     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\Poly2Tri\Poly2TriLicense.txt" />
+     <None Include="Assets\Game\shaders\SpritesBlinkable.shader" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Tiled2Unity.export.txt" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaDepth.shader" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaDiffuseDepth.shader" />
+     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\dependencies.txt" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Imported\DemoLevel_1_Map.tiled2unity.xml" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Imported\1_DemoLevel_Map.tiled2unity.xml" />
+     <None Include="Assets\Game\shaders\Sprites-Diffuse.shader" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Materials\_ReadMe.txt" />
+     <None Include="Assets\Game\lib\AstarPathfindingProject\Readme_upgrading.txt" />
+     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\Clipper\ClipperLicense.txt" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Textures\_ReadMe.txt" />
+     <None Include="Assets\Game\lib\AstarPathfindingProject\Readme.txt" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Imported\DemoLevel_0_Map.tiled2unity.xml" />
+     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\JsonFx\JsonFxLicense.txt" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaColorKey.shader" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Imported\4_DemoLevel_Map.tiled2unity.xml" />
+     <None Include="Assets\Game\lib\AstarPathfindingProject\Plugins\JsonFx\Readme.txt" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Shaders\shaDepthColorKey.shader" />
+     <None Include="Assets\Game\lib\Tiled2Unity\License.txt" />
+     <None Include="Assets\Game\lib\AstarPathfindingProject\Editor\EditorAssets\Materials\NavmeshOutline.shader" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Imported\_ReadMe.txt" />
+     <None Include="Assets\Game\lib\AstarPathfindingProject\link.xml" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Imported\3_DemoLevel_Map.tiled2unity.xml" />
+     <None Include="Assets\Game\lib\Tiled2Unity\Meshes\_ReadMe.txt" />
+ <Reference Include="UnityEngine.UI">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Networking">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.PlaymodeTestsRunner">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Analytics">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.HoloLens">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.VR">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+ </Reference>
+ <Reference Include="Pathfinding.ClipperLib">
+ <HintPath>C:/Users/Galen/Documents/GitHub/Soulslite-Unity/Soulslite/Assets/Game/lib/AstarPathfindingProject/Plugins/Clipper/Pathfinding.ClipperLib.dll</HintPath>
+ </Reference>
+ <Reference Include="Pathfinding.Ionic.Zip.Reduced">
+ <HintPath>C:/Users/Galen/Documents/GitHub/Soulslite-Unity/Soulslite/Assets/Game/lib/AstarPathfindingProject/Plugins/DotNetZip/Pathfinding.Ionic.Zip.Reduced.dll</HintPath>
+ </Reference>
+ <Reference Include="Pathfinding.JsonFx">
+ <HintPath>C:/Users/Galen/Documents/GitHub/Soulslite-Unity/Soulslite/Assets/Game/lib/AstarPathfindingProject/Plugins/JsonFx/Pathfinding.JsonFx.dll</HintPath>
+ </Reference>
+ <Reference Include="Pathfinding.Poly2Tri">
+ <HintPath>C:/Users/Galen/Documents/GitHub/Soulslite-Unity/Soulslite/Assets/Game/lib/AstarPathfindingProject/Plugins/Poly2Tri/Pathfinding.Poly2Tri.dll</HintPath>
+ </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  
+</Project>

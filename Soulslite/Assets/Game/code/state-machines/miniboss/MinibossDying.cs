@@ -47,7 +47,7 @@ public class MinibossDying : StateMachineBehaviour
             if (!flung)
             {
                 TimeSystem.timeSystem.SlowTime(0f, 0.6f);
-                enemy.SetMovementImpulse(flungVelocity, 4, 0.25f);
+                enemy.SetMovementImpulse(flungVelocity, 6, 0.4f);
                 flung = true;
             }
         }

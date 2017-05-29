@@ -488,25 +488,25 @@
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="23" name="Obstacle" x="232" y="224" width="16" height="8">
+  <object id="23" name="Obstacle" x="232" y="224" width="16" height="10">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="24" name="Obstacle" x="392" y="224" width="16" height="8">
+  <object id="24" name="Obstacle" x="392" y="224" width="16" height="10">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="25" name="Obstacle" x="392" y="96" width="16" height="8">
+  <object id="25" name="Obstacle" x="392" y="96" width="16" height="10">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="26" name="Obstacle" x="232" y="96" width="16" height="8">
+  <object id="26" name="Obstacle" x="232" y="96" width="16" height="10">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
@@ -530,13 +530,13 @@
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="30" name="Obstacle" x="226" y="445" width="28" height="12">
+  <object id="30" name="Obstacle" x="226" y="440" width="28" height="17">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>
    </properties>
   </object>
-  <object id="31" name="Obstacle" x="386" y="445" width="28" height="12">
+  <object id="31" name="Obstacle" x="386" y="440" width="28" height="17">
    <properties>
     <property name="unity:layer" value="ObstacleLayer"/>
     <property name="unity:tag" value="ObstacleTag"/>

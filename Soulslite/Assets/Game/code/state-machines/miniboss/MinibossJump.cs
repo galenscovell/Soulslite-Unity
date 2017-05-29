@@ -16,7 +16,7 @@ public class MinibossJump : StateMachineBehaviour
     private bool landed;
 
     private BlobShadow jumpShadow;
-    private Vector2 shadowOffset = new Vector2(-2, -45);
+    private Vector2 shadowOffset = new Vector2(-2, -35);
 
 
     public int GetHash()
@@ -72,7 +72,7 @@ public class MinibossJump : StateMachineBehaviour
                 jumpTarget = enemy.TrackTarget() + new Vector2(0, 32);
                 jumpShadow.LerpWorldPosition(jumpTarget + shadowOffset, 0.8f);
                 jumpShadow.LerpScaleInThenOut(new Vector2(3, 2), new Vector2(1, 0.5f), 0.8f);
-                enemy.StartCoroutine(Jump(300, 0.8f));
+                enemy.StartCoroutine(Jump(240, 0.8f));
                 jumped = true;
             }
         }
